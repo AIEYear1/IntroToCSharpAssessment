@@ -99,7 +99,7 @@ namespace FirstConsoleProgram
             else
                 MiddleName = "";
 
-            if(LastName != "")
+            if(lastName != "")
                 LastName = lastName[0].ToString().ToUpper() + lastName.Remove(0, 1);
             else
                 LastName = "";
