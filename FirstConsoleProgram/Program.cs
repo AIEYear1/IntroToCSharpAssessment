@@ -26,19 +26,20 @@ namespace FirstConsoleProgram
                 running = false;
             else
             {
-                nameDets = input.Trim().Split(' ');
+                nameDets = input.Trim().ToLower().Split(' ');
                 name = new Name((nameDets.Length >= 1) ? nameDets[0] : "", (nameDets.Length >= 3) ? nameDets[1] : "", (nameDets.Length >= 3) ? nameDets[2] : (nameDets.Length >= 2) ? nameDets[1] : "");
 
                 Console.WriteLine("Welcome " + name.FirstName);
             }
 
+            //Loop Start
             while (running)
             {
-                Console.Write(">");
-                input = Console.ReadLine();
-                input = input.Trim().ToLower();
+                Console.Write(">");               //Get player Input
+                input = Console.ReadLine();       //Get player Input
+                input = input.Trim().ToLower();   //Get player Input
 
-                if (input == "who am i")
+                if (input == "who am i")    //Player asking for their name to be repeated for them
                 {
                     if (name.FirstName != "")
                     {
@@ -67,7 +68,7 @@ namespace FirstConsoleProgram
                         }
                     }
                 }
-                else if (input == "quit")
+                else if (input == "quit")   //Player asks to quit the game
                 {
                     running = false;
                 }
@@ -77,11 +78,11 @@ namespace FirstConsoleProgram
 
     class Name
     {
-        public string FirstName;
-        public string MiddleName;
-        public string LastName;
+        public string FirstName;    //Player's first name
+        public string MiddleName;   //Player's middle name
+        public string LastName;     //Player's last name
 
-        public string FullName
+        public string FullName      //Player's full name with middle initial
         {
             get
             {
@@ -91,9 +92,17 @@ namespace FirstConsoleProgram
 
         public Name(string firstName, string middleName, string lastName)
         {
-            FirstName = firstName;
-            MiddleName = middleName;
-            LastName = lastName;
+            FirstName = firstName[0].ToString().ToUpper() + firstName.Remove(0,1);
+
+            if (middleName != "")
+                MiddleName = middleName[0].ToString().ToUpper() + middleName.Remove(0, 1);
+            else
+                MiddleName = "";
+
+            if(LastName != "")
+                LastName = lastName[0].ToString().ToUpper() + lastName.Remove(0, 1);
+            else
+                LastName = "";
         }
     }
 }
