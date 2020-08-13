@@ -39,14 +39,16 @@ namespace FirstConsoleProgram
                 input = Console.ReadLine();       //Get player Input
                 input = input.Trim().ToLower();   //Get player Input
 
-                if (input == "who am i")    //Player asking for their name to be repeated for them
+
+                switch (input)
                 {
-                    if (name.FirstName != "")
-                    {
-                        Console.WriteLine(name.FullName);
-                    }
-                    else
-                    {
+                    case "who am i":
+                        if (name.FirstName != "")
+                        {
+                            Console.WriteLine(name.FullName);
+                            continue;
+                        }
+
                         Console.WriteLine("You did not give us your name would you like to? Yes or No");
                         Console.Write(">");
                         input = Console.ReadLine();
@@ -58,19 +60,28 @@ namespace FirstConsoleProgram
                             Console.Write(">");
                             input = Console.ReadLine();
 
-                            nameDets = input.Trim().Split(' ');
+                            if (input.Trim().ToLower() == "quit")
+                            {
+                                running = false;
+                                break;
+                            }
+
+                            nameDets = input.Trim().ToLower().Split(' ');
                             name = new Name((nameDets.Length >= 1) ? nameDets[0] : "", (nameDets.Length >= 3) ? nameDets[1] : "", (nameDets.Length >= 3) ? nameDets[2] : (nameDets.Length >= 2) ? nameDets[1] : "");
+
                             Console.WriteLine("Welcome " + name.FirstName);
                         }
                         else
                         {
                             Console.WriteLine("Uh, alright then");
                         }
-                    }
-                }
-                else if (input == "quit")   //Player asks to quit the game
-                {
-                    running = false;
+                        break;
+                    case "quit":
+                        running = false;
+                        break;
+                    default:
+                        Console.WriteLine("I- I don- I don't understand");
+                        break;
                 }
             }
         }
@@ -92,7 +103,10 @@ namespace FirstConsoleProgram
 
         public Name(string firstName, string middleName, string lastName)
         {
-            FirstName = firstName[0].ToString().ToUpper() + firstName.Remove(0,1);
+            if (firstName != "")
+                FirstName = firstName[0].ToString().ToUpper() + firstName.Remove(0, 1);
+            else
+                FirstName = "";
 
             if (middleName != "")
                 MiddleName = middleName[0].ToString().ToUpper() + middleName.Remove(0, 1);
