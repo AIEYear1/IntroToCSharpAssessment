@@ -42,7 +42,7 @@ namespace FirstConsoleProgram
 
                 switch (input)
                 {
-                    case "who am i":
+                    case "who am i":                //1st case "who am i"
                         if (name.FirstName != "")
                         {
                             Console.WriteLine(name.FullName);
@@ -76,10 +76,10 @@ namespace FirstConsoleProgram
                             Console.WriteLine("Uh, alright then");
                         }
                         break;
-                    case "quit":
+                    case "quit":                    //2nd case "quit"
                         running = false;
                         break;
-                    default:
+                    default:                        //Overflow
                         Console.WriteLine("I- I don- I don't understand");
                         break;
                 }
