@@ -9,10 +9,10 @@ namespace FirstConsoleProgram
         public int currentHP;
         public int maximumHP;
 
-        public LivingCreature(int currentHP, int maximumHP)
+        public LivingCreature(int HP)
         {
-            this.currentHP = currentHP;
-            this.maximumHP = maximumHP;
+            this.currentHP = HP;
+            this.maximumHP = HP;
         }
 
         public LivingCreature()

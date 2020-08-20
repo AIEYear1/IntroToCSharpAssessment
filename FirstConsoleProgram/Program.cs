@@ -12,23 +12,26 @@ namespace FirstConsoleProgram
         //    }
         //}
         public static bool running = true;
+        public static Player player = new Player(null, 0, 0, 1, new Weapon(5, 1, "Stick", "Sticks", "Long narrow stick with a stick like texture", 1), null, 15);
 
         static void Main(string[] args)
         {
+            Monster wolf = new Monster(new Name("Wolf"), 3, 0, 5, 12, 12);
+
             Console.WriteLine("What is your name");
             Console.Write(">");
             string input = Console.ReadLine();
             string[] nameDets;
-            Name name = null;
 
             if (input.Trim().ToLower() == "quit")
                 running = false;
             else
             {
                 nameDets = input.Trim().ToLower().Split(' ');
-                name = new Name((nameDets.Length >= 1) ? nameDets[0] : "", (nameDets.Length >= 3) ? nameDets[1] : "", (nameDets.Length >= 3) ? nameDets[2] : (nameDets.Length >= 2) ? nameDets[1] : "");
 
-                Console.WriteLine("Welcome " + name.FirstName);
+                player.name = new Name((nameDets.Length >= 1) ? nameDets[0] : "", (nameDets.Length >= 3) ? nameDets[1] : "", (nameDets.Length >= 3) ? nameDets[2] : (nameDets.Length >= 2) ? nameDets[1] : "");
+
+                Console.WriteLine("Welcome " + player.name.FirstName);
             }
 
             //Loop Start
@@ -42,9 +45,9 @@ namespace FirstConsoleProgram
                 switch (input)
                 {
                     case "who am i":                //1st case "who am i"
-                        if (name.FirstName != "")
+                        if (player.name.FirstName != "")
                         {
-                            Console.WriteLine(name.FullName);
+                            Console.WriteLine(player.name.FullName);
                             continue;
                         }
 
@@ -66,14 +69,17 @@ namespace FirstConsoleProgram
                             }
 
                             nameDets = input.Trim().ToLower().Split(' ');
-                            name = new Name((nameDets.Length >= 1) ? nameDets[0] : "", (nameDets.Length >= 3) ? nameDets[1] : "", (nameDets.Length >= 3) ? nameDets[2] : (nameDets.Length >= 2) ? nameDets[1] : "");
+                            player.name = new Name((nameDets.Length >= 1) ? nameDets[0] : "", (nameDets.Length >= 3) ? nameDets[1] : "", (nameDets.Length >= 3) ? nameDets[2] : (nameDets.Length >= 2) ? nameDets[1] : "");
 
-                            Console.WriteLine("Welcome " + name.FirstName);
+                            Console.WriteLine("Welcome " + player.name.FirstName);
                         }
                         else
                         {
                             Console.WriteLine("Uh, alright then");
                         }
+                        break;
+                    case "attack":
+                        player.Attack(wolf);
                         break;
                     case "quit":                    //2nd case "quit"
                         running = false;

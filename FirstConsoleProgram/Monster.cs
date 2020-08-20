@@ -12,7 +12,7 @@ namespace FirstConsoleProgram
         public int rewardXP = 0;
         public int rewardGold = 0;
 
-        public Monster(Name name, int maximumDamage, int minimumDamage, int rewardXP, int rewardGold, int currentHP, int maximumHP) : base(currentHP, maximumHP)
+        public Monster(Name name, int maximumDamage, int minimumDamage, int rewardXP, int rewardGold, int HP) : base(HP)
         {
             this.name = name;
             this.maximumDamage = maximumDamage;
@@ -23,7 +23,9 @@ namespace FirstConsoleProgram
 
         public void Attack(Player player)
         {
-            player.currentHP -= RandomNumberGenerator.NumberBetween(minimumDamage, maximumDamage);
+            int damage = RandomNumberGenerator.NumberBetween(minimumDamage, maximumDamage);
+            player.currentHP -= damage;
+            Console.WriteLine($"You were hit by {name.FullName} for {damage} damage!");
 
             if (player.currentHP <= 0)
             {

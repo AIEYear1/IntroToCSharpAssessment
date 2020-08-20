@@ -18,7 +18,7 @@ namespace FirstConsoleProgram
             }
         }
 
-        public Name(string firstName, string middleName, string lastName)
+        public Name(string firstName, string lastName = "", string middleName = "")
         {
             if (firstName != "")
                 FirstName = firstName[0].ToString().ToUpper() + firstName.Remove(0, 1);

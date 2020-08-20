@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace FirstConsoleProgram
@@ -13,7 +14,7 @@ namespace FirstConsoleProgram
         public Weapon currentWeapon;
         public Armor currentArmor;
 
-        public Player(Name name, int gold, int xP, int level, Weapon currentWeapon, Armor currentArmor, int currentHP, int maximumHP) : base(currentHP, maximumHP)
+        public Player(Name name, int gold, int xP, int level, Weapon currentWeapon, Armor currentArmor, int HP) : base(HP)
         {
             this.name = name;
             this.gold = gold;
@@ -36,7 +37,9 @@ namespace FirstConsoleProgram
                 return;
             }
 
-            enemToAttack.currentHP -= RandomNumberGenerator.NumberBetween(currentWeapon.minDamage, currentWeapon.maxDamage);
+            int damage = RandomNumberGenerator.NumberBetween(currentWeapon.minDamage, currentWeapon.maxDamage);
+            enemToAttack.currentHP -= damage;
+            Console.WriteLine($"You hit {enemToAttack.name.FullName} for {damage} damage!");
 
             if (enemToAttack.currentHP <= 0)
             {
