@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FirstConsoleProgram
+namespace CRPGThing
 {
     public class Item
     {

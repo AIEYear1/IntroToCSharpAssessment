@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace FirstConsoleProgram
+namespace CRPGThing
 {
     public class Player : LivingCreature
     {
@@ -13,6 +13,7 @@ namespace FirstConsoleProgram
         public int level = 1;
         public Weapon currentWeapon;
         public Armor currentArmor;
+        public Location currentLocation;
 
         public Player(Name name, int gold, int xP, int level, Weapon currentWeapon, Armor currentArmor, int HP) : base(HP)
         {
