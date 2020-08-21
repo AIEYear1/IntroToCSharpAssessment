@@ -25,11 +25,11 @@ namespace CRPGThing
         {
             int damage = RandomNumberGenerator.NumberBetween(minimumDamage, maximumDamage);
             player.currentHP -= damage;
-            Console.WriteLine($"You were hit by {name.FullName} for {damage} damage!");
+            Utils.Add($"You were hit by {name.FullName} for {damage} damage!");
 
             if (player.currentHP <= 0)
             {
-                Console.WriteLine(player.name.FullName + " has died!");
+                Utils.Add(player.name.FullName + " has died!");
                 Program.running = false;
             }
         }

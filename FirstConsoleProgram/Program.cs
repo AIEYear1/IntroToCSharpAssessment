@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace CRPGThing
-{
+{ 
     class Program
     {
         public static bool running = true;
@@ -12,106 +12,78 @@ namespace CRPGThing
 
         static void Main()
         {
-            Console.WriteLine("What is your name");
-            Console.Write(">");
-            string input = Console.ReadLine();
-            string[] nameDets = new string[3];
-
-            if (input.Trim().ToLower() == "quit")
-                running = false;
-            else
-            {
-                nameDets = input.Trim().ToLower().Split(' ');
-
-                player.name = new Name((nameDets.Length >= 1) ? nameDets[0] : "", (nameDets.Length >= 3) ? nameDets[1] : "", (nameDets.Length >= 3) ? nameDets[2] : (nameDets.Length >= 2) ? nameDets[1] : "");
-
-                Console.WriteLine("Welcome " + player.name.FirstName);
-            }
+            player.SetName();
 
             //Loop Start
             while (running)
             {
-                Console.Write(">");               //Get player Input
-                input = Console.ReadLine();       //Get player Input
-                input = input.Trim().ToLower();   //Get player Input
-
-
-                switch (input)
-                {
-                    case "who am i":                //1st case "who am i"
-                        if (player.name.FirstName != "")
-                        {
-                            Console.WriteLine(player.name.FullName);
-                            continue;
-                        }
-
-                        Console.WriteLine("You did not give us your name would you like to? Yes or No");
-                        Console.Write(">");
-                        input = Console.ReadLine();
-                        input = input.Trim().ToLower();
-
-                        if (input == "yes")
-                        {
-                            Console.WriteLine("What is your name");
-                            Console.Write(">");
-                            input = Console.ReadLine();
-
-                            if (input.Trim().ToLower() == "quit")
-                            {
-                                running = false;
-                                break;
-                            }
-
-                            nameDets = input.Trim().ToLower().Split(' ');
-                            player.name = new Name((nameDets.Length >= 1) ? nameDets[0] : "", (nameDets.Length >= 3) ? nameDets[1] : "", (nameDets.Length >= 3) ? nameDets[2] : (nameDets.Length >= 2) ? nameDets[1] : "");
-
-                            Console.WriteLine("Welcome " + player.name.FirstName);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Uh, alright then");
-                        }
-                        break;
-                    case string move when move.StartsWith("move "):
-                        string tmpInput = move.Substring(5).Trim();
-                        switch (tmpInput)
-                        {
-                            case "north":
-                            case "up":
-                            case "n":
-                                Console.WriteLine("moving north");
-                                break;
-                            case "east":
-                            case "right":
-                            case "e":
-
-                                break;
-                            case "south":
-                            case "down":
-                            case "s":
-
-                                break;
-                            case "west":
-                            case "left":
-                            case "w":
-
-                                break;
-                            default:
-                                Console.WriteLine("that's not a direction");
-                                break;
-                        }
-                        break;
-                    case "attack":
-                        player.Attack(player.currentLocation.monsterLivingHere);
-                        break;
-                    case "quit":                    //2nd case "quit"
-                        running = false;
-                        break;
-                    default:                        //Overflow
-                        Console.WriteLine("I- I don- I don't understand");
-                        break;
-                }
+                ParseInput(Utils.GetInput());
             }
+        }
+
+        static void ParseInput(string input)
+        {
+            switch (input)
+            {
+                case "who am i":                //1st case "who am i"
+                    if (player.name.FirstName != "")
+                    {
+                        Utils.Add(player.name.FullName);
+                        break;
+                    }
+
+                    input = Utils.AskQuestion("You did not give us your name would you like to? Yes or No");
+
+                    if (input == "yes")
+                    {
+                        player.SetName();
+                    }
+                    else
+                    {
+                        Utils.Add("Uh, alright then");
+                    }
+                    break;
+                case string move when move.StartsWith("move "):
+                    string tmpInput = move.Substring(5).Trim();
+                    switch (tmpInput)
+                    {
+                        case "north":
+                        case "up":
+                        case "n":
+                            player.MoveNorth();
+                            break;
+                        case "east":
+                        case "right":
+                        case "e":
+                            player.MoveEast();
+                            break;
+                        case "south":
+                        case "down":
+                        case "s":
+                            player.MoveSouth();
+                            break;
+                        case "west":
+                        case "left":
+                        case "w":
+                            player.MoveWest();
+                            break;
+                        default:
+                            Utils.Add("that's not a direction");
+                            break;
+                    }
+                    break;
+                case "attack":
+                    player.Attack(player.currentLocation.monsterLivingHere);
+                    break;
+                case "quit":                    //2nd case "quit"
+                    running = false;
+                    break;
+                default:                        //Overflow
+                    Utils.Add("I- I don- I don't understand");
+                    break;
+            }
+
+            Utils.Print();
         }
     }
 }

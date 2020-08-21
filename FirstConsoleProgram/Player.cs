@@ -26,6 +26,22 @@ namespace CRPGThing
             this.currentLocation = currentLocation;
         }
 
+        public void SetName()
+        {
+            string input = Utils.AskQuestion("What is your name");
+
+            if (input == "quit")
+            {
+                Program.running = false;
+                return;
+            }
+
+            string[] nameDets = input.Split(' ');
+            name = new Name((nameDets.Length >= 1) ? nameDets[0] : "", (nameDets.Length >= 3) ? nameDets[2] : (nameDets.Length >= 2) ? nameDets[1] : "", (nameDets.Length >= 3) ? nameDets[1] : "");
+
+            Console.WriteLine("Welcome " + name.FirstName);
+        }
+
         #region Location moving
 
         public void MoveTo(Location loc)
@@ -42,7 +58,7 @@ namespace CRPGThing
             }
             else
             {
-                Console.WriteLine("you cannot move north");
+                Utils.Add("you cannot move north");
             }
         }
         public void MoveEast()
@@ -53,7 +69,7 @@ namespace CRPGThing
             }
             else
             {
-                Console.WriteLine("you cannot move east");
+                Utils.Add("you cannot move east");
             }
         }
         public void MoveSouth()
@@ -64,7 +80,7 @@ namespace CRPGThing
             }
             else
             {
-                Console.WriteLine("you cannot move south");
+                Utils.Add("you cannot move south");
             }
         }
         public void MoveWest()
@@ -75,7 +91,7 @@ namespace CRPGThing
             }
             else
             {
-                Console.WriteLine("you cannot move West");
+                Utils.Add("you cannot move West");
             }
         }
         #endregion
@@ -84,22 +100,22 @@ namespace CRPGThing
         {
             if (currentWeapon == null)
             {
-                Console.WriteLine("You need a weapon to attack");
+                Utils.Add("You need a weapon to attack");
                 return;
             }
             if (enemToAttack == null)
             {
-                Console.WriteLine("You swing wildly at the air");
+                Utils.Add("You swing wildly at the air");
                 return;
             }
 
             int damage = RandomNumberGenerator.NumberBetween(currentWeapon.minDamage, currentWeapon.maxDamage);
             enemToAttack.currentHP -= damage;
-            Console.WriteLine($"You hit {enemToAttack.name.FullName} for {damage} damage!");
+            Utils.Add($"You hit {enemToAttack.name.FullName} for {damage} damage!");
 
             if (enemToAttack.currentHP <= 0)
             {
-                Console.WriteLine(enemToAttack.name.FullName + " has died");
+                Utils.Add(enemToAttack.name.FullName + " has died");
                 gold += enemToAttack.rewardGold;
                 XP += enemToAttack.rewardXP;
                 currentLocation.monsterLivingHere = null;
