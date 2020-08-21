@@ -8,9 +8,9 @@ namespace CRPGThing
     {
         public static bool running = true;
         public static Player player = new Player(null, 0, 0, 1, (Weapon)World.ItemByID(World.ITEM_ID_STICK), 
-            (Armor)World.ItemByID(World.ITEM_ID_CLOTHES), 15);
+            (Armor)World.ItemByID(World.ITEM_ID_CLOTHES), World.LocationByID(World.LOCATION_ID_STARTINGLOCATION), 15);
 
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine("What is your name");
             Console.Write(">");
@@ -72,8 +72,37 @@ namespace CRPGThing
                             Console.WriteLine("Uh, alright then");
                         }
                         break;
+                    case string move when move.StartsWith("move "):
+                        string tmpInput = move.Substring(5).Trim();
+                        switch (tmpInput)
+                        {
+                            case "north":
+                            case "up":
+                            case "n":
+                                Console.WriteLine("moving north");
+                                break;
+                            case "east":
+                            case "right":
+                            case "e":
+
+                                break;
+                            case "south":
+                            case "down":
+                            case "s":
+
+                                break;
+                            case "west":
+                            case "left":
+                            case "w":
+
+                                break;
+                            default:
+                                Console.WriteLine("that's not a direction");
+                                break;
+                        }
+                        break;
                     case "attack":
-                        player.Attack(World.MonsterByID(0));
+                        player.Attack(player.currentLocation.monsterLivingHere);
                         break;
                     case "quit":                    //2nd case "quit"
                         running = false;
