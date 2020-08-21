@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -10,20 +11,25 @@ namespace CRPGThing
         public Name name;
         public int gold = 0;
         public int XP = 0;
+        public int XPToLevelUp = 0;
         public int level = 1;
         public Weapon currentWeapon;
         public Armor currentArmor;
         public Location currentLocation;
+        public Location home;
+        public List<InventoryItem> Inventory = new List<InventoryItem>();
+        public List<Quest> activeQuests = new List<Quest>();
 
-        public Player(Name name, int gold, int xP, int level, Weapon currentWeapon, Armor currentArmor, Location currentLocation, int HP) : base(HP)
+        public Player(Name name, int gold, int xP, int xPToLevelUp, int level, Weapon currentWeapon, Armor currentArmor, Location home, int HP) : base(HP)
         {
             this.name = name;
             this.gold = gold;
             XP = xP;
+            XPToLevelUp = xPToLevelUp;
             this.level = level;
             this.currentWeapon = currentWeapon;
             this.currentArmor = currentArmor;
-            this.currentLocation = currentLocation;
+            this.home = home;
         }
 
         public void SetName()
@@ -48,6 +54,13 @@ namespace CRPGThing
         {
             currentHP = maximumHP;
             currentLocation = loc;
+
+            currentLocation.LookHere();
+
+            if(loc is QuestLocation)
+            {
+                (loc as QuestLocation).CallQuest();
+            }
         }
 
         public void MoveNorth()
@@ -96,6 +109,127 @@ namespace CRPGThing
         }
         #endregion
 
+        #region Item gaining and equiping
+        public void AddItemToInventory(InventoryItem itemToAdd)
+        {
+            if(itemToAdd.details is QuestItem)
+            {
+                (itemToAdd.details as QuestItem).CallQuest();
+            }
+
+            foreach(InventoryItem item in Inventory)
+            {
+                if(itemToAdd.details == item.details)
+                {
+                    item.quantity++;
+                    return;
+                }
+            }
+
+            Inventory.Add(itemToAdd);
+        }
+
+        public void EquipItem(string arg)
+        {
+            foreach(InventoryItem item in Inventory)
+            {
+                if(item.details.name.ToLower() == arg)
+                {
+                    Item tmpItem = item.details;
+
+                    if(tmpItem is Weapon)
+                    {
+                        currentWeapon = (Weapon)tmpItem;
+                        Utils.Add("Equipped " + tmpItem.name);
+                        return;
+                    }
+
+                    if (item.details is Armor)
+                    {
+                        currentArmor = (Armor)tmpItem;
+                        Utils.Add("Equipped " + tmpItem.name);
+                        return;
+                    }
+
+                    Utils.Add("You can't equip " + tmpItem.name);
+                    return;
+                }
+            }
+
+            Utils.Add("You have no items called " + arg);
+        }
+        #endregion
+
+        public void Look(string arg)
+        {
+            switch (arg)
+            {
+                case "north":
+                case "up":
+                case "n":
+                    currentLocation.LookNorth();
+                    break;
+                case "east":
+                case "right":
+                case "e":
+                    currentLocation.LookEast();
+                    break;
+                case "south":
+                case "down":
+                case "s":
+                    currentLocation.LookSouth();
+                    break;
+                case "west":
+                case "left":
+                case "w":
+                    currentLocation.LookWest();
+                    break;
+                case "here":
+                    currentLocation.LookHere();
+                    break;
+                case string item when Inventory.SingleOrDefault(x => x.details.name.ToLower() == item || x.details.namePlural.ToLower() == item) != null:
+                    Item tmpItem = Inventory.SingleOrDefault(x => x.details.name.ToLower() == item || x.details.namePlural.ToLower() == item).details;
+                    Utils.Add(tmpItem.name);
+                    if(tmpItem is Weapon)
+                    {
+                        Utils.Add($"\tAttack Power: {(tmpItem as Weapon).minDamage}-{(tmpItem as Weapon).maxDamage}");
+                        break;
+                    }
+                    if(tmpItem is Armor)
+                    {
+                        Utils.Add($"\tProtection Level: {(tmpItem as Armor).ac}");
+                    }
+                    break;
+                case string monster when currentLocation.monsterLivingHere != null && currentLocation.monsterLivingHere.name.FullName.ToLower() == monster:
+                    currentLocation.monsterLivingHere.LookAt();
+                    break;
+                default:
+                    Utils.Add("Please specify what to look at");
+                    break;
+            }
+        }
+
+        public void Stats()
+        {
+            Utils.Add($"\nStats for {name.FullName}");
+            Utils.Add($"\tHP: \t\t{currentHP}/{maximumHP}");
+            Utils.Add($"\tLevel: \t\t{level}");
+            Utils.Add($"\tXP: \t\t{XP}/{XPToLevelUp}");
+            Utils.Add($"\tGold: \t\t{gold}");
+        }
+
+        public void GainQuest(Quest quest)
+        {
+            if(quest.playerHasQuest || quest.complete)
+            {
+                return;
+            }
+
+            Utils.Add(quest.questGainedText);
+            activeQuests.Add(quest);
+            quest.playerHasQuest = true;
+        }
+
         public void Attack(Monster enemToAttack)
         {
             if (currentWeapon == null)
@@ -115,10 +249,8 @@ namespace CRPGThing
 
             if (enemToAttack.currentHP <= 0)
             {
-                Utils.Add(enemToAttack.name.FullName + " has died");
-                gold += enemToAttack.rewardGold;
-                XP += enemToAttack.rewardXP;
-                currentLocation.monsterLivingHere = null;
+                enemToAttack.Die(this);
+
                 return;
             }
 
