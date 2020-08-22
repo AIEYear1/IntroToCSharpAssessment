@@ -6,7 +6,7 @@ namespace CRPGThing
 {
     public class Monster : LivingCreature
     {
-        public Name name = null;
+        public Name name;
         public string description;
         public int maximumDamage = 0;
         public int minimumDamage = 0;

@@ -23,9 +23,8 @@ namespace CRPGThing
         public List<InventoryItem> Inventory = new List<InventoryItem>();
         public List<Quest> activeQuests = new List<Quest>();
 
-        public Player(Name name, int gold, int xP, int xPToLevelUp, int level, Weapon currentWeapon, Armor currentArmor, Location home, int HP) : base(HP)
+        public Player(int gold, int xP, int xPToLevelUp, int level, Weapon currentWeapon, Armor currentArmor, Location home, int HP) : base(HP)
         {
-            this.name = name;
             this.gold = gold;
             XP = xP;
             XPToLevelUp = xPToLevelUp;

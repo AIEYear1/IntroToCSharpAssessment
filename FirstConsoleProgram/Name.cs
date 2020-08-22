@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CRPGThing
 {
-    public class Name
+    public struct Name
     {
         public string FirstName;    //Player's first name
         public string MiddleName;   //Player's middle name

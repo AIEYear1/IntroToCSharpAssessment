@@ -7,7 +7,7 @@ namespace CRPGThing
     class Program
     {
         public static bool running = true;
-        public static Player player = new Player(null, 0, 0, 50, 1, (Weapon)World.ItemByID(World.ITEM_ID_STICK), 
+        public static Player player = new Player(0, 0, 50, 1, (Weapon)World.ItemByID(World.ITEM_ID_STICK), 
             (Armor)World.ItemByID(World.ITEM_ID_CLOTHES), World.LocationByID(World.LOCATION_ID_CLEARING), 15);
 
         static void Main()
