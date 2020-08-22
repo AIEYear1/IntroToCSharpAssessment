@@ -222,12 +222,12 @@ namespace CRPGThing
                     if(tmpItem is Weapon)
                     {
                         Utils.Add($"\tAttack Power: {(tmpItem as Weapon).minDamage}-{(tmpItem as Weapon).maxDamage}");
-                        break;
                     }
-                    if(tmpItem is Armor)
+                    else if(tmpItem is Armor)
                     {
                         Utils.Add($"\tProtection Level: {(tmpItem as Armor).ac}");
                     }
+                    Utils.Add(tmpItem.description);
                     break;
                 case string monster when currentLocation.monsterLivingHere != null && currentLocation.monsterLivingHere.name.FullName.ToLower() == monster:
                     currentLocation.monsterLivingHere.LookAt();
