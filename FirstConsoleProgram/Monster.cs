@@ -14,7 +14,7 @@ namespace CRPGThing
         public int rewardGold = 0;
         public List<LootItem> lootTable = new List<LootItem>();
 
-        public Monster(Name name, string description, int maximumDamage, int minimumDamage, int rewardXP, int rewardGold, int HP) : base(HP)
+        public Monster(Name name, string description, int HP, int maximumDamage, int minimumDamage, int rewardXP, int rewardGold) : base(HP)
         {
             this.name = name;
             this.description = description;
@@ -34,7 +34,7 @@ namespace CRPGThing
 
         public void Attack(Player player)
         {
-            int damage = (int)MathF.Max((RandomNumberGenerator.NumberBetween(minimumDamage, maximumDamage)) - player.currentArmor.ac, 0);
+            int damage = (int)MathF.Max((RandomNumberGenerator.NumberBetween(minimumDamage, maximumDamage)) - (player.currentArmor.ac + player.baseAc), 0);
             player.currentHP -= damage;
             Utils.Add($"You were hit by {name.FullName} for {damage} damage!");
 
@@ -48,7 +48,7 @@ namespace CRPGThing
         public void Die(Player player)
         {
             player.gold += rewardGold;
-            player.XP += rewardXP;
+            player.EarnXP(rewardXP);
             player.currentLocation.monsterLivingHere = null;
 
             Utils.Add(name.FullName + " has died");

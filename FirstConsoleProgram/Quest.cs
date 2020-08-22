@@ -70,7 +70,7 @@ namespace CRPGThing
         {
             complete = true;
             Program.player.gold += rewardGold;
-            Program.player.XP += rewardXP;
+            Program.player.EarnXP(rewardXP);
             Utils.Add(completionText);
             Utils.Add($"You gained {rewardGold} gold");
             Utils.Add($"You earned {rewardXP} XP");

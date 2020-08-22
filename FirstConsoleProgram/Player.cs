@@ -13,6 +13,9 @@ namespace CRPGThing
         public int XP = 0;
         public int XPToLevelUp = 0;
         public int level = 1;
+        public int baseMaxDamage = 0;
+        public int baseMinDamage = 0;
+        public int baseAc = 0;
         public Weapon currentWeapon;
         public Armor currentArmor;
         public Location currentLocation;
@@ -48,19 +51,43 @@ namespace CRPGThing
             Console.WriteLine("Welcome " + name.FirstName);
         }
 
+        public void EarnXP(int XPEarned)
+        {
+            XP += XPEarned;
+
+            if (XP >= XPToLevelUp)
+            {
+                level++;
+                XP -= XPToLevelUp;
+                XPToLevelUp = 25 * level * (1 + level);
+
+                maximumHP += (int)((float)maximumHP * ((float)level / 4f));
+                currentHP = maximumHP;
+                baseMaxDamage = level / 2;
+                baseMinDamage = level / 2;
+                baseAc = level / 2;
+            }
+        }
+
         #region Location moving
 
         public void MoveTo(Location loc)
         {
+            if(currentLocation != null && currentLocation.monsterLivingHere != null)
+            {
+                Utils.Add($"The {currentLocation.monsterLivingHere.name.FullName} blocks your path");
+                return;
+            }
+
             currentHP = maximumHP;
             currentLocation = loc;
-
-            currentLocation.LookHere();
 
             if(loc is QuestLocation)
             {
                 (loc as QuestLocation).CallQuest();
             }
+
+            currentLocation.LookHere();
         }
 
         public void MoveNorth()
@@ -160,6 +187,8 @@ namespace CRPGThing
         }
         #endregion
 
+        #region Looking and info
+
         public void Look(string arg)
         {
             switch (arg)
@@ -213,10 +242,18 @@ namespace CRPGThing
         {
             Utils.Add($"\nStats for {name.FullName}");
             Utils.Add($"\tHP: \t\t{currentHP}/{maximumHP}");
+
+            if(currentWeapon != null)
+                Utils.Add($"\tAttack Power: \t{currentWeapon.minDamage + baseMinDamage}-{currentWeapon.maxDamage + baseMaxDamage}");
+            if (currentArmor != null)
+                Utils.Add($"\tProtection: \t{currentArmor.ac + baseAc}");
+
             Utils.Add($"\tLevel: \t\t{level}");
             Utils.Add($"\tXP: \t\t{XP}/{XPToLevelUp}");
             Utils.Add($"\tGold: \t\t{gold}");
         }
+
+        #endregion
 
         public void GainQuest(Quest quest)
         {
@@ -243,7 +280,7 @@ namespace CRPGThing
                 return;
             }
 
-            int damage = RandomNumberGenerator.NumberBetween(currentWeapon.minDamage, currentWeapon.maxDamage);
+            int damage = RandomNumberGenerator.NumberBetween(currentWeapon.minDamage + baseMinDamage, currentWeapon.maxDamage + baseMaxDamage);
             enemToAttack.currentHP -= damage;
             Utils.Add($"You hit {enemToAttack.name.FullName} for {damage} damage!");
 
