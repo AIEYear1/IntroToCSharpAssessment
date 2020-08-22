@@ -17,7 +17,8 @@ namespace CRPGThing
 
         public const int MONSTER_ID_WOLF = 0;
 
-        public const int LOCATION_ID_STARTINGLOCATION = 0;
+        public const int LOCATION_ID_CLEARING = 0;
+        public const int LOCATION_ID_PATH = 1;
 
         public const int QUEST_ID_TUTORIALQUEST = 0;
 
@@ -53,14 +54,14 @@ namespace CRPGThing
             QuestLocation clearing = new QuestLocation("Clearing", "A small clearing, forest surrounds you", QuestByID(QUEST_ID_TUTORIALQUEST), -1);
             clearing.monsterLivingHere = World.MonsterByID(World.MONSTER_ID_WOLF);
 
-            Location path1 = new Location("Path", "A small path from the clearing, where does it lead?");
+            Location path = new Location("Path", "A small path from the clearing, where does it lead?");
 
-            clearing.locationToNorth = path1;
+            clearing.locationToNorth = path;
 
-            path1.locationToSouth = clearing;
+            path.locationToSouth = clearing;
 
             Locations.Add(clearing);
-            Locations.Add(path1);
+            Locations.Add(path);
         }
 
         public static void PopulateQuests()
