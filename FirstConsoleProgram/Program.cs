@@ -43,11 +43,9 @@ namespace CRPGThing
                     if (input == "yes")
                     {
                         player.SetName();
+                        break;
                     }
-                    else
-                    {
-                        Utils.Add("Uh, alright then");
-                    }
+                    Utils.Add("Uh, alright then");
                     break;
                 case string look when look.StartsWith("look "):
                     player.Look(look.Substring(5).Trim());

@@ -30,5 +30,22 @@ namespace CRPGThing
             Console.Write(outputToConsole);
             outputToConsole = "";
         }
+
+        public static string PrefixNoun(string noun, bool properNounOrPlural, bool nounKnown)
+        {
+            string vowels = "aeiou";
+
+            if (nounKnown)
+            {
+                return "the " + noun;
+            }
+
+            if (properNounOrPlural)
+            {
+                return noun;
+            }
+
+            return (vowels.Contains(noun[0]) ? "an " : "a ") + noun;
+        }
     }
 }

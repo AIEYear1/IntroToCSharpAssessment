@@ -54,8 +54,7 @@ namespace CRPGThing
             QuestLocation clearing = new QuestLocation("Clearing", "A small clearing, forest surrounds you", QuestByID(QUEST_ID_TUTORIALQUEST), -1);
             clearing.monsterLivingHere = World.MonsterByID(World.MONSTER_ID_WOLF);
 
-            Location path = new Location("Path", "A small path from the clearing, where does it lead?");
-
+            Location path = new Location("Path", "A small path from the clearing, where does it lead?", false);
             clearing.locationToNorth = path;
 
             path.locationToSouth = clearing;

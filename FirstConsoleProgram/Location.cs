@@ -16,10 +16,15 @@ namespace CRPGThing
         public Location locationToSouth;
         public List<Location> LocationsAround = new List<Location>();
 
-        public Location(string name, string description)
+        public bool properNoun;
+        public bool knownNoun;
+
+        public Location(string name, string description, bool knownNoun = false, bool properNoun = false)
         {
             this.name = name;
             this.description = description;
+            this.knownNoun = knownNoun;
+            this.properNoun = properNoun;
         }
 
         public void LookHere()
@@ -28,19 +33,19 @@ namespace CRPGThing
 
             if(locationToNorth != null)
             {
-                Utils.Add("\tTo the North is " + locationToNorth.name);
+                Utils.Add("\tTo the North is " + Utils.PrefixNoun(locationToNorth.name, locationToNorth.properNoun, locationToNorth.knownNoun));
             }
             if (locationToEast != null)
             {
-                Utils.Add("\tTo the East is " + locationToEast.name);
+                Utils.Add("\tTo the East is " + Utils.PrefixNoun(locationToEast.name, locationToEast.properNoun, locationToEast.knownNoun));
             }
             if (locationToWest != null)
             {
-                Utils.Add("\tTo the West is " + locationToWest.name);
+                Utils.Add("\tTo the West is " + Utils.PrefixNoun(locationToWest.name, locationToWest.properNoun, locationToWest.knownNoun));
             }
             if (locationToSouth != null)
             {
-                Utils.Add("\tTo the South is " + locationToSouth.name);
+                Utils.Add("\tTo the South is " + Utils.PrefixNoun(locationToSouth.name, locationToSouth.properNoun, locationToSouth.knownNoun));
             }
             if(monsterLivingHere != null)
             {

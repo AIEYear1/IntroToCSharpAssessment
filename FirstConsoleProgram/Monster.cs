@@ -6,7 +6,6 @@ namespace CRPGThing
 {
     public class Monster : LivingCreature
     {
-        public Name name;
         public string description;
         public int maximumDamage = 0;
         public int minimumDamage = 0;
@@ -14,7 +13,7 @@ namespace CRPGThing
         public int rewardGold = 0;
         public List<LootItem> lootTable = new List<LootItem>();
 
-        public Monster(Name name, string description, int HP, int maximumDamage, int minimumDamage, int rewardXP, int rewardGold) : base(HP)
+        public Monster(Name name, string description, int HP, int maximumDamage, int minimumDamage, int rewardXP, int rewardGold, bool knownNoun = false, bool properNoun = false) : base(name, HP, knownNoun, properNoun)
         {
             this.name = name;
             this.description = description;

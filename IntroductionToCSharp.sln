@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuessTheNumber", "C:\Users\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Walkalong", "C:\Users\2awso\Downloads\Walkalong-master\Walkalong-master\Walkalong\Walkalong.csproj", "{098A4493-39F2-42F1-AD85-75E32E82C58B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blackjack", "..\..\Resources\Blackjack (Student)\Blackjack (Student)\Blackjack\Blackjack.csproj", "{CC95B04B-88F7-4DCD-A9D2-6D36DC3D7E17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{098A4493-39F2-42F1-AD85-75E32E82C58B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{098A4493-39F2-42F1-AD85-75E32E82C58B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{098A4493-39F2-42F1-AD85-75E32E82C58B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC95B04B-88F7-4DCD-A9D2-6D36DC3D7E17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC95B04B-88F7-4DCD-A9D2-6D36DC3D7E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC95B04B-88F7-4DCD-A9D2-6D36DC3D7E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC95B04B-88F7-4DCD-A9D2-6D36DC3D7E17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

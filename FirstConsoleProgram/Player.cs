@@ -8,7 +8,6 @@ namespace CRPGThing
 {
     public class Player : LivingCreature
     {
-        public Name name;
         public int gold = 0;
         public int XP = 0;
         public int XPToLevelUp = 0;
@@ -23,7 +22,7 @@ namespace CRPGThing
         public List<InventoryItem> Inventory = new List<InventoryItem>();
         public List<Quest> activeQuests = new List<Quest>();
 
-        public Player(int gold, int xP, int xPToLevelUp, int level, Weapon currentWeapon, Armor currentArmor, Location home, int HP) : base(HP)
+        public Player(int gold, int xP, int xPToLevelUp, int level, Weapon currentWeapon, Armor currentArmor, Location home, int HP, bool knownNoun = false, bool properNoun = false) : base(HP, knownNoun, properNoun)
         {
             this.gold = gold;
             XP = xP;
@@ -80,6 +79,7 @@ namespace CRPGThing
 
             currentHP = maximumHP;
             currentLocation = loc;
+            currentLocation.knownNoun = true;
 
             if(loc is QuestLocation)
             {
