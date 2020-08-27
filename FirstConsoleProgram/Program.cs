@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using System.Transactions;
 
 namespace CRPGThing
 { 
@@ -67,10 +68,18 @@ namespace CRPGThing
                     break;
                 case "inventory":
                 case "i":
-                    Utils.Add("\nCurrent Inventory: ");
+                    Utils.Add("Current Inventory: ");
                     foreach (InventoryItem invItem in player.Inventory)
                     {
                         Utils.Add($"\t{Utils.ColorText(invItem.details.name, (invItem.details is Weapon) ? Color.SALMON : ((invItem.details is Armor) ? Color.LIGHTBLUE : Color.GOLD))} : {invItem.quantity}");
+                    }
+                    break;
+                case "quests":
+                case "q":
+                    Utils.Add("Current Quests: ");
+                    foreach(Quest q in player.activeQuests)
+                    {
+                        Utils.Add("\t" + q.name);
                     }
                     break;
                 case string move when move.StartsWith("move "):

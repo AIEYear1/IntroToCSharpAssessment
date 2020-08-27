@@ -80,5 +80,21 @@ namespace CRPGThing
                 Program.player.GainQuest(followUpQuest);
             }
         }
+
+        public void LookQuest()
+        {
+            Utils.Add(name);
+            Utils.Add(description);
+            foreach (Objective o in objectives)
+            {
+                if (!o.Complete)
+                {
+                    Utils.Add("\t" + o.Name);
+                    break;
+                }
+
+                Utils.Add("\t" + o.Name);
+            }
+        }
     }
 }

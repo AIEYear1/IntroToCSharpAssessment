@@ -260,6 +260,9 @@ namespace CRPGThing
                 case string monster when currentLocation.monsterLivingHere != null && currentLocation.monsterLivingHere.name.FullName.ToLower() == monster:
                     currentLocation.monsterLivingHere.LookAt();
                     break;
+                case string quest when activeQuests.SingleOrDefault(x => x.name.ToLower() == quest) != null:
+                    activeQuests.SingleOrDefault(x => x.name.ToLower() == quest).LookQuest();
+                    break;
                 default:
                     Utils.Add("Please specify what to look at");
                     break;
