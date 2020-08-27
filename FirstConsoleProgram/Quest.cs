@@ -19,7 +19,7 @@ namespace CRPGThing
         public string completionText;
         public Quest followUpQuest;
 
-        public Quest(string name, string description, List<string> Objectives, int rewardGold, int rewardXP, string questGainedText, string completionText, Quest followUpQuest = null, bool mainQuest = false, bool complete = false)
+        public Quest(string name, string description, List<(string, string)> Objectives, int rewardGold, int rewardXP, string questGainedText, string completionText, Quest followUpQuest = null, bool mainQuest = false, bool complete = false)
         {
             this.name = name;
             this.description = description;
@@ -30,9 +30,9 @@ namespace CRPGThing
             this.complete = complete;
             this.completionText = completionText;
             this.followUpQuest = followUpQuest;
-            foreach (string objective in Objectives)
+            foreach ((string name, string completionText) objective in Objectives)
             {
-                objectives.Add(new Objective(objective, objectives.Count));
+                objectives.Add(new Objective(objective.name, objectives.Count, objective.completionText));
             }
         }
 
@@ -53,7 +53,7 @@ namespace CRPGThing
             }
 
             objectives[objectivePoint].Complete = true;
-
+            Utils.Add(Utils.ColorText(objectives[objectivePoint].CompletionText, Color.MAGENTA));
 
             foreach (Objective o in objectives)
             {
@@ -71,7 +71,7 @@ namespace CRPGThing
             complete = true;
             Program.player.gold += rewardGold;
             Program.player.EarnXP(rewardXP);
-            Utils.Add(completionText);
+            Utils.Add(Utils.ColorText(completionText, Color.MAGENTA));
             Utils.Add($"You gained {Utils.ColorText(rewardGold.ToString(), Color.YELLOW)} gold");
             Utils.Add($"You earned {Utils.ColorText(rewardXP.ToString(), Color.GREEN)} XP");
 

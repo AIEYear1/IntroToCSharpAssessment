@@ -15,7 +15,8 @@ namespace CRPGThing
         BLUE = 69,
         SALMON = 9,
         LIGHTBLUE = 14,
-        GOLD = 3
+        GOLD = 3,
+        DARKRED = 88
     }
 
     class Utils
@@ -45,7 +46,7 @@ namespace CRPGThing
             outputToConsole = "";
         }
 
-        public static string PrefixNoun(string noun, bool properNounOrPlural, bool nounKnown, Color color = Color.WHITE)
+        public static string PrefixNoun(string noun, bool nonCountNoun, bool nounKnown, Color color = Color.WHITE)
         {
             string vowels = "aeiou";
 
@@ -59,7 +60,7 @@ namespace CRPGThing
                 return "the " + noun;
             }
 
-            if (properNounOrPlural)
+            if (nonCountNoun)
             {
                 return noun;
             }

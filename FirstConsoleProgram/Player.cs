@@ -10,17 +10,41 @@ namespace CRPGThing
     {
         public int gold = 0;
         public int XP = 0;
-        public int XPToLevelUp = 0;
-        public int level = 1;
-        public int baseMaxDamage = 0;
-        public int baseMinDamage = 0;
-        public int baseAc = 0;
+        int XPToLevelUp = 0;
+        int level = 1;
+        int baseMaxDamage = 1;
+        int baseMinDamage = 0;
+        int baseAc = 0;
         public Weapon currentWeapon;
         public Armor currentArmor;
         public Location currentLocation;
-        public Location home;
+        public readonly Location home;
         public List<InventoryItem> Inventory = new List<InventoryItem>();
         public List<Quest> activeQuests = new List<Quest>();
+
+        #region current stat vals
+        public int CurrentAc
+        {
+            get
+            {
+                return baseAc + (currentArmor != null ? currentArmor.ac : 0);
+            }
+        }
+        public int CurrentMaxDamage
+        {
+            get
+            {
+                return baseMaxDamage + (currentWeapon != null ? currentWeapon.maxDamage : 0);
+            }
+        }
+        public int CurrentMinDamage
+        {
+            get
+            {
+                return baseMinDamage + (currentWeapon != null ? currentWeapon.minDamage : 0);
+            }
+        }
+        #endregion
 
         public Player(int gold, int xP, int xPToLevelUp, int level, Weapon currentWeapon, Armor currentArmor, Location home, int HP, bool knownNoun = false, bool properNoun = false) : base(HP, knownNoun, properNoun)
         {
@@ -57,24 +81,29 @@ namespace CRPGThing
             {
                 level++;
                 XP -= XPToLevelUp;
-                XPToLevelUp = 25 * level * (1 + level);
+                XPToLevelUp = XPToLevelUp + (int)(XPToLevelUp * 0.3f);
 
                 maximumHP += (int)((float)maximumHP * ((float)level / 4f));
                 currentHP = maximumHP;
-                baseMaxDamage = level / 2;
+                baseMaxDamage = level + (level - 1); 
                 baseMinDamage = level / 2;
-                baseAc = level / 2;
+                baseAc = (2 * level) - 2;
             }
         }
 
         #region Location moving
 
-        public void MoveTo(Location loc)
+        public void MoveTo(Location loc, bool ignoreMonster = false)
         {
-            if(currentLocation != null && currentLocation.monsterLivingHere != null)
+            if(!ignoreMonster && currentLocation != null && currentLocation.monsterLivingHere != null)
             {
                 Utils.Add($"The {currentLocation.monsterLivingHere.name.FullName} blocks your path");
                 return;
+            }
+
+            if(loc.monsterLivingHere != null)
+            {
+                loc.monsterLivingHere.currentHP = loc.monsterLivingHere.maximumHP;
             }
 
             currentHP = maximumHP;
@@ -243,9 +272,9 @@ namespace CRPGThing
             Utils.Add($"\tHP: \t\t{currentHP}/{maximumHP}");
 
             if(currentWeapon != null)
-                Utils.Add($"\tAttack Power: \t{currentWeapon.minDamage + baseMinDamage}-{currentWeapon.maxDamage + baseMaxDamage}");
+                Utils.Add($"\tAttack Power: \t{CurrentMinDamage}-{CurrentMaxDamage}");
             if (currentArmor != null)
-                Utils.Add($"\tProtection: \t{currentArmor.ac + baseAc}");
+                Utils.Add($"\tProtection: \t{CurrentAc}");
 
             Utils.Add($"\tLevel: \t\t{level}");
             Utils.Add($"\tXP: \t\t{XP}/{XPToLevelUp}");
@@ -261,15 +290,13 @@ namespace CRPGThing
                 return;
             }
 
-            Utils.Add(quest.questGainedText);
+            Utils.Add(Utils.ColorText(quest.questGainedText, Color.MAGENTA));
             activeQuests.Add(quest);
             quest.playerHasQuest = true;
         }
 
         public void Attack(Monster enemToAttack)
         {
-            enemToAttack.knownNoun = true;
-
             if (currentWeapon == null)
             {
                 Utils.Add("You need a weapon to attack");
@@ -281,7 +308,9 @@ namespace CRPGThing
                 return;
             }
 
-            int damage = RandomNumberGenerator.NumberBetween(currentWeapon.minDamage + baseMinDamage, currentWeapon.maxDamage + baseMaxDamage);
+            enemToAttack.knownNoun = true;
+
+            int damage = RandomNumberGenerator.NumberBetween(CurrentMinDamage, CurrentMaxDamage);
             enemToAttack.currentHP -= damage;
             Utils.Add($"You hit {Utils.PrefixNoun(enemToAttack.name.FullName, enemToAttack.properNoun, enemToAttack.knownNoun, Color.RED)} for {Utils.ColorText(damage.ToString(), Color.BLUE)} damage!");
 

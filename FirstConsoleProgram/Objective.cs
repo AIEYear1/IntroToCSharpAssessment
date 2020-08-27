@@ -7,14 +7,15 @@ namespace CRPGThing
     public class Objective
     {
         public string Name;
-        public bool Complete;
+        public bool Complete = false;
         public int Marker;
+        public string CompletionText;
 
-        public Objective(string name, int marker, bool complete = false)
+        public Objective(string name, int marker, string completionText)
         {
             Name = name;
             Marker = marker;
-            Complete = complete;
+            CompletionText = completionText;
         }
     }
 }

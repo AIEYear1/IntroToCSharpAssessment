@@ -24,7 +24,6 @@ namespace CRPGThing
 
         static void Main()
         {
-            Console.WriteLine(Utils.ColorText("Greetings", Color.WHITE));
             player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_STICK), 1));
             player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_CLOTHES), 1));
 

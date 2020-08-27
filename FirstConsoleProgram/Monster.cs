@@ -34,14 +34,14 @@ namespace CRPGThing
 
         public void Attack(Player player)
         {
-            int damage = (int)MathF.Max((RandomNumberGenerator.NumberBetween(minimumDamage, maximumDamage)) - (player.currentArmor.ac + player.baseAc), 0);
+            int damage = (int)MathF.Max((RandomNumberGenerator.NumberBetween(minimumDamage, maximumDamage)) - (player.CurrentAc), 0);
             player.currentHP -= damage;
             Utils.Add($"You were hit by {Utils.PrefixNoun(name.FullName, properNoun, knownNoun, Color.RED)} for {Utils.ColorText(damage.ToString(), Color.BLUE)} damage!");
 
             if (player.currentHP <= 0)
             {
-                Utils.Add(player.name.FullName + " has died!");
-                Program.running = false;
+                Utils.Add(Utils.ColorText(player.name.FullName + " has died!", Color.DARKRED));
+                player.MoveTo(player.home, true);
             }
         }
 
