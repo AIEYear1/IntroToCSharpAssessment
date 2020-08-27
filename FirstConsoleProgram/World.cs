@@ -6,11 +6,14 @@ namespace CRPGThing
 {
     class World
     {
+        #region Object Lists
         public static readonly List<Item> Items = new List<Item>();
         public static readonly List<Monster> Monsters = new List<Monster>();
         public static readonly List<Location> Locations = new List<Location>();
         public static readonly List<Quest> Quests = new List<Quest>();
+        #endregion
 
+        #region Object IDs
         public const int ITEM_ID_STICK = 0;
         public const int ITEM_ID_CLOTHES = 1;
         public const int ITEM_ID_FANG = 2;
@@ -30,6 +33,7 @@ namespace CRPGThing
         public const int LOCATION_ID_PAVEDROAD = 5;
 
         public const int QUEST_ID_TUTORIALQUEST = 0;
+        #endregion
 
         static World()
         {
@@ -40,7 +44,7 @@ namespace CRPGThing
         }
 
 
-
+        #region Population
         private static void PopulateItems()
         {
             //Parameters: Name, Plural Name, Description, Weight(, Quest it's connected to, Objective Marker it's related to) < Only for Quest Items
@@ -123,9 +127,10 @@ namespace CRPGThing
 
             Quests.Add(tutorialQuest);
         }
+        #endregion
 
 
-
+        #region GetByID
         public static Item ItemByID(int ID)
         {
             if (ID >= Items.Count)
@@ -169,5 +174,6 @@ namespace CRPGThing
 
             return Quests[ID];
         }
+        #endregion
     }
 }
