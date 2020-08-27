@@ -4,6 +4,20 @@ using System.Text;
 
 namespace CRPGThing
 {
+    enum Color
+    {
+        WHITE = 255,
+        RED = 160,
+        MAGENTA = 163,
+        GREEN = 118,
+        YELLOW = 226,
+        AQUA = 49,
+        BLUE = 69,
+        SALMON = 9,
+        LIGHTBLUE = 14,
+        GOLD = 3
+    }
+
     class Utils
     {
         private static string outputToConsole = "";
@@ -31,9 +45,14 @@ namespace CRPGThing
             outputToConsole = "";
         }
 
-        public static string PrefixNoun(string noun, bool properNounOrPlural, bool nounKnown)
+        public static string PrefixNoun(string noun, bool properNounOrPlural, bool nounKnown, Color color = Color.WHITE)
         {
             string vowels = "aeiou";
+
+            if(color != Color.WHITE)
+            {
+                noun = ColorText(noun, color);
+            }
 
             if (nounKnown)
             {
@@ -46,6 +65,11 @@ namespace CRPGThing
             }
 
             return (vowels.Contains(noun[0]) ? "an " : "a ") + noun;
+        }
+
+        public static string ColorText(string text, Color color)
+        {
+            return "\x1b[38;5;" + (int)color + "m" + text + "\x1b[38;5;255m";
         }
     }
 }

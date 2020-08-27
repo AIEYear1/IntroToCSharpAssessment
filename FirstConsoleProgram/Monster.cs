@@ -25,7 +25,8 @@ namespace CRPGThing
 
         public void LookAt()
         {
-            Utils.Add($"\nStats for {name.FullName}:");
+            knownNoun = true;
+            Utils.Add($"Stats for {name.FullName}:");
             Utils.Add($"\tHP:\t\t{currentHP}/{maximumHP}");
             Utils.Add($"\tAttack power:\t{minimumDamage}-{maximumDamage}");
             Utils.Add(description);
@@ -35,7 +36,7 @@ namespace CRPGThing
         {
             int damage = (int)MathF.Max((RandomNumberGenerator.NumberBetween(minimumDamage, maximumDamage)) - (player.currentArmor.ac + player.baseAc), 0);
             player.currentHP -= damage;
-            Utils.Add($"You were hit by {name.FullName} for {damage} damage!");
+            Utils.Add($"You were hit by {Utils.PrefixNoun(name.FullName, properNoun, knownNoun, Color.RED)} for {Utils.ColorText(damage.ToString(), Color.BLUE)} damage!");
 
             if (player.currentHP <= 0)
             {
@@ -50,9 +51,9 @@ namespace CRPGThing
             player.EarnXP(rewardXP);
             player.currentLocation.monsterLivingHere = null;
 
-            Utils.Add(name.FullName + " has died");
-            Utils.Add($"You gained {rewardGold} gold");
-            Utils.Add($"You earned {rewardXP} XP");
+            Utils.Add(Utils.PrefixNoun(name.FullName, properNoun, knownNoun, Color.RED) + " has died");
+            Utils.Add($"You gained {Utils.ColorText(rewardGold.ToString(), Color.YELLOW)} gold");
+            Utils.Add($"You earned {Utils.ColorText(rewardXP.ToString(), Color.GREEN)} XP");
 
             // Get random loot items from the monster
             List<InventoryItem> lootedItems = new List<InventoryItem>();
@@ -85,11 +86,11 @@ namespace CRPGThing
 
                 if (inventoryItem.quantity == 1)
                 {
-                    Utils.Add($"You loot {inventoryItem.quantity} {inventoryItem.details.name}");
+                    Utils.Add($"You loot {inventoryItem.quantity} {Utils.ColorText(inventoryItem.details.name, (inventoryItem.details is Weapon) ? Color.SALMON: ((inventoryItem.details is Armor) ? Color.LIGHTBLUE : Color.GOLD))}");
                 }
                 else
                 {
-                    Utils.Add($"You loot {inventoryItem.quantity} {inventoryItem.details.namePlural}");
+                    Utils.Add($"You loot {inventoryItem.quantity} {Utils.ColorText(inventoryItem.details.namePlural, (inventoryItem.details is Weapon) ? Color.SALMON : ((inventoryItem.details is Armor) ? Color.LIGHTBLUE : Color.GOLD))}");
                 }
             }
 

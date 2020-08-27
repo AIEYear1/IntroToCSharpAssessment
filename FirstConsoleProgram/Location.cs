@@ -49,7 +49,7 @@ namespace CRPGThing
             }
             if(monsterLivingHere != null)
             {
-                Utils.Add($"There is a {monsterLivingHere.name.FullName} living here");
+                Utils.Add($"There is {Utils.PrefixNoun(monsterLivingHere.name.FullName, monsterLivingHere.properNoun, monsterLivingHere.knownNoun, Color.RED)} living here");
             }
         }
 
@@ -61,6 +61,7 @@ namespace CRPGThing
                 return;
             }
 
+            locationToNorth.knownNoun = true;
             Utils.Add(locationToNorth.description);
         }
         public void LookEast()
@@ -71,6 +72,7 @@ namespace CRPGThing
                 return;
             }
 
+            locationToEast.knownNoun = true;
             Utils.Add(locationToEast.description);
         }
         public void LookSouth()
@@ -81,6 +83,7 @@ namespace CRPGThing
                 return;
             }
 
+            locationToSouth.knownNoun = true;
             Utils.Add(locationToSouth.description);
         }
         public void LookWest()
@@ -91,6 +94,7 @@ namespace CRPGThing
                 return;
             }
 
+            locationToWest.knownNoun = true;
             Utils.Add(locationToWest.description);
         }
     }

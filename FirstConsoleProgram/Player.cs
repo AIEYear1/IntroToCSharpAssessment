@@ -239,7 +239,7 @@ namespace CRPGThing
 
         public void Stats()
         {
-            Utils.Add($"\nStats for {name.FullName}");
+            Utils.Add($"Stats for {name.FullName}");
             Utils.Add($"\tHP: \t\t{currentHP}/{maximumHP}");
 
             if(currentWeapon != null)
@@ -268,6 +268,8 @@ namespace CRPGThing
 
         public void Attack(Monster enemToAttack)
         {
+            enemToAttack.knownNoun = true;
+
             if (currentWeapon == null)
             {
                 Utils.Add("You need a weapon to attack");
@@ -281,7 +283,7 @@ namespace CRPGThing
 
             int damage = RandomNumberGenerator.NumberBetween(currentWeapon.minDamage + baseMinDamage, currentWeapon.maxDamage + baseMaxDamage);
             enemToAttack.currentHP -= damage;
-            Utils.Add($"You hit {enemToAttack.name.FullName} for {damage} damage!");
+            Utils.Add($"You hit {Utils.PrefixNoun(enemToAttack.name.FullName, enemToAttack.properNoun, enemToAttack.knownNoun, Color.RED)} for {Utils.ColorText(damage.ToString(), Color.BLUE)} damage!");
 
             if (enemToAttack.currentHP <= 0)
             {

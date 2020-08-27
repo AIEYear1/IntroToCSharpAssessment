@@ -1,17 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace CRPGThing
 { 
     class Program
     {
+        #region color changing stuff
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool SetConsoleMode(IntPtr hConsoleHandle, int mode);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool GetConsoleMode(IntPtr handle, out int mode);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern IntPtr GetStdHandle(int handle);
+        #endregion
+
         public static bool running = true;
         public static Player player = new Player(0, 0, 50, 1, (Weapon)World.ItemByID(World.ITEM_ID_STICK), 
             (Armor)World.ItemByID(World.ITEM_ID_CLOTHES), World.LocationByID(World.LOCATION_ID_CLEARING), 15);
 
         static void Main()
         {
+            Console.WriteLine(Utils.ColorText("Greetings", Color.WHITE));
             player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_STICK), 1));
             player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_CLOTHES), 1));
 
@@ -58,7 +71,7 @@ namespace CRPGThing
                     Utils.Add("\nCurrent Inventory: ");
                     foreach (InventoryItem invItem in player.Inventory)
                     {
-                        Utils.Add($"\t{invItem.details.name} : {invItem.quantity}");
+                        Utils.Add($"\t{Utils.ColorText(invItem.details.name, (invItem.details is Weapon) ? Color.SALMON : ((invItem.details is Armor) ? Color.LIGHTBLUE : Color.GOLD))} : {invItem.quantity}");
                     }
                     break;
                 case string move when move.StartsWith("move "):

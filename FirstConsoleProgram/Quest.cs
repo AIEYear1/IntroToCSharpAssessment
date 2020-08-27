@@ -72,8 +72,8 @@ namespace CRPGThing
             Program.player.gold += rewardGold;
             Program.player.EarnXP(rewardXP);
             Utils.Add(completionText);
-            Utils.Add($"You gained {rewardGold} gold");
-            Utils.Add($"You earned {rewardXP} XP");
+            Utils.Add($"You gained {Utils.ColorText(rewardGold.ToString(), Color.YELLOW)} gold");
+            Utils.Add($"You earned {Utils.ColorText(rewardXP.ToString(), Color.GREEN)} XP");
 
             if(followUpQuest != null)
             {
