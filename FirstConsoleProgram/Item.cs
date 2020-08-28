@@ -17,9 +17,11 @@ namespace CRPGThing
             this.description = description;
             this.weight = weight;
         }
-        public Item()
+        public Item(string name, string namePlural, string description)
         {
-
+            this.name = name;
+            this.namePlural = namePlural;
+            this.description = description;
         }
     }
 }

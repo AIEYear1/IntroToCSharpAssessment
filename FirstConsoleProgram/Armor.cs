@@ -8,9 +8,13 @@ namespace CRPGThing
     {
         public int ac = 0;
 
-        public Armor(int ac, string name, string namePlural, string description, int weight) : base(name, namePlural, description, weight)
+        public Armor(string name, string namePlural, string description, int weight, int ac) : base(name, namePlural, description, weight)
         {
             this.ac = ac;
+        }
+        public Armor(string name, string namePlural, string description) : base(name, namePlural, description)
+        {
+
         }
     }
 }

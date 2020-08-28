@@ -9,10 +9,14 @@ namespace CRPGThing
         public int maxDamage = 0;
         public int minDamage = 0;
 
-        public Weapon(int maxDamage, int minDamage, string name, string namePlural, string description, int weight) : base(name, namePlural, description, weight)
+        public Weapon(string name, string namePlural, string description, int weight, int maxDamage, int minDamage) : base(name, namePlural, description, weight)
         {
             this.maxDamage = maxDamage;
             this.minDamage = minDamage;
+        }
+        public Weapon(string name, string namePlural, string description) : base(name, namePlural, description)
+        {
+
         }
     }
 }

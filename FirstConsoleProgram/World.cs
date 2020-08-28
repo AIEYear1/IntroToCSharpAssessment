@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace CRPGThing
 {
@@ -47,14 +48,43 @@ namespace CRPGThing
         #region Population
         private static void PopulateItems()
         {
-            //Parameters: Name, Plural Name, Description, Weight(, Quest it's connected to, Objective Marker it's related to) < Only for Quest Items
+            //Parameters: Name,Plural Name,Description,Weight(, Quest it's connected to, Objective Marker it's related to) < Only for Quest Items
             //Weapons: Max Damage Min Damage, Parameters
             //Armor: AC, Parameters
-            Items.Add(new Weapon(4, 1, "Stick", "Sticks", "Long narrow stick with a stick like texture", 3));
-            Items.Add(new Armor(2, "Clothes", "Clothes", "Some pretty normal clothes, without these you'd be naked!", 5));
-            Items.Add(new Item("Wolf Fang", "Wolf Fangs", "The fang of a wolf, pretty useless", 1));
-            Items.Add(new Weapon(10, 3, "Mermaid Spear", "Mermaid Spears", "A simple yet elegant spear", 7));
-            Items.Add(new Armor(5, "Bandit Garb", "Bandit Garb", "A simple set of thrown together armor", 10));
+            //Items.Add(new Weapon(4, 1, "Stick", "Sticks", "Long narrow stick with a stick like texture", 3));
+            //Items.Add(new Armor(2, "Clothes", "Clothes", "Some pretty normal clothes, without these you'd be naked!", 5));
+            //Items.Add(new Item("Wolf Fang", "Wolf Fangs", "The fang of a wolf, pretty useless", 1));
+            //Items.Add(new Weapon(10, 3, "Mermaid Spear", "Mermaid Spears", "A simple yet elegant spear", 7));
+            //Items.Add(new Armor(5, "Bandit Garb", "Bandit Garb", "A simple set of thrown together armor", 10));
+
+            string[] lines = File.ReadAllLines("items.csv");
+
+            for (int x = 1; x < lines.Length; x++)
+            {
+                string[] lineVals = lines[x].Split(',');
+
+                switch (lineVals[0])
+                {
+                    case "W":
+                        Weapon tmpWeapon = new Weapon(lineVals[1], lineVals[2], lineVals[3]);
+                        int.TryParse(lineVals[4], out tmpWeapon.weight);
+                        int.TryParse(lineVals[5], out tmpWeapon.maxDamage);
+                        int.TryParse(lineVals[6], out tmpWeapon.minDamage);
+                        Items.Add(tmpWeapon);
+                        break;
+                    case "A":
+                        Armor tmpArmor = new Armor(lineVals[1], lineVals[2], lineVals[3]);
+                        int.TryParse(lineVals[4], out tmpArmor.weight);
+                        int.TryParse(lineVals[7], out tmpArmor.ac);
+                        Items.Add(tmpArmor);
+                        break;
+                    default:
+                        Item tmpItem = new Item(lineVals[1], lineVals[2], lineVals[3]);
+                        int.TryParse(lineVals[4], out tmpItem.weight);
+                        Items.Add(tmpItem);
+                        break;
+                }
+            }
         }
 
         private static void PopulateMonsters()

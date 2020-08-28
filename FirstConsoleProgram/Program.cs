@@ -19,7 +19,7 @@ namespace CRPGThing
         public static extern IntPtr GetStdHandle(int handle);
         #endregion
 
-        public static bool running = true;
+        public static bool running = true, initialized = false;
         public static Player player = new Player(0, 0, 50, 1, (Weapon)World.ItemByID(World.ITEM_ID_STICK), 
             (Armor)World.ItemByID(World.ITEM_ID_CLOTHES), World.LocationByID(World.LOCATION_ID_CLEARING), 15);
 
