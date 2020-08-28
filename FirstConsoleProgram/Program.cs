@@ -20,7 +20,7 @@ namespace CRPGThing
         #endregion
 
         public static bool running = true, initialized = false;
-        public static Player player = new Player(0, 0, 50, 1, (Weapon)World.ItemByID(World.ITEM_ID_STICK), 
+        public static Player player = new Player(10, 0, 50, 1, (Weapon)World.ItemByID(World.ITEM_ID_STICK), 
             (Armor)World.ItemByID(World.ITEM_ID_CLOTHES), World.LocationByID(World.LOCATION_ID_CLEARING), 15);
 
         static void Main()

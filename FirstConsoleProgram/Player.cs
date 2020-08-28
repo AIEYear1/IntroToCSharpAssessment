@@ -183,6 +183,26 @@ namespace CRPGThing
 
             Inventory.Add(itemToAdd);
         }
+        public void RemoveItemFromInventory(InventoryItem itemToRemove)
+        {
+            if (itemToRemove.details is QuestItem)
+            {
+                Utils.Add("Can't sell quest items");
+            }
+            if (!Inventory.Contains(itemToRemove))
+            {
+                Utils.Add("You don't have this item");
+                return;
+            }
+
+            if(itemToRemove.quantity > 1)
+            {
+                itemToRemove.quantity--;
+                return;
+            }
+
+            Inventory.Remove(itemToRemove);
+        }
 
         public void EquipItem(string arg)
         {

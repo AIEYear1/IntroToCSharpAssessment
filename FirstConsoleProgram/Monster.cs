@@ -63,7 +63,7 @@ namespace CRPGThing
             {
                 if (RandomNumberGenerator.NumberBetween(1, 100) <= lootItem.dropPercentage)
                 {
-                    lootedItems.Add(new InventoryItem(lootItem.details, 1));
+                    lootedItems.Add(lootItem.details);
                 }
             }
 
@@ -74,7 +74,7 @@ namespace CRPGThing
                 {
                     if (lootItem.isDefault)
                     {
-                        lootedItems.Add(new InventoryItem(lootItem.details, 1));
+                        lootedItems.Add(lootItem.details);
                     }
                 }
             }

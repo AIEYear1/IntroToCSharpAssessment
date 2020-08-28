@@ -9,6 +9,7 @@ namespace CRPGThing
     {
         #region Object Lists
         public static readonly List<Item> Items = new List<Item>();
+        public static readonly List<NPC> NPCs = new List<NPC>();
         public static readonly List<Monster> Monsters = new List<Monster>();
         public static readonly List<Location> Locations = new List<Location>();
         public static readonly List<Quest> Quests = new List<Quest>();
@@ -20,6 +21,8 @@ namespace CRPGThing
         public const int ITEM_ID_FANG = 2;
         public const int ITEM_ID_MERMAIDSPEAR = 3;
         public const int ITEM_ID_BANDITGARB = 4;
+
+        public const int NPC_ID_STEVESHOP = 0;
 
         public const int MONSTER_ID_WOLF = 0;
         public const int MONSTER_ID_MERMAID = 1;
@@ -39,6 +42,7 @@ namespace CRPGThing
         static World()
         {
             PopulateItems();
+            PopulateNPCs();
             PopulateQuests();
             PopulateMonsters();
             PopulateLocations();
@@ -67,24 +71,38 @@ namespace CRPGThing
                 {
                     case "W":
                         Weapon tmpWeapon = new Weapon(lineVals[1], lineVals[2], lineVals[3]);
-                        int.TryParse(lineVals[4], out tmpWeapon.weight);
+                        int.TryParse(lineVals[4], out tmpWeapon.value);
                         int.TryParse(lineVals[5], out tmpWeapon.maxDamage);
                         int.TryParse(lineVals[6], out tmpWeapon.minDamage);
                         Items.Add(tmpWeapon);
                         break;
                     case "A":
                         Armor tmpArmor = new Armor(lineVals[1], lineVals[2], lineVals[3]);
-                        int.TryParse(lineVals[4], out tmpArmor.weight);
+                        int.TryParse(lineVals[4], out tmpArmor.value);
                         int.TryParse(lineVals[7], out tmpArmor.ac);
                         Items.Add(tmpArmor);
                         break;
                     default:
                         Item tmpItem = new Item(lineVals[1], lineVals[2], lineVals[3]);
-                        int.TryParse(lineVals[4], out tmpItem.weight);
+                        int.TryParse(lineVals[4], out tmpItem.value);
                         Items.Add(tmpItem);
                         break;
                 }
             }
+        }
+
+        private static void PopulateNPCs()
+        {
+            List<InventoryItem> shopStock = new List<InventoryItem>();
+            foreach (Item item in Items)
+            {
+                shopStock.Add(item);
+            }
+            shopStock.Add(ItemByID(ITEM_ID_STICK));
+            shopStock.Add(ItemByID(ITEM_ID_STICK));
+            shopStock.Add(ItemByID(ITEM_ID_STICK));
+            shopStock.Add(ItemByID(ITEM_ID_STICK));
+            NPCs.Add(new Shop(new Name("Steve"), "'ello", shopStock, 2));
         }
 
         private static void PopulateMonsters()
@@ -170,6 +188,17 @@ namespace CRPGThing
             }
 
             return Items[ID];
+        }
+
+        public static NPC NPCByID(int ID)
+        {
+            if (ID >= NPCs.Count)
+            {
+                Utils.Add("Invalid Item ID");
+                return null;
+            }
+
+            return NPCs[ID];
         }
 
         public static Monster MonsterByID(int ID)

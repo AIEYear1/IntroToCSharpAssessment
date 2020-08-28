@@ -8,20 +8,25 @@ namespace CRPGThing
     {
         public string name = "", namePlural = "";
         public string description = "";
-        public int weight = 0;
+        public int value = 0;
 
-        public Item(string name, string namePlural, string description, int weight)
+        public Item(string name, string namePlural, string description, int value)
         {
             this.name = name;
             this.namePlural = namePlural;
             this.description = description;
-            this.weight = weight;
+            this.value = value;
         }
         public Item(string name, string namePlural, string description)
         {
             this.name = name;
             this.namePlural = namePlural;
             this.description = description;
+        }
+
+        public static implicit operator InventoryItem(Item i)
+        {
+            return new InventoryItem(i, 1);
         }
     }
 }
