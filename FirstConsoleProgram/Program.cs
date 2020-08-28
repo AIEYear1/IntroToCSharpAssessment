@@ -44,6 +44,9 @@ namespace CRPGThing
         {
             switch (input)
             {
+                case "help":
+                    World.Help();
+                    break;
                 case "who am i":                //1st case "who am i"
                     if (player.name.FirstName != "")
                     {

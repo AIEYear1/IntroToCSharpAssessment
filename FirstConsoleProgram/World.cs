@@ -234,5 +234,21 @@ namespace CRPGThing
             return Quests[ID];
         }
         #endregion
+
+        public static void Help()
+        {
+            Utils.Add("Possible Commands: ");
+            Utils.Add("\twho am i: tells you your name");
+            Utils.Add("\tlook: lets you look at things\n\tSubCommands: \n\t\tNorth; East; South; West: lets you look at locations in that direction" +
+                "\n\t\there: lets you look here and tells you of everything in this area\n\t\tItem Names: lets you look at the specified item" +
+                "\n\t\tMonster Names: lets you look at the specified monster\n\t\tQuest Names: lets you look at the specified quest");
+            Utils.Add("\tstats: shows you your current stats");
+            Utils.Add("\tinventory: shows you all the items in your inventory");
+            Utils.Add("\tquests: shows you your current quests");
+            Utils.Add("\tmove: lets you move in a specified direction");
+            Utils.Add("\tequip: lets you equip a specified item");
+            Utils.Add("\tattack: attacks the current monster in the area");
+            Utils.Add("\tquit: quits the game");
+        }
     }
 }
