@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CRPGThing
 {
-    class NPC
+    public class NPC
     {
         Name name;
         string talkLine;

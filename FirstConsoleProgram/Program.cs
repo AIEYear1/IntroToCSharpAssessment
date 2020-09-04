@@ -40,6 +40,7 @@ namespace CRPGThing
             }
         }
 
+        //TODO: Implement NPC interaction and shopping
         static void ParseInput(string input)
         {
             switch (input)

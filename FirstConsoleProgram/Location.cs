@@ -10,11 +10,11 @@ namespace CRPGThing
         public string description;
         public Item itemRequiredToEnter;
         public Monster monsterLivingHere;
+        public NPC npcLivingHere;
         public Location locationToNorth;
         public Location locationToEast;
         public Location locationToWest;
         public Location locationToSouth;
-        public List<Location> LocationsAround = new List<Location>();
 
         public bool properNoun;
         public bool knownNoun;

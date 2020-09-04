@@ -18,19 +18,10 @@ namespace CRPGThing
 
             for(int x = 0; x < stockToAdd.Count; x++)
             {
-                bool itemAdded = false;
-                for(int y = 0; y < stock.Count; y++)
-                {
-                    if(stock[y].details == stockToAdd[x].details)
-                    {
-                        stock[y].quantity++;
-                        itemAdded = true;
-                    }
-                }
-
-                if(!itemAdded)
-                    stock.Add(stockToAdd[x]);
+                AddItemToStock(stockToAdd[x]);
             }
+
+            SortByPrice();
         }
 
         public void SortByPrice()
@@ -67,6 +58,30 @@ namespace CRPGThing
             }
         }
 
+        public void AddItemToStock(InventoryItem itemToAdd)
+        {
+            for (int y = 0; y < stock.Count; y++)
+            {
+                if (stock[y].details == itemToAdd.details)
+                {
+                    stock[y].quantity++;
+                    return;
+                }
+            }
+
+            stock.Add(itemToAdd);
+        }
+        public void RemoveItemFromStock(InventoryItem itemToRemove)
+        {
+            if (itemToRemove.quantity > 1)
+            {
+                itemToRemove.quantity--;
+                return;
+            }
+
+            stock.Remove(itemToRemove);
+        }
+
         public void Buy(Player player, InventoryItem itemToBuy)
         {
             if (player.gold < itemToBuy.details.value)
@@ -83,13 +98,8 @@ namespace CRPGThing
             player.gold -= itemToBuy.details.value + priceAugment;
             player.AddItemToInventory(itemToBuy);
 
-            if(itemToBuy.quantity > 1)
-            {
-                itemToBuy.quantity--;
-                return;
-            }
+            RemoveItemFromStock(itemToBuy);
 
-            stock.Remove(itemToBuy);
             SortByPrice();
         }
 
@@ -104,16 +114,8 @@ namespace CRPGThing
             player.gold += itemToSell.details.value - priceAugment;
             player.RemoveItemFromInventory(itemToSell);
 
-            for (int y = 0; y < stock.Count; y++)
-            {
-                if (stock[y].details == itemToSell.details)
-                {
-                    stock[y].quantity++;
-                    return;
-                }
-            }
+            AddItemToStock(itemToSell);
 
-            stock.Add(itemToSell);
             SortByPrice();
         }
     }
