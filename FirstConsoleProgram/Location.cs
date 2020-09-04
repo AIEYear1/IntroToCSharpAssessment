@@ -49,7 +49,7 @@ namespace CRPGThing
             }
             if(monsterLivingHere != null)
             {
-                Utils.Add($"There is {Utils.PrefixNoun(monsterLivingHere.name.FullName, monsterLivingHere.properNoun, monsterLivingHere.knownNoun, Color.RED)} living here");
+                Utils.Add($"There is {Utils.PrefixNoun(monsterLivingHere.name.FullName, monsterLivingHere.properNoun, monsterLivingHere.knownNoun, TextColor.RED)} living here");
             }
         }
 

@@ -53,7 +53,7 @@ namespace CRPGThing
             }
 
             objectives[objectivePoint].Complete = true;
-            Utils.Add(Utils.ColorText(objectives[objectivePoint].CompletionText, Color.MAGENTA));
+            Utils.Add(Utils.ColorText(objectives[objectivePoint].CompletionText, TextColor.MAGENTA));
 
             foreach (Objective o in objectives)
             {
@@ -71,9 +71,9 @@ namespace CRPGThing
             complete = true;
             Program.player.gold += rewardGold;
             Program.player.EarnXP(rewardXP);
-            Utils.Add(Utils.ColorText(completionText, Color.MAGENTA));
-            Utils.Add($"You gained {Utils.ColorText(rewardGold.ToString(), Color.YELLOW)} gold");
-            Utils.Add($"You earned {Utils.ColorText(rewardXP.ToString(), Color.GREEN)} XP");
+            Utils.Add(Utils.ColorText(completionText, TextColor.MAGENTA));
+            Utils.Add($"You gained {Utils.ColorText(rewardGold.ToString(), TextColor.YELLOW)} gold");
+            Utils.Add($"You earned {Utils.ColorText(rewardXP.ToString(), TextColor.GREEN)} XP");
 
             if(followUpQuest != null)
             {

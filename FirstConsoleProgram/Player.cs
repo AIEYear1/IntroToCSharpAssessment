@@ -34,14 +34,14 @@ namespace CRPGThing
         {
             get
             {
-                return baseMaxDamage + (currentWeapon != null ? currentWeapon.maxDamage : 0);
+                return baseMaxDamage + (currentWeapon != null ? currentWeapon.weaponAttack.maxDamage : 0);
             }
         }
         public int CurrentMinDamage
         {
             get
             {
-                return baseMinDamage + (currentWeapon != null ? currentWeapon.minDamage : 0);
+                return baseMinDamage + (currentWeapon != null ? currentWeapon.weaponAttack.minDamage : 0);
             }
         }
         #endregion
@@ -265,17 +265,7 @@ namespace CRPGThing
                     currentLocation.LookHere();
                     break;
                 case string item when Inventory.SingleOrDefault(x => x.details.name.ToLower() == item || x.details.namePlural.ToLower() == item) != null:
-                    Item tmpItem = Inventory.SingleOrDefault(x => x.details.name.ToLower() == item || x.details.namePlural.ToLower() == item).details;
-                    Utils.Add(tmpItem.name);
-                    if(tmpItem is Weapon)
-                    {
-                        Utils.Add($"\tAttack Power: {(tmpItem as Weapon).minDamage}-{(tmpItem as Weapon).maxDamage}");
-                    }
-                    else if(tmpItem is Armor)
-                    {
-                        Utils.Add($"\tProtection Level: {(tmpItem as Armor).ac}");
-                    }
-                    Utils.Add(tmpItem.description);
+                    Inventory.SingleOrDefault(x => x.details.name.ToLower() == item || x.details.namePlural.ToLower() == item).details.Look();
                     break;
                 case string monster when currentLocation.monsterLivingHere != null && currentLocation.monsterLivingHere.name.FullName.ToLower() == monster:
                     currentLocation.monsterLivingHere.LookAt();
@@ -313,7 +303,7 @@ namespace CRPGThing
                 return;
             }
 
-            Utils.Add(Utils.ColorText(quest.questGainedText, Color.MAGENTA));
+            Utils.Add(Utils.ColorText(quest.questGainedText, TextColor.MAGENTA));
             activeQuests.Add(quest);
             quest.playerHasQuest = true;
         }
@@ -333,9 +323,9 @@ namespace CRPGThing
 
             enemToAttack.knownNoun = true;
 
-            int damage = RandomNumberGenerator.NumberBetween(CurrentMinDamage, CurrentMaxDamage);
+            int damage = Utils.NumberBetween(CurrentMinDamage, CurrentMaxDamage);
             enemToAttack.currentHP -= damage;
-            Utils.Add($"You hit {Utils.PrefixNoun(enemToAttack.name.FullName, enemToAttack.properNoun, enemToAttack.knownNoun, Color.RED)} for {Utils.ColorText(damage.ToString(), Color.BLUE)} damage!");
+            Utils.Add($"You hit {Utils.PrefixNoun(enemToAttack.name.FullName, enemToAttack.properNoun, enemToAttack.knownNoun, TextColor.RED)} for {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
 
             if (enemToAttack.currentHP <= 0)
             {

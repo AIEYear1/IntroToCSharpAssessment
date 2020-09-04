@@ -24,6 +24,12 @@ namespace CRPGThing
             this.description = description;
         }
 
+        public virtual void Look()
+        {
+            Utils.Add(name);
+            Utils.Add(description);
+        }
+
         public static implicit operator InventoryItem(Item i)
         {
             return new InventoryItem(i, 1);

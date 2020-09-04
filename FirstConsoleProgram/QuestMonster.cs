@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using raygamecsharp;
 
 namespace CRPGThing
 {
@@ -9,7 +10,7 @@ namespace CRPGThing
         public Quest relatingQuest;
         public int objectiveMarker;
 
-        public QuestMonster(Name name, string description, int HP, int maximumDamage, int minimumDamage, int rewardXP, int rewardGold, Quest relatingQuest, int objectiveMarker, bool knownNoun = false, bool properNoun = false) : base(name, description, HP, maximumDamage, minimumDamage, rewardXP, rewardGold, knownNoun, properNoun)
+        public QuestMonster(Name name, string description, int HP, EnemyAttack enemyAttack, int rewardXP, int rewardGold, Quest relatingQuest, int objectiveMarker, bool knownNoun = false, bool properNoun = false) : base(name, description, HP, enemyAttack, rewardXP, rewardGold, knownNoun, properNoun)
         {
             this.relatingQuest = relatingQuest;
             this.objectiveMarker = objectiveMarker;

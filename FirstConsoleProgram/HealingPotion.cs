@@ -8,7 +8,7 @@ namespace CRPGThing
     {
         public int amountToHeal;
 
-        public HealingPotion(int amountToHeal, string name, string namePlural, string description, int weight) : base(name, namePlural, description, weight)
+        public HealingPotion(int amountToHeal, string name, string namePlural, string description, int value) : base(name, namePlural, description, value)
         {
             this.amountToHeal = amountToHeal;
         }

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Transactions;
+using raygamecsharp;
 
 namespace CRPGThing
-{ 
+{
     class Program
     {
         #region color changing stuff
@@ -23,11 +20,14 @@ namespace CRPGThing
         public static Player player = new Player(10, 0, 50, 1, (Weapon)World.ItemByID(World.ITEM_ID_STICK), 
             (Armor)World.ItemByID(World.ITEM_ID_CLOTHES), World.LocationByID(World.LOCATION_ID_CLEARING), 15);
 
+        public static Window combatWindow = new Window();
+
         static void Main()
         {
             player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_STICK), 1));
             player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_CLOTHES), 1));
 
+            Console.Clear();
             player.SetName();
 
             player.MoveTo(player.home);
@@ -36,8 +36,15 @@ namespace CRPGThing
             //Loop Start
             while (running)
             {
+                while (!combatWindow.WindowHidden)
+                {
+                    combatWindow.Run();
+                }
+
                 ParseInput(Utils.GetInput());
             }
+
+            combatWindow.Close();
         }
 
         //TODO: Implement NPC interaction and shopping
@@ -45,6 +52,14 @@ namespace CRPGThing
         {
             switch (input)
             {
+                case "open window":
+                    if (!combatWindow.WindowHidden)
+                    {
+                        Utils.Add("The window is already open");
+                        break;
+                    }
+                    combatWindow.StartAttack(player, World.MonsterByID(World.MONSTER_ID_WOLF));
+                    break;
                 case "help":
                     World.Help();
                     break;
@@ -75,7 +90,7 @@ namespace CRPGThing
                     Utils.Add("Current Inventory: ");
                     foreach (InventoryItem invItem in player.Inventory)
                     {
-                        Utils.Add($"\t{Utils.ColorText(invItem.details.name, (invItem.details is Weapon) ? Color.SALMON : ((invItem.details is Armor) ? Color.LIGHTBLUE : Color.GOLD))} : {invItem.quantity}");
+                        Utils.Add($"\t{Utils.ColorText(invItem.details.name, (invItem.details is Weapon) ? TextColor.SALMON : ((invItem.details is Armor) ? TextColor.LIGHTBLUE : TextColor.GOLD))} : {invItem.quantity}");
                     }
                     break;
                 case "quests":

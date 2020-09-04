@@ -6,7 +6,7 @@ namespace CRPGThing
 {
     public abstract class Consumable : Item
     {
-        public Consumable(string name, string namePlural, string description, int weight) : base(name, namePlural, description, weight)
+        public Consumable(string name, string namePlural, string description, int value) : base(name, namePlural, description, value)
         {
 
         }

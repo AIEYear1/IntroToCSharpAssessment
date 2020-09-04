@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using raygamecsharp;
+using static raygamecsharp.Objects;
 
 namespace CRPGThing
 {
@@ -55,40 +57,40 @@ namespace CRPGThing
             //Parameters: Name,Plural Name,Description,Weight(, Quest it's connected to, Objective Marker it's related to) < Only for Quest Items
             //Weapons: Max Damage Min Damage, Parameters
             //Armor: AC, Parameters
-            //Items.Add(new Weapon(4, 1, "Stick", "Sticks", "Long narrow stick with a stick like texture", 3));
-            //Items.Add(new Armor(2, "Clothes", "Clothes", "Some pretty normal clothes, without these you'd be naked!", 5));
-            //Items.Add(new Item("Wolf Fang", "Wolf Fangs", "The fang of a wolf, pretty useless", 1));
-            //Items.Add(new Weapon(10, 3, "Mermaid Spear", "Mermaid Spears", "A simple yet elegant spear", 7));
-            //Items.Add(new Armor(5, "Bandit Garb", "Bandit Garb", "A simple set of thrown together armor", 10));
+            Items.Add(new Weapon("Stick", "Sticks", "Long narrow stick with a stick like texture", 3, stickAttack));
+            Items.Add(new Armor("Clothes", "Clothes", "Some pretty normal clothes, without these you'd be naked!", 5, 2));
+            Items.Add(new Item("Wolf Fang", "Wolf Fangs", "The fang of a wolf, pretty useless", 1));
+            Items.Add(new Weapon("Mermaid Spear", "Mermaid Spears", "A simple yet elegant spear", 7, mermaidSpearAttack));
+            Items.Add(new Armor("Bandit Garb", "Bandit Garb", "A simple set of thrown together armor", 10, 5));
 
-            string[] lines = File.ReadAllLines("items.csv");
+            //string[] lines = File.ReadAllLines("items.csv");
 
-            for (int x = 1; x < lines.Length; x++)
-            {
-                string[] lineVals = lines[x].Split(',');
+            //for (int x = 1; x < lines.Length; x++)
+            //{
+            //    string[] lineVals = lines[x].Split(',');
 
-                switch (lineVals[0])
-                {
-                    case "W":
-                        Weapon tmpWeapon = new Weapon(lineVals[1], lineVals[2], lineVals[3]);
-                        int.TryParse(lineVals[4], out tmpWeapon.value);
-                        int.TryParse(lineVals[5], out tmpWeapon.maxDamage);
-                        int.TryParse(lineVals[6], out tmpWeapon.minDamage);
-                        Items.Add(tmpWeapon);
-                        break;
-                    case "A":
-                        Armor tmpArmor = new Armor(lineVals[1], lineVals[2], lineVals[3]);
-                        int.TryParse(lineVals[4], out tmpArmor.value);
-                        int.TryParse(lineVals[7], out tmpArmor.ac);
-                        Items.Add(tmpArmor);
-                        break;
-                    default:
-                        Item tmpItem = new Item(lineVals[1], lineVals[2], lineVals[3]);
-                        int.TryParse(lineVals[4], out tmpItem.value);
-                        Items.Add(tmpItem);
-                        break;
-                }
-            }
+            //    switch (lineVals[0])
+            //    {
+            //        case "W":
+            //            Weapon tmpWeapon = new Weapon(lineVals[1], lineVals[2], lineVals[3]);
+            //            int.TryParse(lineVals[4], out tmpWeapon.value);
+            //            int.TryParse(lineVals[5], out tmpWeapon.maxDamage);
+            //            int.TryParse(lineVals[6], out tmpWeapon.minDamage);
+            //            Items.Add(tmpWeapon);
+            //            break;
+            //        case "A":
+            //            Armor tmpArmor = new Armor(lineVals[1], lineVals[2], lineVals[3]);
+            //            int.TryParse(lineVals[4], out tmpArmor.value);
+            //            int.TryParse(lineVals[7], out tmpArmor.ac);
+            //            Items.Add(tmpArmor);
+            //            break;
+            //        default:
+            //            Item tmpItem = new Item(lineVals[1], lineVals[2], lineVals[3]);
+            //            int.TryParse(lineVals[4], out tmpItem.value);
+            //            Items.Add(tmpItem);
+            //            break;
+            //    }
+            //}
         }
 
         private static void PopulateNPCs()
@@ -108,13 +110,13 @@ namespace CRPGThing
         private static void PopulateMonsters()
         {
             //Parameters: Name, Description, Health, Max Damage, Min Damage, Reward XP, Reward Gold(, Quest it's connected to, Objective Marker it's related to) < Only for Quest Monsters
-            Monster wolf = new Monster(new Name("Wolf"), "A lone wolf prowling", 12, 7, 3, 11, 5);
+            Monster wolf = new Monster(new Name("Wolf"), "A lone wolf prowling", 12, WolfAttack, 11, 5);
             wolf.lootTable.Add(new LootItem(ItemByID(ITEM_ID_FANG), 100, true));
-            Monster mermaid = new Monster(new Name("Mermaid"), "a mermaid sitting on the edge of the lake", 15, 10, 3, 23, 3);
+            Monster mermaid = new Monster(new Name("Mermaid"), "a mermaid sitting on the edge of the lake", 15, mermaidAttack, 23, 3);
             mermaid.lootTable.Add(new LootItem(ItemByID(ITEM_ID_MERMAIDSPEAR), 100, true));
-            Monster looter = new Monster(new Name("Looter"), "A looter hiding in the bushes", 20, 5, 1, 18, 7);
+            Monster looter = new Monster(new Name("Looter"), "A looter hiding in the bushes", 20, looterAttack, 18, 7);
             looter.lootTable.Add(new LootItem(ItemByID(ITEM_ID_BANDITGARB), 100, true));
-            QuestMonster troll = new QuestMonster(new Name("Troll"), "A troll trying to attack the town", 30, 19, 9, 32, 10, QuestByID(QUEST_ID_TUTORIALQUEST), 1);
+            QuestMonster troll = new QuestMonster(new Name("Troll"), "A troll trying to attack the town", 30, trollAttack, 32, 10, QuestByID(QUEST_ID_TUTORIALQUEST), 1);
 
             Monsters.Add(wolf);
             Monsters.Add(mermaid);
