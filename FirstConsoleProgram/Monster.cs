@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using raygamecsharp;
+using RaylibWindowNamespace;
 
-namespace CRPGThing
+namespace CRPGNamespace
 {
     public class Monster : LivingCreature
     {
@@ -31,16 +31,14 @@ namespace CRPGThing
             Utils.Add(description);
         }
 
-        public void Attack(Player player)
+        public override void TakeDamage(int damage)
         {
-            //int damage = (int)MathF.Max((RandomNumberGenerator.NumberBetween(minimumDamage, maximumDamage)) - (player.CurrentAc), 0);
-            //player.currentHP -= damage;
-            //Utils.Add($"You were hit by {Utils.PrefixNoun(name.FullName, properNoun, knownNoun, TextColor.RED)} for {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
-
-            if (player.currentHP <= 0)
+            currentHP -= damage;
+            Utils.Add($"You hit {Utils.PrefixNoun(name.FullName, properNoun, knownNoun, TextColor.RED)} for {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
+            if (currentHP <= 0)
             {
-                Utils.Add(Utils.ColorText(player.name.FullName + " has died!", TextColor.DARKRED));
-                player.MoveTo(player.home, true);
+                Utils.Add(Utils.ColorText(name.FullName + " has died!", TextColor.DARKRED));
+                Die(Program.player);
             }
         }
 

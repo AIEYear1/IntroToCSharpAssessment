@@ -2,7 +2,7 @@
 using System;
 using static Raylib_cs.Raylib;
 
-namespace raygamecsharp
+namespace RaylibWindowNamespace
 {
     public struct Input
     {

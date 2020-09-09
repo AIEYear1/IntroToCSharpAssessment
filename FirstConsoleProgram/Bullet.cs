@@ -2,7 +2,7 @@
 using System.Numerics;
 using static Raylib_cs.Raylib;
 
-namespace raygamecsharp
+namespace RaylibWindowNamespace
 {
     public class Bullet : Sprite
     {

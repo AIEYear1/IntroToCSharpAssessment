@@ -1,10 +1,10 @@
 ﻿using Raylib_cs;
 using System;
 using System.Numerics;
-using static raygamecsharp.Objects;
+using static RaylibWindowNamespace.Objects;
 using static Raylib_cs.Raylib;
 
-namespace raygamecsharp
+namespace RaylibWindowNamespace
 {
     public class AI : Character
     {

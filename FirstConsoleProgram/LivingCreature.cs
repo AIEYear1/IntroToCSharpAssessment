@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CRPGThing
+namespace CRPGNamespace
 {
     public class LivingCreature
     {
@@ -32,5 +32,7 @@ namespace CRPGThing
         {
 
         }
+
+        public virtual void TakeDamage(int damage) { }
     }
 }

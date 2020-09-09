@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using static raygamecsharp.Objects;
+using static RaylibWindowNamespace.Objects;
 using static Raylib_cs.Color;
 
-namespace raygamecsharp
+namespace RaylibWindowNamespace
 {
     public enum EnemyAttackIndex { WOLFATTACK, LOOTERATTACK, MERMAIDATTACK, TROLLATTACK }
     public class EnemyAttack
@@ -76,7 +76,13 @@ namespace raygamecsharp
 
                 if (CollisionManager.Colliding(player, wolves[x]))
                 {
+                    player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
+                    healthBar.width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.width;
                     wolves.RemoveAt(x);
+                    if (wolves.Count == 0)
+                    {
+                        Window.attackTimer.Reset(Window.attackTimer.delay);
+                    }
                 }
             }
         }

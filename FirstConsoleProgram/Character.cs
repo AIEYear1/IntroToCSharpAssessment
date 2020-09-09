@@ -1,10 +1,11 @@
 ﻿using Raylib_cs;
 using System;
 using System.Numerics;
-using static raygamecsharp.Objects;
+using static RaylibWindowNamespace.Objects;
 using static Raylib_cs.Raylib;
+using CRPGNamespace;
 
-namespace raygamecsharp
+namespace RaylibWindowNamespace
 {
     public class Character : AnimatedObject
     {
@@ -17,6 +18,8 @@ namespace raygamecsharp
 
         public float posSpeedMod = 1;
         public float negSpeedMod = 1;
+
+        public LivingCreature creature;
 
         public float SpeedMod
         {
@@ -86,22 +89,22 @@ namespace raygamecsharp
 
         public void Border()
         {
-            if (position.X < 0 + radius)
+            if (position.X < Window.playZoneBarrier.X + radius)
             {
-                position.X = 0 + radius;
+                position.X = Window.playZoneBarrier.X + radius;
             }
-            else if (position.X > Window.screenWidth - radius)
+            else if (position.X > Window.playZoneBarrier.Z - radius)
             {
-                position.X = Window.screenWidth - radius;
+                position.X = Window.playZoneBarrier.Z - radius;
             }
 
-            if (position.Y < 0 + radius)
+            if (position.Y < Window.playZoneBarrier.Y + radius)
             {
-                position.Y = 0 + radius;
+                position.Y = Window.playZoneBarrier.Y + radius;
             }
-            else if (position.Y > Window.screenHeight - radius)
+            else if (position.Y > Window.playZoneBarrier.W - radius)
             {
-                position.Y = Window.screenHeight - radius;
+                position.Y = Window.playZoneBarrier.W - radius;
             }
         }
     }

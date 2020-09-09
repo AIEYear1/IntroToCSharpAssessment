@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CRPGThing
+namespace CRPGNamespace
 {
     public class NPC
     {

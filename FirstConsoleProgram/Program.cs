@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using raygamecsharp;
+using RaylibWindowNamespace;
 
-namespace CRPGThing
+namespace CRPGNamespace
 {
     class Program
     {
@@ -52,18 +52,10 @@ namespace CRPGThing
         {
             switch (input)
             {
-                case "open window":
-                    if (!combatWindow.WindowHidden)
-                    {
-                        Utils.Add("The window is already open");
-                        break;
-                    }
-                    combatWindow.StartAttack(player, World.MonsterByID(World.MONSTER_ID_WOLF));
-                    break;
-                case "help":
+                case "help":                                            //1st case "help"
                     World.Help();
                     break;
-                case "who am i":                //1st case "who am i"
+                case "who am i":                                        //2nd case "who am i"
                     if (player.name.FirstName != "")
                     {
                         Utils.Add(player.name.FullName);
@@ -79,13 +71,13 @@ namespace CRPGThing
                     }
                     Utils.Add("Uh, alright then");
                     break;
-                case string look when look.StartsWith("look "):
+                case string look when look.StartsWith("look "):         //3rd case "look"
                     player.Look(look.Substring(5).Trim());
                     break;
-                case "stats":
+                case "stats":                                           //4th case "stats"
                     player.Stats();
                     break;
-                case "inventory":
+                case "inventory":                                       //5th case "inventory" "i"
                 case "i":
                     Utils.Add("Current Inventory: ");
                     foreach (InventoryItem invItem in player.Inventory)
@@ -93,7 +85,7 @@ namespace CRPGThing
                         Utils.Add($"\t{Utils.ColorText(invItem.details.name, (invItem.details is Weapon) ? TextColor.SALMON : ((invItem.details is Armor) ? TextColor.LIGHTBLUE : TextColor.GOLD))} : {invItem.quantity}");
                     }
                     break;
-                case "quests":
+                case "quests":                                          //6th case "quest" "q"
                 case "q":
                     Utils.Add("Current Quests: ");
                     foreach(Quest q in player.activeQuests)
@@ -101,20 +93,20 @@ namespace CRPGThing
                         Utils.Add("\t" + q.name);
                     }
                     break;
-                case string move when move.StartsWith("move "):
+                case string move when move.StartsWith("move "):         //7th case "move"
                     MovePlayer(move.Substring(5).Trim());
                     break;
-                case string equip when equip.StartsWith("equip "):
+                case string equip when equip.StartsWith("equip "):      //8th case "equip"
                     string tmpEquipInput = equip.Substring(6).Trim();
                     player.EquipItem(tmpEquipInput);
                     break;
-                case "attack":
+                case "attack":                                          //9th case "attack"
                     player.Attack(player.currentLocation.monsterLivingHere);
                     break;
-                case "quit":                    //2nd case "quit"
+                case "quit":                                            //10th case "quit"
                     running = false;
                     break;
-                default:                        //Overflow
+                default:                                                //Overflow
                     Utils.Add("I- I don- I don't understand");
                     break;
             }

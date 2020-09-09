@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using raygamecsharp;
-using static raygamecsharp.Objects;
+using RaylibWindowNamespace;
+using static RaylibWindowNamespace.Objects;
 
-namespace CRPGThing
+namespace CRPGNamespace
 {
     class World
     {

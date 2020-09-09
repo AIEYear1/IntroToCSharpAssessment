@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace CRPGThing
+namespace CRPGNamespace
 {
     public class Player : LivingCreature
     {
@@ -308,6 +308,17 @@ namespace CRPGThing
             quest.playerHasQuest = true;
         }
 
+        public override void TakeDamage(int damage)
+        {
+            currentHP -= damage;
+            Utils.Add($"You took {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
+            if (currentHP <= 0)
+            {
+                Utils.Add(Utils.ColorText(name.FullName + " has died!", TextColor.DARKRED));
+                MoveTo(home, true);
+            }
+        }
+
         public void Attack(Monster enemToAttack)
         {
             if (currentWeapon == null)
@@ -323,18 +334,7 @@ namespace CRPGThing
 
             enemToAttack.knownNoun = true;
 
-            int damage = Utils.NumberBetween(CurrentMinDamage, CurrentMaxDamage);
-            enemToAttack.currentHP -= damage;
-            Utils.Add($"You hit {Utils.PrefixNoun(enemToAttack.name.FullName, enemToAttack.properNoun, enemToAttack.knownNoun, TextColor.RED)} for {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
-
-            if (enemToAttack.currentHP <= 0)
-            {
-                enemToAttack.Die(this);
-
-                return;
-            }
-
-            enemToAttack.Attack(this);
+            Program.combatWindow.StartAttack(this, enemToAttack);
         }
     }
 }

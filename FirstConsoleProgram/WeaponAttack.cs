@@ -1,9 +1,10 @@
-﻿using CRPGThing;
+﻿using CRPGNamespace;
 using Raylib_cs;
 using System.Collections.Generic;
 using System.Numerics;
-using static raygamecsharp.Objects;
-namespace raygamecsharp
+using static RaylibWindowNamespace.Objects;
+
+namespace RaylibWindowNamespace
 {
     public enum WeaponAttackIndex { STICKATTACK, MERMAIDSPEARATTACK }
     public class WeaponAttack
@@ -58,6 +59,8 @@ namespace raygamecsharp
 
             if(CollisionManager.Colliding(player, monster))
             {
+                monster.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
+                healthBar.width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.width;
                 Window.attackTimer.Reset(Window.attackTimer.delay);
             }
         }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using raygamecsharp;
+using RaylibWindowNamespace;
 
-namespace CRPGThing
+namespace CRPGNamespace
 {
     class QuestMonster : Monster
     {

@@ -21,12 +21,13 @@
 
 using Raylib_cs;
 using System.Numerics;
-using static raygamecsharp.Objects;
+using static RaylibWindowNamespace.Objects;
 using static Raylib_cs.Color;
 using static Raylib_cs.Raylib;
-using CRPGThing;
+using CRPGNamespace;
+using System.IO.Compression;
 
-namespace raygamecsharp
+namespace RaylibWindowNamespace
 {
     public class Window
     {
@@ -36,10 +37,13 @@ namespace raygamecsharp
 
         public static Timer attackTimer = new Timer(20);
 
+        public static Vector4 playZoneBarrier = new Vector4(borderThickness, borderThickness, 
+            screenWidth - borderThickness, screenHeight - borderThickness);
+
         CombatPhase stage = CombatPhase.START;
 
-        Player curPlayer;
-        Monster curMonster;
+        //Player curPlayer;
+        //Monster curMonster;
 
         public bool WindowHidden { get { return IsWindowHidden(); } }
 
@@ -54,14 +58,14 @@ namespace raygamecsharp
             HideWindow();
         }
 
-        public void StartAttack(Player player, Monster monster)
+        public void StartAttack(Player curPlayer, Monster curMonster)
         {
             stage = CombatPhase.START;
-            curPlayer = player;
-            curMonster = monster;
+            player.creature = curPlayer;
+            monster.creature = curMonster;
 
-            curPlayer.currentWeapon.weaponAttack.Start();
-            curMonster.enemyAttack.Start();
+            (player.creature as Player).currentWeapon.weaponAttack.Start();
+            (monster.creature as Monster).enemyAttack.Start();
 
             attackTimer.Reset(7);
             UnhideWindow();
@@ -69,8 +73,9 @@ namespace raygamecsharp
 
         void EndAttack()
         {
-            curPlayer = null;
-            curMonster = null;
+            player.creature = null;
+            monster.creature = null;
+            Utils.Print();
             HideWindow();
         }
 
@@ -78,12 +83,22 @@ namespace raygamecsharp
         {
             BeginDrawing();
             ClearBackground(BLACK);
+            DrawUI(stage);
             switch (stage)
             {
                 case CombatPhase.START:
                     DrawText("Loading", 300, 200, 40, RAYWHITE);
                     if (attackTimer.Check())
+                    {
+                        Vector2 vec = new Vector2(0, borderThickness + healthBar.height);
+                        healthBorder.position = vec;
+                        vec = Vector2.One * borderThickness;
+                        healthBackground.position = vec;
+                        healthBar.position = vec;
+                        healthBar.width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.width;
+
                         stage = CombatPhase.PLAYERATTACK;
+                    }
                     break;
                 case CombatPhase.PLAYERATTACK:
                     PlayerAttack();
@@ -91,7 +106,17 @@ namespace raygamecsharp
                 case CombatPhase.PAUSE:
                     DrawText("Press Enter to continue", 170, 50, 40, RAYWHITE);
                     if (IsKeyPressed(KeyboardKey.KEY_ENTER))
+                    {
+                        Vector2 vec = new Vector2(0, screenHeight - (borderThickness * 2 + healthBar.height));
+                        healthBorder.position = vec;
+                        vec.X = borderThickness;
+                        vec.Y = screenHeight - (borderThickness + healthBar.height);
+                        healthBackground.position = vec;
+                        healthBar.position = vec;
+                        healthBar.width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.width;
+
                         stage = CombatPhase.ENEMYATTACK;
+                    }
                     break;
                 case CombatPhase.ENEMYATTACK:
                     EnemyAttack();
@@ -103,6 +128,34 @@ namespace raygamecsharp
             EndDrawing();
         }
 
+        void DrawUI(CombatPhase phase)
+        {
+            topBar.Draw();
+            bottomBar.Draw();
+            leftBar.Draw();
+            rightBar.Draw();
+
+            switch (phase)
+            {
+                case CombatPhase.PLAYERATTACK:
+                    healthBorder.Draw();
+                    healthBackground.Draw();
+                    healthBar.Draw();
+                    playZoneBarrier.Y = borderThickness * 2 + healthBar.height;
+                    break;
+                case CombatPhase.ENEMYATTACK:
+                    healthBorder.Draw();
+                    healthBackground.Draw();
+                    healthBar.Draw();
+                    playZoneBarrier.W = screenHeight - (borderThickness * 2 + healthBar.height);
+                    break;
+                default:
+                    playZoneBarrier.Y = borderThickness;
+                    playZoneBarrier.W = screenHeight - borderThickness;
+                    break;
+            }
+        }
+
         void PlayerAttack()
         {
             if (attackTimer.Check())
@@ -110,7 +163,7 @@ namespace raygamecsharp
                 stage = CombatPhase.PAUSE;
                 return;
             }
-            curPlayer.currentWeapon.weaponAttack.Update();
+            (player.creature as Player).currentWeapon.weaponAttack.Update();
         }
         void EnemyAttack()
         {
@@ -119,7 +172,7 @@ namespace raygamecsharp
                 stage = CombatPhase.END;
                 return;
             }
-            curMonster.enemyAttack.Update();
+            (monster.creature as Monster).enemyAttack.Update();
         }
 
         public void Close()
