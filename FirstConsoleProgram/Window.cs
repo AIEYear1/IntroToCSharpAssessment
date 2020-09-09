@@ -71,7 +71,7 @@ namespace RaylibWindowNamespace
             UnhideWindow();
         }
 
-        void EndAttack()
+        public void EndAttack()
         {
             player.creature = null;
             monster.creature = null;
@@ -137,6 +137,7 @@ namespace RaylibWindowNamespace
 
             switch (phase)
             {
+                case CombatPhase.PAUSE:
                 case CombatPhase.PLAYERATTACK:
                     healthBorder.Draw();
                     healthBackground.Draw();

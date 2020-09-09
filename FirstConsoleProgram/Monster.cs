@@ -38,6 +38,7 @@ namespace CRPGNamespace
             if (currentHP <= 0)
             {
                 Utils.Add(Utils.ColorText(name.FullName + " has died!", TextColor.DARKRED));
+                Program.combatWindow.EndAttack();
                 Die(Program.player);
             }
         }
