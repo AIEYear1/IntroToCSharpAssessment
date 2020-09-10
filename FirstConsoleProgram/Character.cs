@@ -32,11 +32,17 @@ namespace RaylibWindowNamespace
 
         public Character(Texture2D image, Vector2 position, Color color, int tileSize, Vector2 frames, int radius) : base(image, position, color, tileSize, frames, radius)
         {
-            SetState(2);
+            SetState(3);
         }
         public Character()
         {
-            SetState(2);
+            SetState(3);
+        }
+
+        public virtual void Start()
+        {
+            direction = Vector2.Zero;
+            velocity = Vector2.Zero;
         }
 
         public override void Update()

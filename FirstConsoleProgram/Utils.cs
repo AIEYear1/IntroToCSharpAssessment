@@ -147,4 +147,9 @@ struct Utils
     {
         return _generator.Next(minVal, maxVal + 1);
     }
+
+    public static float AngleBetween(Vector2 vec1, Vector2 vec2)
+    {
+        return MathF.Acos(Vector2.Dot(vec1, vec2) / (vec1.Length() * vec2.Length())) * (180 / MathF.PI);
+    }
 }

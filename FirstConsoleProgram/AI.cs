@@ -20,6 +20,12 @@ namespace RaylibWindowNamespace
             sensitivity = 1.5f;
         }
 
+        public override void Start()
+        {
+            vertDir = 0;
+            horDir = 0;
+        }
+
         public override void Update()
         {
             velocity = direction * (speed * SpeedMod) * GetFrameTime();

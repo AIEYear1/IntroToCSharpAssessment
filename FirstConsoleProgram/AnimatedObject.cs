@@ -52,7 +52,7 @@ namespace RaylibWindowNamespace
             {
                 curFrame.Check(1);
 
-                frameRec.x = curFrame.CurrentTime * (float)texture.width / frames.X;
+                frameRec.x = curFrame.timer * (float)texture.width / frames.X;
             }
 
             animReset = false;

@@ -66,8 +66,11 @@ namespace RaylibWindowNamespace
 
             (player.creature as Player).currentWeapon.weaponAttack.Start();
             (monster.creature as Monster).enemyAttack.Start();
+            player.Start();
+            monster.Start();
+            Input.Start();
 
-            attackTimer.Reset(7);
+            attackTimer.Reset(attackTimer.delay - 3);
             UnhideWindow();
         }
 

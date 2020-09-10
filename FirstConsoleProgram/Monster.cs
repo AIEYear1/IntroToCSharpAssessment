@@ -37,9 +37,8 @@ namespace CRPGNamespace
             Utils.Add($"You hit {Utils.PrefixNoun(name.FullName, properNoun, knownNoun, TextColor.RED)} for {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
             if (currentHP <= 0)
             {
-                Utils.Add(Utils.ColorText(name.FullName + " has died!", TextColor.DARKRED));
-                Program.combatWindow.EndAttack();
                 Die(Program.player);
+                Program.combatWindow.EndAttack();
             }
         }
 

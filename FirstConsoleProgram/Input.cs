@@ -6,6 +6,12 @@ namespace RaylibWindowNamespace
 {
     public struct Input
     {
+        public static void  Start()
+        {
+            hInput1 = 0;
+            vInput1 = 0;
+        }
+
         private static float hInput1 = 0;
         private static float vInput1 = 0;
         public static float GetAxis(string axis, float sensitivity = 3)

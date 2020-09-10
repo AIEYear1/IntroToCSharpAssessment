@@ -15,10 +15,10 @@ namespace RaylibWindowNamespace
         public static Character player;
         public static AI monster;
 
-        public static WeaponAttack stickAttack = new WeaponAttack(1, 4, "", WeaponAttackIndex.STICKATTACK);
+        public static WeaponAttack stickAttack = new WeaponAttack(3, 7, "", WeaponAttackIndex.STICKATTACK);
         public static WeaponAttack mermaidSpearAttack = new WeaponAttack(2, 6, "", WeaponAttackIndex.MERMAIDSPEARATTACK);
 
-        public static EnemyAttack WolfAttack = new EnemyAttack(3, 7, "", EnemyAttackIndex.WOLFATTACK);
+        public static EnemyAttack WolfAttack = new EnemyAttack(1, 4, "", EnemyAttackIndex.WOLFATTACK);
         public static EnemyAttack looterAttack = new EnemyAttack(1, 5, "", EnemyAttackIndex.LOOTERATTACK);
         public static EnemyAttack mermaidAttack = new EnemyAttack(3, 10, "", EnemyAttackIndex.MERMAIDATTACK);
         public static EnemyAttack trollAttack = new EnemyAttack(9, 19, "", EnemyAttackIndex.TROLLATTACK);

@@ -42,6 +42,7 @@ namespace RaylibWindowNamespace
             }
         }
 
+        #region Stick Attack
         void StickAttack()
         {
             //put player in bottom left corner have him try to catch enemy on collision enemy takes damage
@@ -60,19 +61,23 @@ namespace RaylibWindowNamespace
             if(CollisionManager.Colliding(player, monster))
             {
                 monster.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
-                healthBar.width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.width;
+                if(monster.creature != null)
+                    healthBar.width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.width;
                 Window.attackTimer.Reset(Window.attackTimer.delay);
             }
         }
         void InitStick()
         {
             player.position = new Vector2(player.radius, Window.screenHeight - player.radius);
-            player.sensitivity = 2;
-            monster.sensitivity = 2.5f;
+            player.sensitivity = 2.5f;
             player.speed = 400;
+
+            monster.sensitivity = 3;
             monster.speed = 300;
+
             initialized = true;
         }
+        #endregion
 
         void MermaidSpearAttack()
         {

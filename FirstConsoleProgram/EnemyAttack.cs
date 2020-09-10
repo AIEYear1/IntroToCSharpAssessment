@@ -49,13 +49,14 @@ namespace RaylibWindowNamespace
             }
         }
 
-        List<AI> wolves = new List<AI>();
+        #region Wolf Attack
+        List<AI> wolves;
         void WolfAttack()
         {
             //put player in bottom left corner have him try to catch enemy on collision enemy takes damage
 
             if (!initialized)
-                initWolf();
+                InitWolf();
 
             player.Update();
             player.Draw();
@@ -77,7 +78,8 @@ namespace RaylibWindowNamespace
                 if (CollisionManager.Colliding(player, wolves[x]))
                 {
                     player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
-                    healthBar.width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.width;
+                    if(player.creature != null)
+                        healthBar.width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.width;
                     wolves.RemoveAt(x);
                     if (wolves.Count == 0)
                     {
@@ -86,12 +88,14 @@ namespace RaylibWindowNamespace
                 }
             }
         }
-        void initWolf()
+        void InitWolf()
         {
+            wolves = new List<AI>();
             for (int x = 0; x < 5; x++) 
             {
                 wolves.Add(new AI(monster.texture,
-                                  new Vector2(Utils.NumberBetween(10, Window.screenWidth - 10), Utils.NumberBetween(10, Window.screenHeight - 10)),
+                                  new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X + 10), (int)(Window.playZoneBarrier.Z - 10)), 
+                                  Utils.NumberBetween((int)(Window.playZoneBarrier.Y + 10), (int)(Window.playZoneBarrier.W - 10))),
                                   WHITE, 16, Vector2.One * 4, 10));
 
                 wolves[x].speed = 350;
@@ -102,13 +106,52 @@ namespace RaylibWindowNamespace
             player.sensitivity = 3;
             initialized = true;
         }
+        #endregion
+
+        #region Looter Attack
+        //TODO: continue testing anglebetween code, I don't think its doing what I want it to do
         void LooterAttack()
         {
-            // one looter spawned randomly in the scene, player cannot see the looter when it is behind them
+            //one looter spawned randomly in the scene, player cannot see the looter when it is behind them
+
+            if (!initialized)
+                InitLooter();
+
+            player.Update();
+
+            monster.SetDirection(player.position - monster.position);
+            monster.Update();
+
+            player.Draw();
+
+            if (MathF.Abs(Utils.AngleBetween(player.position + player.direction, monster.position - player.position)) < 70) 
+            {
+                monster.Draw();
+            }
+
+            if (CollisionManager.Colliding(player, monster))
+            {
+                player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
+                if (player.creature != null)
+                    healthBar.width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.width;
+                Window.attackTimer.Reset(Window.attackTimer.delay);
+            }
         }
+        void InitLooter()
+        {
+            monster.position = new Vector2(monster.radius, Window.screenHeight - monster.radius);
+            monster.sensitivity = 3;
+            monster.speed = 300;
+
+            player.sensitivity = 4;
+            player.speed = 400;
+
+            initialized = true;
+        }
+        #endregion
         void MermaidAttack()
         {
-            //player clicks and drags in the direction they want to attack spear spawns on release on collision enemy takes damage
+            //spears appear pointing at the player and travel forward on collision player takes damage
         }
         void TrollAttack()
         {

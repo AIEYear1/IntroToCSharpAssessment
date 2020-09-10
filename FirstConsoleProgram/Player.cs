@@ -310,13 +310,14 @@ namespace CRPGNamespace
 
         public override void TakeDamage(int damage)
         {
+            damage = (int)MathF.Max(0, damage - ((currentArmor != null) ? currentArmor.ac : 0));
             currentHP -= damage;
             Utils.Add($"You took {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
             if (currentHP <= 0)
             {
                 Utils.Add(Utils.ColorText(name.FullName + " has died!", TextColor.DARKRED));
-                Program.combatWindow.EndAttack();
                 MoveTo(home, true);
+                Program.combatWindow.EndAttack();
             }
         }
 

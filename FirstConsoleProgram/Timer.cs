@@ -3,7 +3,15 @@
 public struct Timer
 {
     public readonly float delay;
-    float timer;
+    public float timer { get;  private set; }
+    public float PercentComplete
+    {
+        get => timer / delay;
+    }
+    public float TimeRemaining
+    {
+        get => delay - timer;
+    }
 
     public Timer(float delay)
     {
@@ -11,20 +19,6 @@ public struct Timer
         this.delay = delay;
     }
 
-    public float PercentComplete
-    {
-        get
-        {
-            return timer / delay;
-        }
-    }
-    public float CurrentTime
-    {
-        get
-        {
-            return timer;
-        }
-    }
 
     /// <summary>
     /// Reset the timer to the startPoint
