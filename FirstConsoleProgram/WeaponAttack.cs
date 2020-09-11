@@ -14,8 +14,7 @@ namespace RaylibWindowNamespace
         public int minDamage;
         public int maxDamage;
         public string description;
-
-        WeaponAttackIndex index;
+        readonly WeaponAttackIndex index;
 
         bool initialized = false;
 
@@ -64,7 +63,7 @@ namespace RaylibWindowNamespace
             {
                 monster.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
                 if(monster.creature != null)
-                    healthBar.width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.width;
+                    healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
                 Window.attackTimer.Reset(Window.attackTimer.delay);
             }
         }
@@ -135,7 +134,7 @@ namespace RaylibWindowNamespace
                 {
                     monster.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
                     if (monster.creature != null)
-                        healthBar.width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.width;
+                        healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
                     spears.RemoveAt(x);
                     if (spears.Count == 0)
                     {

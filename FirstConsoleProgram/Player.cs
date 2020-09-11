@@ -74,8 +74,7 @@ namespace CRPGNamespace
             baseMinDamage = level / 2;
             baseAc = (2 * level) - 2;
 
-            int tempInt = 0;
-            int.TryParse(saveData[8], out tempInt);
+            int.TryParse(saveData[8], out int tempInt);
             currentWeapon = (Weapon)World.ItemByID(tempInt);
             int.TryParse(saveData[9], out tempInt);
             currentArmor = (Armor)World.ItemByID(tempInt);
@@ -92,11 +91,10 @@ namespace CRPGNamespace
             int buffer = tmpBytes.Length;
             int.TryParse(saveData[12 + buffer], out tempInt);
             tmpBytes = World.ParseIDs(tempInt);
-            Quest tmpQuest = null;
             for (int x = 0; x < tmpBytes.Length; x++)
             {
                 int.TryParse(saveData[13 + buffer + x], out tempInt);
-                tmpQuest = World.QuestByID(tmpBytes[x]);
+                Quest tmpQuest = World.QuestByID(tmpBytes[x]);
                 activeQuests.Add(tmpQuest);
                 tmpQuest.ObjectiveMarker(tempInt);
             }
@@ -135,7 +133,7 @@ namespace CRPGNamespace
             {
                 level++;
                 XP -= XPToLevelUp;
-                XPToLevelUp = XPToLevelUp + (int)(XPToLevelUp * 0.3f);
+                XPToLevelUp += (int)(XPToLevelUp * 0.3f);
 
                 maximumHP += (int)((float)maximumHP * ((float)level / 4f));
                 currentHP = maximumHP;
@@ -329,17 +327,17 @@ namespace CRPGNamespace
                 {
                     Item tmpItem = item.details;
 
-                    if(tmpItem is Weapon)
+                    if(tmpItem is Weapon weapon)
                     {
-                        currentWeapon = (Weapon)tmpItem;
-                        Utils.Add("Equipped " + tmpItem.Name);
+                        currentWeapon = weapon;
+                        Utils.Add("Equipped " + weapon.Name);
                         return;
                     }
 
-                    if (item.details is Armor)
+                    if (item.details is Armor armor)
                     {
-                        currentArmor = (Armor)tmpItem;
-                        Utils.Add("Equipped " + tmpItem.Name);
+                        currentArmor = armor;
+                        Utils.Add("Equipped " + armor.Name);
                         return;
                     }
 

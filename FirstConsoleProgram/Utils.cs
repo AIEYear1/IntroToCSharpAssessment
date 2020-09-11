@@ -142,7 +142,7 @@ struct Utils
     }
 
 
-    private static Random _generator = new Random(Guid.NewGuid().GetHashCode());
+    private static readonly Random _generator = new Random(Guid.NewGuid().GetHashCode());
 
     public static int NumberBetween(int minVal, int maxVal)
     {

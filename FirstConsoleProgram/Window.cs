@@ -92,12 +92,12 @@ namespace RaylibWindowNamespace
                     DrawText("Loading", 300, 200, 40, RAYWHITE);
                     if (attackTimer.Check())
                     {
-                        Vector2 vec = new Vector2(0, borderThickness + healthBar.height);
-                        healthBorder.position = vec;
+                        Vector2 vec = new Vector2(0, borderThickness + healthBar.Height);
+                        healthBorder.Position = vec;
                         vec = Vector2.One * borderThickness;
-                        healthBackground.position = vec;
-                        healthBar.position = vec;
-                        healthBar.width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.width;
+                        healthBackground.Position = vec;
+                        healthBar.Position = vec;
+                        healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
 
                         stage = CombatPhase.PLAYERATTACK;
                     }
@@ -109,13 +109,13 @@ namespace RaylibWindowNamespace
                     DrawText("Press Enter to continue", 170, 50, 40, RAYWHITE);
                     if (IsKeyPressed(KeyboardKey.KEY_ENTER))
                     {
-                        Vector2 vec = new Vector2(0, screenHeight - (borderThickness * 2 + healthBar.height));
-                        healthBorder.position = vec;
+                        Vector2 vec = new Vector2(0, screenHeight - (borderThickness * 2 + healthBar.Height));
+                        healthBorder.Position = vec;
                         vec.X = borderThickness;
-                        vec.Y = screenHeight - (borderThickness + healthBar.height);
-                        healthBackground.position = vec;
-                        healthBar.position = vec;
-                        healthBar.width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.width;
+                        vec.Y = screenHeight - (borderThickness + healthBar.Height);
+                        healthBackground.Position = vec;
+                        healthBar.Position = vec;
+                        healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
 
                         stage = CombatPhase.ENEMYATTACK;
                     }
@@ -145,13 +145,13 @@ namespace RaylibWindowNamespace
                     healthBorder.Draw();
                     healthBackground.Draw();
                     healthBar.Draw();
-                    playZoneBarrier.Y = borderThickness * 2 + healthBar.height;
+                    playZoneBarrier.Y = borderThickness * 2 + healthBar.Height;
                     break;
                 case CombatPhase.ENEMYATTACK:
                     healthBorder.Draw();
                     healthBackground.Draw();
                     healthBar.Draw();
-                    playZoneBarrier.W = screenHeight - (borderThickness * 2 + healthBar.height);
+                    playZoneBarrier.W = screenHeight - (borderThickness * 2 + healthBar.Height);
                     break;
                 default:
                     playZoneBarrier.Y = borderThickness;

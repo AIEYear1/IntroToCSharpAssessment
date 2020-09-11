@@ -14,8 +14,7 @@ namespace RaylibWindowNamespace
         public int minDamage;
         public int maxDamage;
         public string description;
-
-        EnemyAttackIndex index;
+        readonly EnemyAttackIndex index;
 
         bool initialized = false;
 
@@ -81,7 +80,7 @@ namespace RaylibWindowNamespace
                 {
                     player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
                     if(player.creature != null)
-                        healthBar.width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.width;
+                        healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
                     wolves.RemoveAt(x);
                     if (wolves.Count == 0)
                     {
@@ -139,7 +138,7 @@ namespace RaylibWindowNamespace
             {
                 player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
                 if (player.creature != null)
-                    healthBar.width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.width;
+                    healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
                 Window.attackTimer.Reset(Window.attackTimer.delay);
             }
         }
@@ -178,7 +177,7 @@ namespace RaylibWindowNamespace
                 {
                     player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
                     if (player.creature != null)
-                        healthBar.width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.width;
+                        healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
                     spears.RemoveAt(x);
                     if (spears.Count == 0)
                     {
@@ -247,7 +246,7 @@ namespace RaylibWindowNamespace
                 {
                     player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
                     if (player.creature != null)
-                        healthBar.width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.width;
+                        healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
 
                     hit = true;
                 }
@@ -263,10 +262,12 @@ namespace RaylibWindowNamespace
         }
         void InitTroll()
         {
-            attackSpaces = new List<RectangleSprite>();
-            attackSpaces.Add(new RectangleSprite(Vector2.Zero, Window.screenWidth / 2, Window.screenHeight, BLANK));
-            attackSpaces.Add(new RectangleSprite(Vector2.UnitX * (Window.screenWidth / 4), Window.screenWidth / 2, Window.screenHeight, BLANK));
-            attackSpaces.Add(new RectangleSprite(Vector2.UnitX * (Window.screenWidth / 2), Window.screenWidth / 2, Window.screenHeight, BLANK));
+            attackSpaces = new List<RectangleSprite>
+            {
+                new RectangleSprite(Vector2.Zero, Window.screenWidth / 2, Window.screenHeight, BLANK),
+                new RectangleSprite(Vector2.UnitX * (Window.screenWidth / 4), Window.screenWidth / 2, Window.screenHeight, BLANK),
+                new RectangleSprite(Vector2.UnitX * (Window.screenWidth / 2), Window.screenWidth / 2, Window.screenHeight, BLANK)
+            };
 
             player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.sensitivity = 4;

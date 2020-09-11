@@ -15,7 +15,7 @@ namespace RaylibWindowNamespace
             get => rectangle;
             set => rectangle = value;
         }
-        public Vector2 position
+        public Vector2 Position
         {
             get => new Vector2(rectangle.x, rectangle.y);
             set
@@ -24,12 +24,12 @@ namespace RaylibWindowNamespace
                 rectangle.y = value.Y;
             }
         }
-        public float width
+        public float Width
         {
             get => rectangle.width;
             set => rectangle.width = value;
         }
-        public float height
+        public float Height
         {
             get => rectangle.height;
             set => rectangle.height = value;

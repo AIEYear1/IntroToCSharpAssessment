@@ -10,17 +10,16 @@ namespace RaylibWindowNamespace
     {
         public Vector2 position;
         public float thickness;
+        public readonly float Length;
 
         Vector2 startPos;
         Vector2 endPos;
         Vector2 direction;
-        float length;
-        float speed;
+        readonly float speed;
         Color color;
 
         public Vector2 StartPos { get => startPos; }
         public Vector2 EndPos { get => endPos; }
-        public float Length { get => length; }
 
         public LineSprite(Vector2 position, Vector2 direction, float length, float thickness, float speed, Color color)
         {
@@ -29,7 +28,7 @@ namespace RaylibWindowNamespace
             startPos = position - (direction * (length / 2));
             endPos = position + (direction * (length / 2));
             this.direction = direction;
-            this.length = length;
+            this.Length = length;
             this.thickness = thickness;
             this.speed = speed;
             this.color = color;
@@ -47,9 +46,9 @@ namespace RaylibWindowNamespace
                                       Utils.NumberBetween((int)(Window.playZoneBarrier.Y + 10), (int)(Window.playZoneBarrier.W - 10)));
 
                 float incrementer = 0;
-                while (Vector2.Distance(pos, player) < length * 3)
+                while (Vector2.Distance(pos, player) < Length * 3)
                 {
-                    incrementer += length * 3;
+                    incrementer += Length * 3;
                     pos = new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X - incrementer + 10), (int)(Window.playZoneBarrier.Z + incrementer - 10)),
                                          Utils.NumberBetween((int)(Window.playZoneBarrier.Y - incrementer + 10), (int)(Window.playZoneBarrier.W + incrementer - 10)));
                 }
@@ -65,8 +64,8 @@ namespace RaylibWindowNamespace
             direction = Utils.LockMagnitude(direction, 1);
             position += direction * speed * GetFrameTime();
 
-            startPos = position - (direction * (length / 2));
-            endPos = position + (direction * (length / 2));
+            startPos = position - (direction * (Length / 2));
+            endPos = position + (direction * (Length / 2));
         }
 
         public void Draw()
