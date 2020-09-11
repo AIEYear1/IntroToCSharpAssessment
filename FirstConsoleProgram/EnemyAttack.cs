@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using static RaylibWindowNamespace.Objects;
 using static Raylib_cs.Color;
+using static Raylib_cs.Raylib;
 
 namespace RaylibWindowNamespace
 {
@@ -124,7 +125,7 @@ namespace RaylibWindowNamespace
 
             player.Draw();
 
-            if (MathF.Abs(Utils.AngleBetween(player.position + player.direction, monster.position - player.position)) < 70) 
+            if (MathF.Abs(Utils.AngleBetween(player.position + Utils.LockMagnitude(player.direction, 4), monster.position - player.position)) < 70) 
             {
                 monster.Draw();
             }
