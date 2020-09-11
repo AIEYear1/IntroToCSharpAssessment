@@ -86,6 +86,7 @@ namespace RaylibWindowNamespace
         List<LineSprite> spears = new List<LineSprite>();
         Vector2 spawnPoint;
         int spearNum = 0;
+        Timer endTimer = new Timer(2);
         void MermaidSpearAttack()
         {
             //spears appear pointing at the player and travel forward on collision player takes damage
@@ -105,6 +106,11 @@ namespace RaylibWindowNamespace
                     spearNum++;
                 }
             }
+            else if (endTimer.Check())
+            {
+                Window.attackTimer.Reset(Window.attackTimer.delay);
+            }
+            
             
             if(spearNum == 0)
             {
@@ -118,6 +124,10 @@ namespace RaylibWindowNamespace
             int spearToRunFrom = 0;
             for (int x = 0; x < spearNum; x++) 
             {
+                if(x >= spears.Count)
+                {
+                    break;
+                }
                 spears[x].Update();
                 spears[x].Draw();
 
@@ -131,6 +141,7 @@ namespace RaylibWindowNamespace
                     {
                         Window.attackTimer.Reset(Window.attackTimer.delay);
                     }
+                    continue;
                 }
 
                 if (distance > Vector2.Distance(monster.position, spears[x].position))

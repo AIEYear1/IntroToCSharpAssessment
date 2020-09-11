@@ -202,10 +202,77 @@ namespace RaylibWindowNamespace
             initialized = true;
         }
         #endregion
-
+        List<RectangleSprite> attackSpaces = new List<RectangleSprite>();
+        Timer waitTimer = new Timer(3);
+        Timer stallTimer = new Timer(1.5f);
+        Timer holdTimer = new Timer(.5f);
+        int spaceToUse = -1;
+        int prevSpace = -1;
+        bool hit = false;
         void TrollAttack()
         {
             //troll will randomly attack the left right or center all of which take up have the screen player must avoid or take damage
+            if (!initialized)
+                InitTroll();
+
+            player.Update();
+            player.Draw();
+
+            if (!waitTimer.Check(false))
+                return;
+
+            if (stallTimer.timer == 0)
+            {
+                spaceToUse = Utils.NumberBetween(0, attackSpaces.Count - 1);
+                while(spaceToUse == prevSpace)
+                {
+                    spaceToUse = Utils.NumberBetween(0, attackSpaces.Count - 1);
+                }
+            }
+
+            attackSpaces[spaceToUse].Draw();
+            player.Draw();
+
+            if (!stallTimer.Check(false))
+            {
+                attackSpaces[spaceToUse].color = GRAY;
+                return;
+            }
+
+            if (!holdTimer.Check())
+            {
+                attackSpaces[spaceToUse].color = RED;
+
+                if (!hit && CollisionManager.Colliding(player, attackSpaces[spaceToUse].Rectangle))
+                {
+                    player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
+                    if (player.creature != null)
+                        healthBar.width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.width;
+
+                    hit = true;
+                }
+
+                return;
+            }
+
+            prevSpace = spaceToUse;
+            stallTimer.Reset();
+            waitTimer.Reset();
+            attackSpaces[spaceToUse].color = BLANK;
+            hit = false;
+        }
+        void InitTroll()
+        {
+            attackSpaces = new List<RectangleSprite>();
+            attackSpaces.Add(new RectangleSprite(Vector2.Zero, Window.screenWidth / 2, Window.screenHeight, BLANK));
+            attackSpaces.Add(new RectangleSprite(Vector2.UnitX * (Window.screenWidth / 4), Window.screenWidth / 2, Window.screenHeight, BLANK));
+            attackSpaces.Add(new RectangleSprite(Vector2.UnitX * (Window.screenWidth / 2), Window.screenWidth / 2, Window.screenHeight, BLANK));
+
+            player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
+            player.sensitivity = 4;
+            player.speed = 400;
+
+            initialized = true;
         }
     }
 }

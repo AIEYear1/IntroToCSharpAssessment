@@ -10,6 +10,11 @@ namespace RaylibWindowNamespace
         public Color color = WHITE;
         Rectangle rectangle;
 
+        public Rectangle Rectangle 
+        { 
+            get => rectangle;
+            set => rectangle = value;
+        }
         public Vector2 position
         {
             get => new Vector2(rectangle.x, rectangle.y);
