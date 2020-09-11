@@ -8,7 +8,7 @@ namespace CRPGNamespace
     {
         public int amountToHeal;
 
-        public HealingPotion(int amountToHeal, string name, string namePlural, string description, int value) : base(name, namePlural, description, value)
+        public HealingPotion(int iD, string name, string namePlural, string description, int value, int amountToHeal) : base(iD, name, namePlural, description, value)
         {
             this.amountToHeal = amountToHeal;
         }

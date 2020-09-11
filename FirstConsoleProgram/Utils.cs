@@ -150,6 +150,38 @@ struct Utils
 
     public static float AngleBetween(Vector2 vec1, Vector2 vec2)
     {
-        return MathF.Acos(Vector2.Dot(vec1, vec2) / (vec1.Length() * vec2.Length())) * (180 / MathF.PI);
+        float toReturn = MathF.Acos(Vector2.Dot(vec1, vec2) / (vec1.Length() * vec2.Length())) * (180 / MathF.PI);
+        return (toReturn > 180) ? toReturn - 360 : toReturn;
+    }
+
+    /// <summary>
+    /// Converts an Array into a string of the values separated by a splicable char
+    /// </summary>
+    /// <param name="array">Array to be converted</param>
+    /// <param name="spacer">Spacer put in-between values from the Array</param>
+    /// <returns>Returns a string of the values separated by a splicable char</returns>
+    public static string ToString<TInput>(TInput[] array, string spacer = "")
+    {
+        string Return = "";
+        for (int count = 0; count < array.Length; count++)
+            Return += (array[count]) + (count + 1 < array.Length ? spacer : "");
+
+        return Return;
+    }
+
+    /// <summary>
+    /// Converts a List into a string of the values separated by a splicable char
+    /// </summary>
+    /// <param name="list">List to be converted</param>
+    /// <param name="spacer">Spacer put in-between values from the List</param>
+    /// <returns>Returns a string of the values separated by a splicable char</returns>
+    public static string ToString<TInput>(List<TInput> list, string spacer = "")
+    {
+        string Return = "";
+
+        for (int count = 0; count < list.Count; count++)
+            Return += (list[count]) + (count + 1 < list.Count ? spacer : "");
+
+        return Return;
     }
 }

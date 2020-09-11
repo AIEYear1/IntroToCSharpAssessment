@@ -6,6 +6,7 @@ namespace CRPGNamespace
 {
     public class Quest
     {
+        public int ID;
         public string name;
         public string description;
         public List<Objective> objectives = new List<Objective>();
@@ -19,8 +20,9 @@ namespace CRPGNamespace
         public string completionText;
         public Quest followUpQuest;
 
-        public Quest(string name, string description, List<(string, string)> Objectives, int rewardGold, int rewardXP, string questGainedText, string completionText, Quest followUpQuest = null, bool mainQuest = false, bool complete = false)
+        public Quest(int iD, string name, string description, List<(string name, string completionText)> Objectives, int rewardGold, int rewardXP, string questGainedText, string completionText, Quest followUpQuest = null, bool mainQuest = false, bool complete = false)
         {
+            ID = iD;
             this.name = name;
             this.description = description;
             this.questGainedText = questGainedText;
@@ -30,37 +32,33 @@ namespace CRPGNamespace
             this.complete = complete;
             this.completionText = completionText;
             this.followUpQuest = followUpQuest;
-            foreach ((string name, string completionText) objective in Objectives)
+            for(int x = 0; x < Objectives.Count; x++)
             {
-                objectives.Add(new Objective(objective.name, objectives.Count, objective.completionText));
+                objectives.Add(new Objective(Objectives[x].name, objectives.Count, Objectives[x].completionText));
             }
         }
 
         public void ObjectiveMarker(int objectivePoint)
         {
+            if (objectivePoint == -1)
+                return;
             if (objectivePoint < 0)
                 objectivePoint = 0;
-
-            if (objectivePoint != 0 && !objectives[objectivePoint - 1].Complete)
-            {
-                Utils.Add("Objective not ready to hit!");
-                return;
-            }
             if (objectives[objectivePoint].Complete)
             {
-                Utils.Add("Objective already hit!");
                 return;
             }
 
-            objectives[objectivePoint].Complete = true;
+            for (int x = 0; x <= objectivePoint; x++)
+            {
+                objectives[x].Complete = true;
+            }
             Utils.Add(Utils.ColorText(objectives[objectivePoint].CompletionText, TextColor.MAGENTA));
 
-            foreach (Objective o in objectives)
+            for(int x = 0; x<objectives.Count; x++)
             {
-                if (!o.Complete)
-                {
+                if(!objectives[x].Complete)
                     return;
-                }
             }
 
             CompleteQuest();

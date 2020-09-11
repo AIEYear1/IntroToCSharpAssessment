@@ -28,6 +28,7 @@ namespace CRPGNamespace
             Utils.Add($"Stats for {name.FullName}:");
             Utils.Add($"\tHP:\t\t{currentHP}/{maximumHP}");
             Utils.Add($"\tAttack power:\t{enemyAttack.minDamage}-{enemyAttack.maxDamage}");
+            Utils.Add("Attack: " + enemyAttack.description);
             Utils.Add(description);
         }
 
@@ -83,11 +84,11 @@ namespace CRPGNamespace
 
                 if (inventoryItem.quantity == 1)
                 {
-                    Utils.Add($"You loot {inventoryItem.quantity} {Utils.ColorText(inventoryItem.details.name, (inventoryItem.details is Weapon) ? TextColor.SALMON: ((inventoryItem.details is Armor) ? TextColor.LIGHTBLUE : TextColor.GOLD))}");
+                    Utils.Add($"You loot {inventoryItem.quantity} {Utils.ColorText(inventoryItem.details.Name, (inventoryItem.details is Weapon) ? TextColor.SALMON: ((inventoryItem.details is Armor) ? TextColor.LIGHTBLUE : TextColor.GOLD))}");
                 }
                 else
                 {
-                    Utils.Add($"You loot {inventoryItem.quantity} {Utils.ColorText(inventoryItem.details.namePlural, (inventoryItem.details is Weapon) ? TextColor.SALMON : ((inventoryItem.details is Armor) ? TextColor.LIGHTBLUE : TextColor.GOLD))}");
+                    Utils.Add($"You loot {inventoryItem.quantity} {Utils.ColorText(inventoryItem.details.NamePlural, (inventoryItem.details is Weapon) ? TextColor.SALMON : ((inventoryItem.details is Armor) ? TextColor.LIGHTBLUE : TextColor.GOLD))}");
                 }
             }
 

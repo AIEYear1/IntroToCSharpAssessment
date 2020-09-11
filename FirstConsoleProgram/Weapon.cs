@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CsvHelper.Configuration;
 using RaylibWindowNamespace;
 
 namespace CRPGNamespace
 {
     public class Weapon : Item
     {
-        public WeaponAttack weaponAttack;
+        public WeaponAttack WeaponAttack;
 
-        public Weapon(string name, string namePlural, string description, int value, WeaponAttack weaponAttack) : base(name, namePlural, description, value)
+        public Weapon(int iD, string name, string namePlural, string description, int value, WeaponAttack weaponAttack) : base(iD, name, namePlural, description, value)
         {
-            this.weaponAttack = weaponAttack;
-        }
-        public Weapon(string name, string namePlural, string description) : base(name, namePlural, description)
-        {
-
+            this.WeaponAttack = weaponAttack;
         }
 
         public override void Look()
         {
-            Utils.Add(name);
-            Utils.Add($"\tAttack Power: {weaponAttack.minDamage}-{weaponAttack.maxDamage}");
-            Utils.Add(description);
+            Utils.Add(Name);
+            Utils.Add($"\tAttack Power: {WeaponAttack.minDamage}-{WeaponAttack.maxDamage}");
+            Utils.Add("Attack: " + WeaponAttack.description);
+            Utils.Add(Description);
         }
     }
 }
+

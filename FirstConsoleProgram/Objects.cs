@@ -1,5 +1,4 @@
 ﻿using Raylib_cs;
-using System.ComponentModel.Design;
 using System.Numerics;
 using static Raylib_cs.Color;
 using static Raylib_cs.Raylib;
@@ -15,11 +14,11 @@ namespace RaylibWindowNamespace
         public static Character player;
         public static AI monster;
 
-        public static WeaponAttack stickAttack = new WeaponAttack(3, 7, "", WeaponAttackIndex.STICKATTACK);
+        public static WeaponAttack stickAttack = new WeaponAttack(3, 7, "You chase the enemy around and attempt to smack them", WeaponAttackIndex.STICKATTACK);
         public static WeaponAttack mermaidSpearAttack = new WeaponAttack(2, 6, "", WeaponAttackIndex.MERMAIDSPEARATTACK);
 
-        public static EnemyAttack WolfAttack = new EnemyAttack(1, 4, "", EnemyAttackIndex.WOLFATTACK);
-        public static EnemyAttack looterAttack = new EnemyAttack(1, 5, "", EnemyAttackIndex.LOOTERATTACK);
+        public static EnemyAttack WolfAttack = new EnemyAttack(3, 5, "Wolves appear out of nowhere and and attempt to pounce on you", EnemyAttackIndex.WOLFATTACK);
+        public static EnemyAttack looterAttack = new EnemyAttack(3, 5, "Looter attempts to sneak up behind you hiding in you blind spots", EnemyAttackIndex.LOOTERATTACK);
         public static EnemyAttack mermaidAttack = new EnemyAttack(3, 10, "", EnemyAttackIndex.MERMAIDATTACK);
         public static EnemyAttack trollAttack = new EnemyAttack(9, 19, "", EnemyAttackIndex.TROLLATTACK);
 

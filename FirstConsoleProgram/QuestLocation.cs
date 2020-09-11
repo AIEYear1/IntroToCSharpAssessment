@@ -9,7 +9,7 @@ namespace CRPGNamespace
         public Quest relatingQuest;
         public int objectiveMarker;
 
-        public QuestLocation(string name, string description, Quest relatingQuest, int objectiveMarker) :base(name, description)
+        public QuestLocation(int iD, string name, string description, Quest relatingQuest, int objectiveMarker) :base(iD, name, description)
         {
             this.name = name;
             this.description = description;

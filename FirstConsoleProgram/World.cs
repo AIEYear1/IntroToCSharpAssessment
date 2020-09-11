@@ -4,10 +4,15 @@ using System.Text;
 using System.IO;
 using RaylibWindowNamespace;
 using static RaylibWindowNamespace.Objects;
+using CsvHelper;
+using Raylib_cs;
+using System.Globalization;
+using System.Linq;
+using System.Collections;
 
 namespace CRPGNamespace
 {
-    class World
+    struct World
     {
         #region Object Lists
         public static readonly List<Item> Items = new List<Item>();
@@ -18,11 +23,11 @@ namespace CRPGNamespace
         #endregion
 
         #region Object IDs
-        public const int ITEM_ID_STICK = 0;
-        public const int ITEM_ID_CLOTHES = 1;
-        public const int ITEM_ID_FANG = 2;
-        public const int ITEM_ID_MERMAIDSPEAR = 3;
-        public const int ITEM_ID_BANDITGARB = 4;
+        public const int ITEM_ID_STICK = 1;
+        public const int ITEM_ID_CLOTHES = 2;
+        public const int ITEM_ID_FANG = 4;
+        public const int ITEM_ID_MERMAIDSPEAR = 8;
+        public const int ITEM_ID_BANDITGARB = 16;
 
         public const int NPC_ID_STEVESHOP = 0;
 
@@ -31,14 +36,14 @@ namespace CRPGNamespace
         public const int MONSTER_ID_LOOTER = 2;
         public const int MONSTER_ID_TROLL = 3;
 
-        public const int LOCATION_ID_CLEARING = 0;
-        public const int LOCATION_ID_PATH = 1;
-        public const int LOCATION_ID_BUSHES = 2;
-        public const int LOCATION_ID_LAKE = 3;
-        public const int LOCATION_ID_FORESTEDGE = 4;
-        public const int LOCATION_ID_PAVEDROAD = 5;
+        public const int LOCATION_ID_CLEARING = 1;
+        public const int LOCATION_ID_PATH = 2;
+        public const int LOCATION_ID_BUSHES = 4;
+        public const int LOCATION_ID_LAKE = 8;
+        public const int LOCATION_ID_FORESTEDGE = 16;
+        public const int LOCATION_ID_PAVEDROAD = 32;
 
-        public const int QUEST_ID_TUTORIALQUEST = 0;
+        public const int QUEST_ID_TUTORIALQUEST = 1;
         #endregion
 
         static World()
@@ -49,52 +54,32 @@ namespace CRPGNamespace
             PopulateMonsters();
             PopulateLocations();
         }
-
+        public static void Reload()
+        {
+            PopulateItems();
+            PopulateNPCs();
+            PopulateQuests();
+            PopulateMonsters();
+            PopulateLocations();
+        }
 
         #region Population
         private static void PopulateItems()
         {
+            Items.Clear();
             //Parameters: Name,Plural Name,Description,Weight(, Quest it's connected to, Objective Marker it's related to) < Only for Quest Items
-            //Weapons: Max Damage Min Damage, Parameters
-            //Armor: AC, Parameters
-            Items.Add(new Weapon("Stick", "Sticks", "Long narrow stick with a stick like texture", 3, stickAttack));
-            Items.Add(new Armor("Clothes", "Clothes", "Some pretty normal clothes, without these you'd be naked!", 5, 2));
-            Items.Add(new Item("Wolf Fang", "Wolf Fangs", "The fang of a wolf, pretty useless", 1));
-            Items.Add(new Weapon("Mermaid Spear", "Mermaid Spears", "A simple yet elegant spear", 7, mermaidSpearAttack));
-            Items.Add(new Armor("Bandit Garb", "Bandit Garb", "A simple set of thrown together armor", 10, 5));
-
-            //string[] lines = File.ReadAllLines("items.csv");
-
-            //for (int x = 1; x < lines.Length; x++)
-            //{
-            //    string[] lineVals = lines[x].Split(',');
-
-            //    switch (lineVals[0])
-            //    {
-            //        case "W":
-            //            Weapon tmpWeapon = new Weapon(lineVals[1], lineVals[2], lineVals[3]);
-            //            int.TryParse(lineVals[4], out tmpWeapon.value);
-            //            int.TryParse(lineVals[5], out tmpWeapon.maxDamage);
-            //            int.TryParse(lineVals[6], out tmpWeapon.minDamage);
-            //            Items.Add(tmpWeapon);
-            //            break;
-            //        case "A":
-            //            Armor tmpArmor = new Armor(lineVals[1], lineVals[2], lineVals[3]);
-            //            int.TryParse(lineVals[4], out tmpArmor.value);
-            //            int.TryParse(lineVals[7], out tmpArmor.ac);
-            //            Items.Add(tmpArmor);
-            //            break;
-            //        default:
-            //            Item tmpItem = new Item(lineVals[1], lineVals[2], lineVals[3]);
-            //            int.TryParse(lineVals[4], out tmpItem.value);
-            //            Items.Add(tmpItem);
-            //            break;
-            //    }
-            //}
+            //Weapons: Parameters, Weapon Attack
+            //Armor: Parameters, AC
+            Items.Add(new Weapon(ITEM_ID_STICK, "Stick", "Sticks", "Long narrow stick with a stick like texture", 3, stickAttack));
+            Items.Add(new Armor(ITEM_ID_CLOTHES, "Clothes", "Clothes", "Some pretty normal clothes, without these you'd be naked!", 5, 2));
+            Items.Add(new Item(ITEM_ID_FANG, "Wolf Fang", "Wolf Fangs", "The fang of a wolf, pretty useless", 1));
+            Items.Add(new Weapon(ITEM_ID_MERMAIDSPEAR, "Mermaid Spear", "Mermaid Spears", "A simple yet elegant spear", 7, mermaidSpearAttack));
+            Items.Add(new Armor(ITEM_ID_BANDITGARB, "Bandit Garb", "Bandit Garb", "A simple set of thrown together armor", 10, 5));
         }
 
         private static void PopulateNPCs()
         {
+            NPCs.Clear();
             List<InventoryItem> shopStock = new List<InventoryItem>();
             foreach (Item item in Items)
             {
@@ -109,6 +94,7 @@ namespace CRPGNamespace
 
         private static void PopulateMonsters()
         {
+            Monsters.Clear();
             //Parameters: Name, Description, Health, Max Damage, Min Damage, Reward XP, Reward Gold(, Quest it's connected to, Objective Marker it's related to) < Only for Quest Monsters
             Monster wolf = new Monster(new Name("Wolf"), "A lone wolf prowling", 12, WolfAttack, 11, 5);
             wolf.lootTable.Add(new LootItem(ItemByID(ITEM_ID_FANG), 100, true));
@@ -126,16 +112,17 @@ namespace CRPGNamespace
 
         private static void PopulateLocations()
         {
+            Locations.Clear();
             //Parameters: Name, Description(, Quest it's connected to, Objective Marker it's related to) < Only for Quest Locations
-            QuestLocation clearing = new QuestLocation("Clearing", "A small clearing, forest surrounds you", QuestByID(QUEST_ID_TUTORIALQUEST), -1);
+            QuestLocation clearing = new QuestLocation(LOCATION_ID_CLEARING, "Clearing", "A small clearing, forest surrounds you", QuestByID(QUEST_ID_TUTORIALQUEST), -1);
             clearing.monsterLivingHere = World.MonsterByID(World.MONSTER_ID_WOLF);
-            Location path = new Location("Path", "A small path from the clearing, where does it lead?");
-            Location bushes = new Location("Rustling Bushes", "Some rustling bushes", false, true);
+            Location path = new Location(LOCATION_ID_PATH, "Path", "A small path from the clearing, where does it lead?");
+            Location bushes = new Location(LOCATION_ID_BUSHES, "Rustling Bushes", "Some rustling bushes", false, true);
             bushes.monsterLivingHere = MonsterByID(MONSTER_ID_LOOTER);
-            Location smallLake = new Location("Lake", "a small lake, seems peaceful");
+            Location smallLake = new Location(LOCATION_ID_LAKE, "Lake", "a small lake, seems peaceful");
             smallLake.monsterLivingHere = MonsterByID(MONSTER_ID_MERMAID);
-            Location forestEdge = new Location("Forest Edge", "you can see the forest give way to what looks like grasslands", true);
-            QuestLocation pavedRoad = new QuestLocation("Paved Road", "A paved road the first sign of civilization", QuestByID(QUEST_ID_TUTORIALQUEST), 0);
+            Location forestEdge = new Location(LOCATION_ID_FORESTEDGE, "Forest Edge", "you can see the forest give way to what looks like grasslands", true);
+            QuestLocation pavedRoad = new QuestLocation(LOCATION_ID_PAVEDROAD, "Paved Road", "A paved road the first sign of civilization", QuestByID(QUEST_ID_TUTORIALQUEST), 0);
             pavedRoad.monsterLivingHere = MonsterByID(MONSTER_ID_TROLL);
 
 
@@ -164,6 +151,7 @@ namespace CRPGNamespace
 
         public static void PopulateQuests()
         {
+            Quests.Clear();
             //Parameters: Name, Description, Objectives, Reward Gold, Reward XP, Text played when quest gained, Text played when quest completed, quest following current quest-presumed null, Whther quest is main quest-presumed false, Quest complete-presumed false
             List<(string, string)> objectives = new List<(string, string)>();
 
@@ -172,7 +160,7 @@ namespace CRPGNamespace
             objectives.Add(("Defeat the troll", "With the troll defeated the town is now safe, perhaps there you can find answers there"));
             objectives.Add(("Talk with the townsfolk", ""));
             #endregion
-            Quest tutorialQuest = new Quest("Lost in the Forest!", "You've no idea where you are, you should start looking around for anything familiar", objectives, 7, 20, "You wake up in a clearing, where is this place? You should figure out where you are.", "well, looks like it's time to adventure");
+            Quest tutorialQuest = new Quest(QUEST_ID_TUTORIALQUEST, "Lost in the Forest!", "You've no idea where you are, you should start looking around for anything familiar", objectives, 7, 20, "You wake up in a clearing, where is this place? You should figure out where you are.", "well, looks like it's time to adventure");
             objectives.Clear();
 
             Quests.Add(tutorialQuest);
@@ -183,13 +171,15 @@ namespace CRPGNamespace
         #region GetByID
         public static Item ItemByID(int ID)
         {
-            if (ID >= Items.Count)
+            for(int x = 0; x < Items.Count; x++)
             {
-                Utils.Add("Invalid Item ID");
-                return null;
+                if(Items[x].ID == ID)
+                {
+                    return Items[x];
+                }
             }
-
-            return Items[ID];
+            Utils.Add("Not an Item");
+            return null;
         }
 
         public static NPC NPCByID(int ID)
@@ -216,26 +206,45 @@ namespace CRPGNamespace
 
         public static Location LocationByID(int ID)
         {
-            if (ID >= Locations.Count)
+            for (int x = 0; x < Locations.Count; x++)
             {
-                Utils.Add("Invalid Location ID");
-                return null;
+                if (Locations[x].ID == ID)
+                {
+                    return Locations[x];
+                }
             }
-
-            return Locations[ID];
+            Utils.Add("Not a location");
+            return null;
         }
 
         public static Quest QuestByID(int ID)
         {
-            if (ID >= Quests.Count)
+            for (int x = 0; x < Quests.Count; x++)
             {
-                Utils.Add("Invalid Location ID");
-                return null;
+                if (Quests[x].ID == ID)
+                {
+                    return Quests[x];
+                }
             }
-
-            return Quests[ID];
+            Utils.Add("Not an Item");
+            return null;
         }
         #endregion
+
+        public static int[] ParseIDs(int IDs)
+        {
+            byte[] bytes = BitConverter.GetBytes(IDs);
+            BitArray bitArray = new BitArray(bytes);
+            List<int> ints = new List<int>();
+            for (int x = 0; x < bitArray.Count; x++)
+            {
+                if (((bitArray[x]) ? 1 : 0) << x != 0)
+                {
+                    ints.Add(1 << x);
+                }
+            }
+            return ints.ToArray();
+        }
 
         public static void Help()
         {

@@ -1,33 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CsvHelper.Configuration;
 
 namespace CRPGNamespace
 {
     public class Item
     {
-        public string name = "", namePlural = "";
-        public string description = "";
-        public int value = 0;
+        public int ID = 0;
+        public string Name = ""; 
+        public string NamePlural = "";
+        public string Description = "";
+        public int Value = 0;
 
-        public Item(string name, string namePlural, string description, int value)
+        public Item(int iD, string name, string namePlural, string description, int value)
         {
-            this.name = name;
-            this.namePlural = namePlural;
-            this.description = description;
-            this.value = value;
-        }
-        public Item(string name, string namePlural, string description)
-        {
-            this.name = name;
-            this.namePlural = namePlural;
-            this.description = description;
+            ID = iD;
+            Name = name;
+            NamePlural = namePlural;
+            Description = description;
+            Value = value;
         }
 
         public virtual void Look()
         {
-            Utils.Add(name);
-            Utils.Add(description);
+            Utils.Add(Name);
+            Utils.Add(Description);
         }
 
         public static implicit operator InventoryItem(Item i)

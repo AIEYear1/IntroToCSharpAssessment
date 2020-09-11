@@ -6,6 +6,7 @@ namespace CRPGNamespace
 {
     public class Location
     {
+        public int ID;
         public string name;
         public string description;
         public Item itemRequiredToEnter;
@@ -19,8 +20,9 @@ namespace CRPGNamespace
         public bool properNoun;
         public bool knownNoun;
 
-        public Location(string name, string description, bool knownNoun = false, bool properNoun = false)
+        public Location(int iD, string name, string description, bool knownNoun = false, bool properNoun = false)
         {
+            ID = iD;
             this.name = name;
             this.description = description;
             this.knownNoun = knownNoun;

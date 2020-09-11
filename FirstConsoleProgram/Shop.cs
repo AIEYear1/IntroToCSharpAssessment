@@ -35,7 +35,7 @@ namespace CRPGNamespace
 
                 for(int x = 0; x < stock.Count - iteration - 1; x++)
                 {
-                    if(stock[x].details.value > stock[x + 1].details.value)
+                    if(stock[x].details.Value > stock[x + 1].details.Value)
                     {
                         InventoryItem tmpHolder = stock[x + 1];
                         stock[x + 1] = stock[x];
@@ -45,7 +45,7 @@ namespace CRPGNamespace
                 }
                 for (int x = stock.Count-1; x > 0 + iteration; x--)
                 {
-                    if (stock[x].details.value < stock[x - 1].details.value)
+                    if (stock[x].details.Value < stock[x - 1].details.Value)
                     {
                         InventoryItem tmpHolder = stock[x - 1];
                         stock[x - 1] = stock[x];
@@ -84,7 +84,7 @@ namespace CRPGNamespace
 
         public void Buy(Player player, InventoryItem itemToBuy)
         {
-            if (player.gold < itemToBuy.details.value)
+            if (player.gold < itemToBuy.details.Value)
             {
                 Utils.Add("Not enough gold");
                 return;
@@ -95,7 +95,7 @@ namespace CRPGNamespace
                 return;
             }
 
-            player.gold -= itemToBuy.details.value + priceAugment;
+            player.gold -= itemToBuy.details.Value + priceAugment;
             player.AddItemToInventory(itemToBuy);
 
             RemoveItemFromStock(itemToBuy);
@@ -111,7 +111,7 @@ namespace CRPGNamespace
                 return;
             }
 
-            player.gold += itemToSell.details.value - priceAugment;
+            player.gold += itemToSell.details.Value - priceAugment;
             player.RemoveItemFromInventory(itemToSell);
 
             AddItemToStock(itemToSell);

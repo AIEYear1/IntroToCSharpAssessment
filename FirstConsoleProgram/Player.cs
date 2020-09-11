@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -18,7 +20,7 @@ namespace CRPGNamespace
         public Weapon currentWeapon;
         public Armor currentArmor;
         public Location currentLocation;
-        public readonly Location home;
+        public Location home;
         public List<InventoryItem> Inventory = new List<InventoryItem>();
         public List<Quest> activeQuests = new List<Quest>();
 
@@ -34,14 +36,14 @@ namespace CRPGNamespace
         {
             get
             {
-                return baseMaxDamage + (currentWeapon != null ? currentWeapon.weaponAttack.maxDamage : 0);
+                return baseMaxDamage + (currentWeapon != null ? 0 : 0);
             }
         }
         public int CurrentMinDamage
         {
             get
             {
-                return baseMinDamage + (currentWeapon != null ? currentWeapon.weaponAttack.minDamage : 0);
+                return baseMinDamage + (currentWeapon != null ? 0 : 0);
             }
         }
         #endregion
@@ -55,6 +57,58 @@ namespace CRPGNamespace
             this.currentWeapon = currentWeapon;
             this.currentArmor = currentArmor;
             this.home = home;
+        }
+
+        public Player(string[] saveData)
+        {
+            //name, gold, xp, xptolevelup, level, maximumHP, currentWeaponID, currentArmorID, homeID, Inventory, quests, clearedLocs
+            name = new Name(saveData[0], saveData[1], saveData[2]);
+            int.TryParse(saveData[3], out gold);
+            int.TryParse(saveData[4], out XP);
+            int.TryParse(saveData[5], out XPToLevelUp);
+            int.TryParse(saveData[6], out level);
+            int.TryParse(saveData[7], out maximumHP);
+
+            currentHP = maximumHP;
+            baseMaxDamage = level + (level - 1);
+            baseMinDamage = level / 2;
+            baseAc = (2 * level) - 2;
+
+            int tempInt = 0;
+            int.TryParse(saveData[8], out tempInt);
+            currentWeapon = (Weapon)World.ItemByID(tempInt);
+            int.TryParse(saveData[9], out tempInt);
+            currentArmor = (Armor)World.ItemByID(tempInt);
+            int.TryParse(saveData[10], out tempInt);
+            home = World.LocationByID(tempInt);
+
+            int.TryParse(saveData[11], out tempInt);
+            int[] tmpBytes = World.ParseIDs(tempInt);
+            for(int x = 0; x < tmpBytes.Length; x++)
+            {
+                int.TryParse(saveData[12 + x], out tempInt);
+                Inventory.Add(new InventoryItem(World.ItemByID(tmpBytes[x]), tempInt));
+            }
+            int buffer = tmpBytes.Length;
+            int.TryParse(saveData[12 + buffer], out tempInt);
+            tmpBytes = World.ParseIDs(tempInt);
+            Quest tmpQuest = null;
+            for (int x = 0; x < tmpBytes.Length; x++)
+            {
+                int.TryParse(saveData[13 + buffer + x], out tempInt);
+                tmpQuest = World.QuestByID(tmpBytes[x]);
+                activeQuests.Add(tmpQuest);
+                tmpQuest.ObjectiveMarker(tempInt);
+            }
+            buffer += tmpBytes.Length;
+            int.TryParse(saveData[13 + buffer], out tempInt);
+            tmpBytes = World.ParseIDs(tempInt);
+            for (int x = 0; x < tmpBytes.Length; x++)
+            {
+                World.LocationByID(tmpBytes[x]).monsterLivingHere = null;
+            }
+
+            MoveTo(home, true);
         }
 
         public void SetName()
@@ -91,8 +145,71 @@ namespace CRPGNamespace
             }
         }
 
-        #region Location moving
+        #region save and load
+        public void Save(string saveName)
+        {
+            if(File.Exists(saveName + ".save"))
+            {
+                File.Delete(saveName + ".save");
+            }
 
+            int invTypes = 0;
+            int[] invQuants = new int[Inventory.Count];
+            for (int x = 0; x < Inventory.Count; x++)
+            {
+                invTypes += Inventory[x].details.ID;
+                invQuants[x] = (Inventory[x].quantity);
+            }
+            int quests = 0;
+            int[] questProgress = new int[activeQuests.Count];
+            for (int x = 0; x < activeQuests.Count; x++)
+            {
+                quests += activeQuests[x].ID;
+                for(int y = 0; y < activeQuests[x].objectives.Count; y++)
+                {
+                    if (!activeQuests[x].objectives[y].Complete)
+                    {
+                        questProgress[x] = y-1;
+                        break;
+                    }
+                }
+            }
+            int clearedLocs = 0;
+            for (int x = 0; x < World.Locations.Count; x++)
+            {
+                if(World.Locations[x].monsterLivingHere == null)
+                {
+                    clearedLocs += World.Locations[x].ID;
+                }
+            }
+
+            string saveText = $"{name.FirstName},{name.MiddleName},{name.LastName}";
+            saveText += "," + gold;
+            saveText += "," + XP;
+            saveText += "," + XPToLevelUp;
+            saveText += "," + level;
+            saveText += "," + maximumHP;
+            saveText += "," + currentWeapon.ID;
+            saveText += "," + currentArmor.ID;
+            saveText += "," + home.ID;
+            saveText += $",{invTypes},{Utils.ToString(invQuants, ",")}";
+            saveText += $",{quests},{Utils.ToString(questProgress, ",")}";
+            saveText += "," + clearedLocs;
+
+            File.AppendAllText(saveName + ".save", saveText);
+
+            Utils.Add("save successful");
+        }
+
+        public static void Load(string saveName)
+        {
+            World.Reload();
+            string saveText = File.ReadAllText(saveName + ".save");
+            Program.player = new Player(saveText.Split(","));
+        }
+        #endregion
+
+        #region Location moving
         public void MoveTo(Location loc, bool ignoreMonster = false)
         {
             if(!ignoreMonster && currentLocation != null && currentLocation.monsterLivingHere != null)
@@ -208,25 +325,25 @@ namespace CRPGNamespace
         {
             foreach(InventoryItem item in Inventory)
             {
-                if(item.details.name.ToLower() == arg)
+                if(item.details.Name.ToLower() == arg)
                 {
                     Item tmpItem = item.details;
 
                     if(tmpItem is Weapon)
                     {
                         currentWeapon = (Weapon)tmpItem;
-                        Utils.Add("Equipped " + tmpItem.name);
+                        Utils.Add("Equipped " + tmpItem.Name);
                         return;
                     }
 
                     if (item.details is Armor)
                     {
                         currentArmor = (Armor)tmpItem;
-                        Utils.Add("Equipped " + tmpItem.name);
+                        Utils.Add("Equipped " + tmpItem.Name);
                         return;
                     }
 
-                    Utils.Add("You can't equip " + tmpItem.name);
+                    Utils.Add("You can't equip " + tmpItem.Name);
                     return;
                 }
             }
@@ -264,8 +381,8 @@ namespace CRPGNamespace
                 case "here":
                     currentLocation.LookHere();
                     break;
-                case string item when Inventory.SingleOrDefault(x => x.details.name.ToLower() == item || x.details.namePlural.ToLower() == item) != null:
-                    Inventory.SingleOrDefault(x => x.details.name.ToLower() == item || x.details.namePlural.ToLower() == item).details.Look();
+                case string item when Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != null:
+                    Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item).details.Look();
                     break;
                 case string monster when currentLocation.monsterLivingHere != null && currentLocation.monsterLivingHere.name.FullName.ToLower() == monster:
                     currentLocation.monsterLivingHere.LookAt();

@@ -64,7 +64,7 @@ namespace RaylibWindowNamespace
             player.creature = curPlayer;
             monster.creature = curMonster;
 
-            (player.creature as Player).currentWeapon.weaponAttack.Start();
+            (player.creature as Player).currentWeapon.WeaponAttack.Start();
             (monster.creature as Monster).enemyAttack.Start();
             player.Start();
             monster.Start();
@@ -167,7 +167,7 @@ namespace RaylibWindowNamespace
                 stage = CombatPhase.PAUSE;
                 return;
             }
-            (player.creature as Player).currentWeapon.weaponAttack.Update();
+            (player.creature as Player).currentWeapon.WeaponAttack.Update();
         }
         void EnemyAttack()
         {

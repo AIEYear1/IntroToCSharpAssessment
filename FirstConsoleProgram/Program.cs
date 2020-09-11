@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using RaylibWindowNamespace;
 
@@ -22,6 +23,8 @@ namespace CRPGNamespace
 
         public static Window combatWindow = new Window();
 
+        public static bool loadSave = false;
+
         static void Main()
         {
             player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_STICK), 1));
@@ -31,11 +34,18 @@ namespace CRPGNamespace
             player.SetName();
 
             player.MoveTo(player.home);
-            Utils.Print();
+            if(running)
+                Utils.Print();
 
             //Loop Start
             while (running)
             {
+                while (loadSave)
+                {
+                    AttemptLoad();
+                    Utils.Print();
+                }
+
                 while (!combatWindow.WindowHidden)
                 {
                     combatWindow.Run();
@@ -45,6 +55,66 @@ namespace CRPGNamespace
             }
 
             combatWindow.Close();
+        }
+
+        static void AttemptLoad()
+        {
+            string filePath = @".\";
+            string[] files = Directory.GetFiles(@".\", "*.save");
+
+            if(files.Length == 0)
+            {
+                Utils.Add("No save files found");
+                loadSave = false;
+                return;
+            }
+
+            for(int x = 0; x < files.Length; x++)
+            {
+                Utils.Add("\t" + files[x].Substring(filePath.Length).Trim());
+            }
+            Utils.Print();
+
+            string input = Utils.AskQuestion("which save do you wish to load?");
+
+            switch (input)
+            {
+                case "quit":
+                    running = false;
+                    return;
+                case "back":
+                    loadSave = false;
+                    return;
+                case "help":
+                    Utils.Add("back to return to game, quit to leave");
+                    return;
+                case string file when file.StartsWith("delete "):
+                    file = file.Substring(7);
+                    for (int x = 0; x < files.Length; x++)
+                    {
+                        if (file == files[x].Substring(filePath.Length).Trim().ToLower() || file == files[x].Substring(filePath.Length).Trim().ToLower().Split('.')[0])
+                        {
+                            File.Delete(files[x]);
+                            Utils.Add("save successfully deleted");
+                            return;
+                        }
+                    }
+                    return;
+
+            }
+
+            for (int x = 0; x < files.Length; x++)
+            {
+                if(input == files[x].Substring(filePath.Length).Trim().ToLower() || input == files[x].Substring(filePath.Length).Trim().ToLower().Split('.')[0])
+                {
+                    Player.Load(files[x].Substring(filePath.Length).Split('.')[0]);
+                    loadSave = false;
+                    Utils.Add("save successfully loaded");
+                    return;
+                }
+            }
+
+            Utils.Add("no save file of that name found");
         }
 
         //TODO: Implement NPC interaction and shopping
@@ -82,7 +152,7 @@ namespace CRPGNamespace
                     Utils.Add("Current Inventory: ");
                     foreach (InventoryItem invItem in player.Inventory)
                     {
-                        Utils.Add($"\t{Utils.ColorText(invItem.details.name, (invItem.details is Weapon) ? TextColor.SALMON : ((invItem.details is Armor) ? TextColor.LIGHTBLUE : TextColor.GOLD))} : {invItem.quantity}");
+                        Utils.Add($"\t{Utils.ColorText(invItem.details.Name, (invItem.details is Weapon) ? TextColor.SALMON : ((invItem.details is Armor) ? TextColor.LIGHTBLUE : TextColor.GOLD))} : {invItem.quantity}");
                     }
                     break;
                 case "quests":                                          //6th case "quest" "q"
@@ -96,14 +166,20 @@ namespace CRPGNamespace
                 case string move when move.StartsWith("move "):         //7th case "move"
                     MovePlayer(move.Substring(5).Trim());
                     break;
-                case string equip when equip.StartsWith("equip "):      //8th case "equip"
+                case string save when save.StartsWith("save "):         //8th case "save"
+                    player.Save(save.Substring(5).Trim());
+                    break;
+                case "load":                                            //8th case "load"
+                    loadSave = true;
+                    break;
+                case string equip when equip.StartsWith("equip "):      //10th case "equip"
                     string tmpEquipInput = equip.Substring(6).Trim();
                     player.EquipItem(tmpEquipInput);
                     break;
-                case "attack":                                          //9th case "attack"
+                case "attack":                                          //11th case "attack"
                     player.Attack(player.currentLocation.monsterLivingHere);
                     break;
-                case "quit":                                            //10th case "quit"
+                case "quit":                                            //12th case "quit"
                     running = false;
                     break;
                 default:                                                //Overflow
