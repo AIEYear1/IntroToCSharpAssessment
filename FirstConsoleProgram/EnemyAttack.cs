@@ -156,6 +156,8 @@ namespace RaylibWindowNamespace
             initialized = true;
         }
         #endregion
+
+        #region Mermaid Attack
         List<LineSprite> spears = new List<LineSprite>();
         void MermaidAttack()
         {
@@ -199,6 +201,8 @@ namespace RaylibWindowNamespace
 
             initialized = true;
         }
+        #endregion
+
         void TrollAttack()
         {
             //troll will randomly attack the left right or center all of which take up have the screen player must avoid or take damage
