@@ -150,8 +150,26 @@ struct Utils
 
     public static float AngleBetween(Vector2 vec1, Vector2 vec2)
     {
-        float toReturn = MathF.Acos(Vector2.Dot(vec1, vec2) / (vec1.Length() * vec2.Length())) * (180 / MathF.PI);
-        return (toReturn > 180) ? toReturn - 360 : toReturn;
+        float toReturn = MathF.Acos(Vector2.Dot(vec1, vec2) / (vec1.Length() * vec2.Length()));
+        return RadToDeg(toReturn);
+    }
+
+    public static float DegToRad(float deg)
+    {
+        deg = ((deg < 0) ? deg + 360 : deg);
+        return deg * (MathF.PI / 180);
+    }
+    public static float RadToDeg(float rad)
+    {
+        rad *= (180 / MathF.PI);
+        return  + ((rad > 180) ? rad - 360 : rad);
+    }
+
+    //(x cos alpha + y sin alpha, -x sin alpha + y cos alpha)
+    public static Vector2 RotationMatrix(Vector2 origin, float angle, float magnitude)
+    {
+        Vector2 toReturn = new Vector2((origin.X * MathF.Cos(angle)) + (origin.Y * MathF.Sin(angle)), (-origin.X * MathF.Sin(angle)) + (origin.Y * MathF.Cos(angle)));
+        return toReturn * (magnitude / origin.Length());
     }
 
     /// <summary>

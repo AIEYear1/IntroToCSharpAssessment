@@ -86,7 +86,6 @@ namespace RaylibWindowNamespace
         {
             BeginDrawing();
             ClearBackground(BLACK);
-            DrawUI(stage);
             switch (stage)
             {
                 case CombatPhase.START:
@@ -128,6 +127,7 @@ namespace RaylibWindowNamespace
                     EndAttack();
                     break;
             }
+            DrawUI(stage);
             EndDrawing();
         }
 

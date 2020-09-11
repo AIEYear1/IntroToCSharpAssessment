@@ -72,6 +72,7 @@ namespace RaylibWindowNamespace
             player.sensitivity = 2.5f;
             player.speed = 400;
 
+            monster.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             monster.sensitivity = 3;
             monster.speed = 300;
 

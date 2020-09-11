@@ -4,6 +4,7 @@ using System.Numerics;
 using static RaylibWindowNamespace.Objects;
 using static Raylib_cs.Color;
 using static Raylib_cs.Raylib;
+using CRPGNamespace;
 
 namespace RaylibWindowNamespace
 {
@@ -103,8 +104,10 @@ namespace RaylibWindowNamespace
                 wolves[x].sensitivity = 1.5f;
             }
 
+            player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.speed = 300;
             player.sensitivity = 3;
+
             initialized = true;
         }
         #endregion
@@ -123,9 +126,15 @@ namespace RaylibWindowNamespace
             monster.SetDirection(player.position - monster.position);
             monster.Update();
 
+            Vector2 triPoint2 = player.position + Utils.RotationMatrix(Utils.LockMagnitude(player.direction, 1), Utils.DegToRad(-70), Window.screenWidth / MathF.Cos(Utils.DegToRad(-70)));
+            Vector2 triPoint3 = player.position + Utils.RotationMatrix(Utils.LockMagnitude(player.direction, 1), Utils.DegToRad(70), Window.screenWidth / MathF.Cos(Utils.DegToRad(70)));
+
+
+            DrawTriangle(player.position, triPoint2, triPoint3, GRAY);
+
             player.Draw();
 
-            if (MathF.Abs(Utils.AngleBetween(player.position + Utils.LockMagnitude(player.direction, 4), monster.position - player.position)) < 70) 
+            if (MathF.Abs(Utils.AngleBetween(Utils.LockMagnitude(player.direction, 1), monster.position - player.position)) < 70) 
             {
                 monster.Draw();
             }
@@ -142,8 +151,9 @@ namespace RaylibWindowNamespace
         {
             monster.position = new Vector2(monster.radius, Window.screenHeight - monster.radius);
             monster.sensitivity = 3;
-            monster.speed = 300;
+            monster.speed = 200;
 
+            player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.sensitivity = 4;
             player.speed = 400;
 

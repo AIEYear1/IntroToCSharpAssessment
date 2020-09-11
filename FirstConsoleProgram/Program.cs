@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using RaylibWindowNamespace;
 
@@ -23,6 +25,7 @@ namespace CRPGNamespace
 
         public static Window combatWindow = new Window();
 
+        public static string fileToLoad = "";
         public static bool loadSave = false;
 
         static void Main()
@@ -31,18 +34,36 @@ namespace CRPGNamespace
             player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_CLOTHES), 1));
 
             Console.Clear();
-            player.SetName();
 
-            player.MoveTo(player.home);
-            if(running)
-                Utils.Print();
+            while (!initialized)
+            {
+                while (loadSave)
+                {
+                    if (AttemptLoad(fileToLoad))
+                        initialized = true;
+                    Utils.Print();
+                }
+                switch (Utils.AskQuestion("new or load?"))
+                {
+                    case "new":
+                        Initialize();
+                        break;
+                    case string load when load.StartsWith("load"):
+                        fileToLoad = "";
+                        if (load.Length > 5)
+                            fileToLoad = load.Substring(5);
+
+                        loadSave = true;
+                        break;
+                }
+            }
 
             //Loop Start
             while (running)
             {
                 while (loadSave)
                 {
-                    AttemptLoad();
+                    AttemptLoad(fileToLoad);
                     Utils.Print();
                 }
 
@@ -57,7 +78,19 @@ namespace CRPGNamespace
             combatWindow.Close();
         }
 
-        static void AttemptLoad()
+        static void Initialize()
+        {
+            player.SetName();
+
+            player.MoveTo(player.home);
+            if (running)
+                Utils.Print();
+
+            initialized = true;
+        }
+
+        static bool attempted = false;
+        static bool AttemptLoad(string fileToAttmept)
         {
             string filePath = @".\";
             string[] files = Directory.GetFiles(@".\", "*.save");
@@ -66,41 +99,47 @@ namespace CRPGNamespace
             {
                 Utils.Add("No save files found");
                 loadSave = false;
-                return;
+                return false;
             }
 
-            for(int x = 0; x < files.Length; x++)
-            {
-                Utils.Add("\t" + files[x].Substring(filePath.Length).Trim());
-            }
-            Utils.Print();
+            string input = fileToAttmept;
 
-            string input = Utils.AskQuestion("which save do you wish to load?");
-
-            switch (input)
+            if (fileToAttmept == "" || attempted)
             {
-                case "quit":
-                    running = false;
-                    return;
-                case "back":
-                    loadSave = false;
-                    return;
-                case "help":
-                    Utils.Add("back to return to game, quit to leave");
-                    return;
-                case string file when file.StartsWith("delete "):
-                    file = file.Substring(7);
-                    for (int x = 0; x < files.Length; x++)
-                    {
-                        if (file == files[x].Substring(filePath.Length).Trim().ToLower() || file == files[x].Substring(filePath.Length).Trim().ToLower().Split('.')[0])
+                for (int x = 0; x < files.Length; x++)
+                {
+                    Utils.Add("\t" + files[x].Substring(filePath.Length).Trim());
+                }
+                Utils.Print();
+
+                input = Utils.AskQuestion("which save do you wish to load?");
+
+                switch (input)
+                {
+                    case "quit":
+                        running = false;
+                        loadSave = false;
+                        return true;
+                    case "back":
+                        loadSave = false;
+                        attempted = false;
+                        return false;
+                    case "help":
+                        Utils.Add("back to return to game, quit to leave");
+                        return false;
+                    case string file when file.StartsWith("delete "):
+                        file = file.Substring(7);
+                        for (int x = 0; x < files.Length; x++)
                         {
-                            File.Delete(files[x]);
-                            Utils.Add("save successfully deleted");
-                            return;
+                            if (file == files[x].Substring(filePath.Length).Trim().ToLower() || file == files[x].Substring(filePath.Length).Trim().ToLower().Split('.')[0])
+                            {
+                                File.Delete(files[x]);
+                                Utils.Add("save successfully deleted");
+                                return false;
+                            }
                         }
-                    }
-                    return;
-
+                        return false;
+                }
             }
 
             for (int x = 0; x < files.Length; x++)
@@ -109,12 +148,15 @@ namespace CRPGNamespace
                 {
                     Player.Load(files[x].Substring(filePath.Length).Split('.')[0]);
                     loadSave = false;
+                    attempted = false;
                     Utils.Add("save successfully loaded");
-                    return;
+                    return true;
                 }
             }
 
             Utils.Add("no save file of that name found");
+            attempted = true;
+            return false;
         }
 
         //TODO: Implement NPC interaction and shopping
@@ -169,7 +211,11 @@ namespace CRPGNamespace
                 case string save when save.StartsWith("save "):         //8th case "save"
                     player.Save(save.Substring(5).Trim());
                     break;
-                case "load":                                            //8th case "load"
+                case string load when load.StartsWith("load"):          //9th case "load"
+                    fileToLoad = "";
+                    if (load.Length > 5)
+                        fileToLoad = load.Substring(5);
+
                     loadSave = true;
                     break;
                 case string equip when equip.StartsWith("equip "):      //10th case "equip"
