@@ -36,23 +36,26 @@ namespace RaylibWindowNamespace
         }
 
         bool spawned = false;
-        public void Spaawn(Vector2 player)
+        public void Spawn(Vector2 player, bool overridePosition = false)
         {
             if (spawned)
                 return;
 
-            Vector2 pos = new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X + 10), (int)(Window.playZoneBarrier.Z - 10)),
-                                  Utils.NumberBetween((int)(Window.playZoneBarrier.Y + 10), (int)(Window.playZoneBarrier.W - 10)));
-
-            float incrementer = 0;
-            while(Vector2.Distance(pos, player) < length * 3)
+            if (!overridePosition)
             {
-                incrementer += length*3;
-                pos = new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X - incrementer + 10), (int)(Window.playZoneBarrier.Z + incrementer - 10)),
-                                     Utils.NumberBetween((int)(Window.playZoneBarrier.Y - incrementer + 10), (int)(Window.playZoneBarrier.W + incrementer - 10)));
-            }
+                Vector2 pos = new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X + 10), (int)(Window.playZoneBarrier.Z - 10)),
+                                      Utils.NumberBetween((int)(Window.playZoneBarrier.Y + 10), (int)(Window.playZoneBarrier.W - 10)));
 
-            position = pos;
+                float incrementer = 0;
+                while (Vector2.Distance(pos, player) < length * 3)
+                {
+                    incrementer += length * 3;
+                    pos = new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X - incrementer + 10), (int)(Window.playZoneBarrier.Z + incrementer - 10)),
+                                         Utils.NumberBetween((int)(Window.playZoneBarrier.Y - incrementer + 10), (int)(Window.playZoneBarrier.W + incrementer - 10)));
+                }
+
+                position = pos;
+            }
             direction = player - position;
             spawned = true;
         }

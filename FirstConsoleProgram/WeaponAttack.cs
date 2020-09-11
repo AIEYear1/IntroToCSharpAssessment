@@ -1,7 +1,9 @@
-﻿using CRPGNamespace;
-using Raylib_cs;
+﻿using Raylib_cs;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
+using static Raylib_cs.Color;
+using static Raylib_cs.Raylib;
 using static RaylibWindowNamespace.Objects;
 
 namespace RaylibWindowNamespace
@@ -80,9 +82,82 @@ namespace RaylibWindowNamespace
         }
         #endregion
 
+        #region Mermaid Spear Attack
+        List<LineSprite> spears = new List<LineSprite>();
+        Vector2 spawnPoint;
+        int spearNum = 0;
         void MermaidSpearAttack()
         {
-            //player clicks and drags in the direction they want to attack spear spawns on release on collision enemy takes damage
+            //spears appear pointing at the player and travel forward on collision player takes damage
+            if (!initialized)
+                InitMermaidSpear();
+
+            if(spearNum < spears.Count)
+            {
+                if (IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
+                {
+                    spawnPoint = GetMousePosition();
+                }
+                if (IsMouseButtonReleased(MouseButton.MOUSE_LEFT_BUTTON))
+                {
+                    spears[spearNum].position = spawnPoint;
+                    spears[spearNum].Spawn(GetMousePosition(), true);
+                    spearNum++;
+                }
+            }
+            
+            if(spearNum == 0)
+            {
+                monster.SetDirection(monster.position - GetMousePosition());
+                monster.Update();
+                monster.Draw();
+                return;
+            }
+
+            float distance = Vector2.Distance(monster.position, spears[0].position);
+            int spearToRunFrom = 0;
+            for (int x = 0; x < spearNum; x++) 
+            {
+                spears[x].Update();
+                spears[x].Draw();
+
+                if (CollisionManager.Colliding(monster, spears[x]))
+                {
+                    monster.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
+                    if (monster.creature != null)
+                        healthBar.width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.width;
+                    spears.RemoveAt(x);
+                    if (spears.Count == 0)
+                    {
+                        Window.attackTimer.Reset(Window.attackTimer.delay);
+                    }
+                }
+
+                if (distance > Vector2.Distance(monster.position, spears[x].position))
+                {
+                    spearToRunFrom = x;
+                    distance = Vector2.Distance(monster.position, spears[x].position);
+                }
+            }
+
+            monster.SetDirection(monster.position - spears[spearToRunFrom].position);
+            monster.Update();
+            monster.Draw();
         }
+        void InitMermaidSpear()
+        {
+            spears = new List<LineSprite>();
+            for (int x = 0; x < 15; x++)
+            {
+                spears.Add(new LineSprite(Vector2.Zero, Vector2.Zero, 100, 10, 600, SKYBLUE));
+            }
+
+            monster.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
+            monster.sensitivity = 4;
+            monster.speed = 400;
+
+            initialized = true;
+        }
+        #endregion
     }
 }

@@ -168,7 +168,7 @@ namespace RaylibWindowNamespace
 
             for (int x = 0; x < MathF.Min((spears.Count + 1) * Window.attackTimer.PercentComplete, spears.Count); x++)
             {
-                spears[x].Spaawn(player.position);
+                spears[x].Spawn(player.position);
                 spears[x].Update();
                 spears[x].Draw();
 
