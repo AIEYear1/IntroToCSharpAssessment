@@ -1,3 +1,4 @@
-Introduction to CSharp
+Introduction to CSharp Assesment
 
-This is my first project at AIE Seattle
+a Console RPG using raylib for undertale esque attack scenes.
+Work I plan to turn in for my Introduction to CSharp assessment.
