@@ -113,11 +113,9 @@ namespace RaylibWindowNamespace
         #endregion
 
         #region Looter Attack
-        //TODO: continue testing anglebetween code, I don't think its doing what I want it to do
         void LooterAttack()
         {
             //one looter spawned randomly in the scene, player cannot see the looter when it is behind them
-
             if (!initialized)
                 InitLooter();
 
@@ -128,8 +126,6 @@ namespace RaylibWindowNamespace
 
             Vector2 triPoint2 = player.position + Utils.RotationMatrix(Utils.LockMagnitude(player.direction, 1), Utils.DegToRad(-70), Window.screenWidth / MathF.Cos(Utils.DegToRad(-70)));
             Vector2 triPoint3 = player.position + Utils.RotationMatrix(Utils.LockMagnitude(player.direction, 1), Utils.DegToRad(70), Window.screenWidth / MathF.Cos(Utils.DegToRad(70)));
-
-
             DrawTriangle(player.position, triPoint2, triPoint3, GRAY);
 
             player.Draw();
@@ -160,9 +156,48 @@ namespace RaylibWindowNamespace
             initialized = true;
         }
         #endregion
+        List<LineSprite> spears = new List<LineSprite>();
         void MermaidAttack()
         {
             //spears appear pointing at the player and travel forward on collision player takes damage
+            if (!initialized)
+                InitMermaid();
+
+            player.Update();
+            player.Draw();
+
+            for (int x = 0; x < MathF.Min((spears.Count + 1) * Window.attackTimer.PercentComplete, spears.Count); x++)
+            {
+                spears[x].Spaawn(player.position);
+                spears[x].Update();
+                spears[x].Draw();
+
+                if (CollisionManager.Colliding(player, spears[x]))
+                {
+                    player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
+                    if (player.creature != null)
+                        healthBar.width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.width;
+                    spears.RemoveAt(x);
+                    if (spears.Count == 0)
+                    {
+                        Window.attackTimer.Reset(Window.attackTimer.delay);
+                    }
+                }
+            }
+        }
+        void InitMermaid()
+        {
+            spears = new List<LineSprite>();
+            for (int x = 0; x < 15; x++)
+            {
+                spears.Add(new LineSprite(Vector2.Zero, Vector2.Zero, 100, 10, 600, SKYBLUE));
+            }
+
+            player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
+            player.sensitivity = 4;
+            player.speed = 400;
+
+            initialized = true;
         }
         void TrollAttack()
         {

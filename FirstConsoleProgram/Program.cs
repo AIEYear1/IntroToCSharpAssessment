@@ -43,6 +43,8 @@ namespace CRPGNamespace
                         initialized = true;
                     Utils.Print();
                 }
+                if (initialized)
+                    break;
                 switch (Utils.AskQuestion("new or load?"))
                 {
                     case "new":
@@ -54,6 +56,10 @@ namespace CRPGNamespace
                             fileToLoad = load.Substring(5);
 
                         loadSave = true;
+                        break;
+                    case "quit":
+                        initialized = true;
+                        running = false;
                         break;
                 }
             }
@@ -81,6 +87,8 @@ namespace CRPGNamespace
         static void Initialize()
         {
             player.SetName();
+
+            Utils.Add(Utils.ColorText("Welcome! type 'help' for commands", TextColor.LIME));
 
             player.MoveTo(player.home);
             if (running)

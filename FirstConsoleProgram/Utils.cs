@@ -9,6 +9,7 @@ enum TextColor
     RED = 160,
     MAGENTA = 163,
     GREEN = 118,
+    LIME = 154,
     YELLOW = 226,
     AQUA = 49,
     BLUE = 69,
