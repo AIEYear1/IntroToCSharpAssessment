@@ -61,7 +61,7 @@ namespace RaylibWindowNamespace
 
             if(CollisionManager.Colliding(player, monster))
             {
-                monster.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
+                monster.creature.TakeDamage(0);
                 if(monster.creature != null)
                     healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
                 Window.attackTimer.Reset(Window.attackTimer.delay);
@@ -132,7 +132,7 @@ namespace RaylibWindowNamespace
 
                 if (CollisionManager.Colliding(monster, spears[x]))
                 {
-                    monster.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
+                    monster.creature.TakeDamage(0);
                     if (monster.creature != null)
                         healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
                     spears.RemoveAt(x);

@@ -9,6 +9,7 @@ using Raylib_cs;
 using System.Globalization;
 using System.Linq;
 using System.Collections;
+using System.Security.Cryptography.X509Certificates;
 
 namespace CRPGNamespace
 {
@@ -80,16 +81,14 @@ namespace CRPGNamespace
         private static void PopulateNPCs()
         {
             NPCs.Clear();
+            NPCs.Add(new NPC(new Name("Steve"), "'ello, welcome to Kvorkys", false, true));
+            NPCs.Add(new Inn(new Name("Kvorkys", "Inn"), "'ello", "Would you like to rent a room for the night?", 10));
+            PopulateShops();
+        }
+        private static void PopulateShops()
+        {
             List<InventoryItem> shopStock = new List<InventoryItem>();
-            foreach (Item item in Items)
-            {
-                shopStock.Add(item);
-            }
-            shopStock.Add(ItemByID(ITEM_ID_STICK));
-            shopStock.Add(ItemByID(ITEM_ID_STICK));
-            shopStock.Add(ItemByID(ITEM_ID_STICK));
-            shopStock.Add(ItemByID(ITEM_ID_STICK));
-            NPCs.Add(new Shop(new Name("Steve"), "'ello", shopStock, 2));
+            NPCs.Add(new Shop(new Name("Kvorkys", "Shop"), "'ello", "Buyin' or sellin'?", shopStock, 2));
         }
 
         private static void PopulateMonsters()
@@ -114,16 +113,24 @@ namespace CRPGNamespace
         {
             Locations.Clear();
             //Parameters: Name, Description(, Quest it's connected to, Objective Marker it's related to) < Only for Quest Locations
-            QuestLocation clearing = new QuestLocation(LOCATION_ID_CLEARING, "Clearing", "A small clearing, forest surrounds you", QuestByID(QUEST_ID_TUTORIALQUEST), -1);
-            clearing.monsterLivingHere = World.MonsterByID(World.MONSTER_ID_WOLF);
+            QuestLocation clearing = new QuestLocation(LOCATION_ID_CLEARING, "Clearing", "A small clearing, forest surrounds you", QuestByID(QUEST_ID_TUTORIALQUEST), -1)
+            {
+                monsterLivingHere = MonsterByID(MONSTER_ID_WOLF)
+            };
             Location path = new Location(LOCATION_ID_PATH, "Path", "A small path from the clearing, where does it lead?");
-            Location bushes = new Location(LOCATION_ID_BUSHES, "Rustling Bushes", "Some rustling bushes", false, true);
-            bushes.monsterLivingHere = MonsterByID(MONSTER_ID_LOOTER);
-            Location smallLake = new Location(LOCATION_ID_LAKE, "Lake", "a small lake, seems peaceful");
-            smallLake.monsterLivingHere = MonsterByID(MONSTER_ID_MERMAID);
+            Location bushes = new Location(LOCATION_ID_BUSHES, "Rustling Bushes", "Some rustling bushes", false, true)
+            {
+                monsterLivingHere = MonsterByID(MONSTER_ID_LOOTER)
+            };
+            Location smallLake = new Location(LOCATION_ID_LAKE, "Lake", "a small lake, seems peaceful")
+            {
+                monsterLivingHere = MonsterByID(MONSTER_ID_MERMAID)
+            };
             Location forestEdge = new Location(LOCATION_ID_FORESTEDGE, "Forest Edge", "you can see the forest give way to what looks like grasslands", true);
-            QuestLocation pavedRoad = new QuestLocation(LOCATION_ID_PAVEDROAD, "Paved Road", "A paved road the first sign of civilization", QuestByID(QUEST_ID_TUTORIALQUEST), 0);
-            pavedRoad.monsterLivingHere = MonsterByID(MONSTER_ID_TROLL);
+            QuestLocation pavedRoad = new QuestLocation(LOCATION_ID_PAVEDROAD, "Paved Road", "A paved road the first sign of civilization", QuestByID(QUEST_ID_TUTORIALQUEST), 0)
+            {
+                monsterLivingHere = MonsterByID(MONSTER_ID_TROLL)
+            };
 
 
             clearing.locationToNorth = path;

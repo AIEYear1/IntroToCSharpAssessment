@@ -51,7 +51,11 @@ namespace CRPGNamespace
             }
             if(monsterLivingHere != null)
             {
-                Utils.Add($"There is {Utils.PrefixNoun(monsterLivingHere.name.FullName, monsterLivingHere.properNoun, monsterLivingHere.knownNoun, TextColor.RED)} living here");
+                Utils.Add($"There is {Utils.PrefixNoun(monsterLivingHere.name.FullName, monsterLivingHere.properNoun, monsterLivingHere.knownNoun, TextColor.RED)} here");
+            }
+            if(npcLivingHere != null)
+            {
+                Utils.Add($"There is{Utils.PrefixNoun(npcLivingHere.name.FullName, npcLivingHere.properNoun, npcLivingHere.knownNoun, TextColor.RED)} here");
             }
         }
 

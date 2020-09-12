@@ -36,14 +36,14 @@ namespace CRPGNamespace
         {
             get
             {
-                return baseMaxDamage + (currentWeapon != null ? 0 : 0);
+                return baseMaxDamage + (currentWeapon != null ? currentWeapon.WeaponAttack.maxDamage : 0);
             }
         }
         public int CurrentMinDamage
         {
             get
             {
-                return baseMinDamage + (currentWeapon != null ? 0 : 0);
+                return baseMinDamage + (currentWeapon != null ? currentWeapon.WeaponAttack.minDamage : 0);
             }
         }
         #endregion
@@ -107,6 +107,11 @@ namespace CRPGNamespace
             }
 
             MoveTo(home, true);
+        }
+
+        public void SetHome()
+        {
+            home = currentLocation;
         }
 
         public void SetName()

@@ -32,8 +32,9 @@ namespace CRPGNamespace
             Utils.Add(description);
         }
 
-        public override void TakeDamage(int damage)
+        public override void TakeDamage(int damage = 0)
         {
+            damage = Utils.NumberBetween(Program.player.CurrentMinDamage, Program.player.CurrentMaxDamage);
             currentHP -= damage;
             Utils.Add($"You hit {Utils.PrefixNoun(name.FullName, properNoun, knownNoun, TextColor.RED)} for {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
             if (currentHP <= 0)

@@ -6,12 +6,12 @@ using System.Text;
 
 namespace CRPGNamespace
 {
-    class Shop : NPC
+    class Shop : QueryNPC
     {
         public List<InventoryItem> stock = new List<InventoryItem>();
-        int priceAugment;
+        readonly int priceAugment;
 
-        public Shop(Name name, string talkLine, List<InventoryItem> stockToAdd, int priceAugment) : base(name, talkLine)
+        public Shop(Name name, string talkLine, string question, List<InventoryItem> stockToAdd, int priceAugment, bool knownNoun = false, bool properNoun = false) : base(name, talkLine, question, knownNoun, properNoun)
         {
             this.priceAugment = priceAugment;
 
@@ -22,6 +22,33 @@ namespace CRPGNamespace
             }
 
             SortByPrice();
+        }
+
+        public override void Talk()
+        {
+            base.Talk();
+            Utils.Print();
+            switch (Utils.AskQuestion(question))
+            {
+                case string item when item.StartsWith("buy "):
+                    item = item.Substring(4);
+                    if(stock.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != null)
+                    {
+                        Buy(stock.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item));
+                        break;
+                    }
+                    Utils.Add("The shop doesn't have that");
+                    break;
+                case string item when item.StartsWith("sell "):
+                    item = item.Substring(5);
+                    if (Program.player.Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != null)
+                    {
+                        Sell(Program.player.Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item));
+                        break;
+                    }
+                    Utils.Add("you don't have that");
+                    break;
+            }
         }
 
         public void SortByPrice()
@@ -82,9 +109,9 @@ namespace CRPGNamespace
             stock.Remove(itemToRemove);
         }
 
-        public void Buy(Player player, InventoryItem itemToBuy)
+        public void Buy(InventoryItem itemToBuy)
         {
-            if (player.gold < itemToBuy.details.Value)
+            if (Program.player.gold < itemToBuy.details.Value)
             {
                 Utils.Add("Not enough gold");
                 return;
@@ -95,24 +122,24 @@ namespace CRPGNamespace
                 return;
             }
 
-            player.gold -= itemToBuy.details.Value + priceAugment;
-            player.AddItemToInventory(itemToBuy);
+            Program.player.gold -= itemToBuy.details.Value + priceAugment;
+            Program.player.AddItemToInventory(itemToBuy);
 
             RemoveItemFromStock(itemToBuy);
 
             SortByPrice();
         }
 
-        public void Sell(Player player, InventoryItem itemToSell)
+        public void Sell(InventoryItem itemToSell)
         {
-            if (!player.Inventory.Contains(itemToSell))
+            if (!Program.player.Inventory.Contains(itemToSell))
             {
                 Utils.Add("you don't have this item");
                 return;
             }
 
-            player.gold += itemToSell.details.Value - priceAugment;
-            player.RemoveItemFromInventory(itemToSell);
+            Program.player.gold += itemToSell.details.Value - priceAugment;
+            Program.player.RemoveItemFromInventory(itemToSell);
 
             AddItemToStock(itemToSell);
 
