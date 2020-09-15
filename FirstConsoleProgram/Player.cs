@@ -62,7 +62,7 @@ namespace CRPGNamespace
         public Player(string[] saveData)
         {
             //name, gold, xp, xptolevelup, level, maximumHP, currentWeaponID, currentArmorID, homeID, Inventory, quests, clearedLocs
-            name = new Name(saveData[0], saveData[1], saveData[2]);
+            Name = new Name(saveData[0], saveData[1], saveData[2]);
             int.TryParse(saveData[3], out gold);
             int.TryParse(saveData[4], out XP);
             int.TryParse(saveData[5], out XPToLevelUp);
@@ -125,9 +125,9 @@ namespace CRPGNamespace
             }
 
             string[] nameDets = input.Split(' ');
-            name = new Name((nameDets.Length >= 1) ? nameDets[0] : "", (nameDets.Length >= 3) ? nameDets[2] : (nameDets.Length >= 2) ? nameDets[1] : "", (nameDets.Length >= 3) ? nameDets[1] : "");
+            Name = new Name((nameDets.Length >= 1) ? nameDets[0] : "", (nameDets.Length >= 3) ? nameDets[2] : (nameDets.Length >= 2) ? nameDets[1] : "", (nameDets.Length >= 3) ? nameDets[1] : "");
 
-            Console.WriteLine("Welcome " + name.FirstName);
+            Utils.Add(Utils.ColorText($"Welcome {Name.FirstName}! type 'help' for commands", TextColor.LIME));
         }
 
         public void EarnXP(int XPEarned)
@@ -186,7 +186,7 @@ namespace CRPGNamespace
                 }
             }
 
-            string saveText = $"{name.FirstName},{name.MiddleName},{name.LastName}";
+            string saveText = $"{Name.FirstName},{Name.MiddleName},{Name.LastName}";
             saveText += "," + gold;
             saveText += "," + XP;
             saveText += "," + XPToLevelUp;
@@ -217,7 +217,7 @@ namespace CRPGNamespace
         {
             if(!ignoreMonster && currentLocation != null && currentLocation.monsterLivingHere != null)
             {
-                Utils.Add($"The {currentLocation.monsterLivingHere.name.FullName} blocks your path");
+                Utils.Add($"The {currentLocation.monsterLivingHere.Name.FullName} blocks your path");
                 return;
             }
 
@@ -387,7 +387,7 @@ namespace CRPGNamespace
                 case string item when Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != null:
                     Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item).details.Look();
                     break;
-                case string monster when currentLocation.monsterLivingHere != null && currentLocation.monsterLivingHere.name.FullName.ToLower() == monster:
+                case string monster when currentLocation.monsterLivingHere != null && currentLocation.monsterLivingHere.Name.FullName.ToLower() == monster:
                     currentLocation.monsterLivingHere.LookAt();
                     break;
                 case string quest when activeQuests.SingleOrDefault(x => x.name.ToLower() == quest) != null:
@@ -401,7 +401,7 @@ namespace CRPGNamespace
 
         public void Stats()
         {
-            Utils.Add($"Stats for {name.FullName}");
+            Utils.Add($"Stats for {Name.FullName}");
             Utils.Add($"\tHP: \t\t{currentHP}/{maximumHP}");
 
             if(currentWeapon != null)
@@ -435,7 +435,7 @@ namespace CRPGNamespace
             Utils.Add($"You took {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
             if (currentHP <= 0)
             {
-                Utils.Add(Utils.ColorText(name.FullName + " has died!", TextColor.DARKRED));
+                Utils.Add(Utils.ColorText(Name.FullName + " has died!", TextColor.DARKRED));
                 MoveTo(home, true);
                 Program.combatWindow.EndAttack();
             }
@@ -454,7 +454,7 @@ namespace CRPGNamespace
                 return;
             }
 
-            enemToAttack.knownNoun = true;
+            enemToAttack.KnownNoun = true;
 
             Program.combatWindow.StartAttack(this, enemToAttack);
         }

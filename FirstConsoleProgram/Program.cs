@@ -88,8 +88,6 @@ namespace CRPGNamespace
         {
             player.SetName();
 
-            Utils.Add(Utils.ColorText("Welcome! type 'help' for commands", TextColor.LIME));
-
             player.MoveTo(player.home);
             if (running)
                 Utils.Print();
@@ -176,9 +174,9 @@ namespace CRPGNamespace
                     World.Help();
                     break;
                 case "who am i":                                        //2nd case "who am i"
-                    if (player.name.FirstName != "")
+                    if (player.Name.FirstName != "")
                     {
-                        Utils.Add(player.name.FullName);
+                        Utils.Add(player.Name.FullName);
                         break;
                     }
 
@@ -237,7 +235,7 @@ namespace CRPGNamespace
                     running = false;
                     break;
                 default:                                                //Overflow
-                    Utils.Add("I- I don- I don't understand");
+                    Utils.Add("I- I don- I don't understand, type 'help' for commands");
                     break;
             }
 

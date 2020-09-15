@@ -4,28 +4,28 @@ using System.Text;
 
 namespace CRPGNamespace
 {
-    public class LivingCreature
+    public abstract class LivingCreature
     {
-        public Name name;
+        public Name Name;
         public int currentHP;
         public int maximumHP;
-        public bool knownNoun;
-        public bool properNoun;
+        public bool KnownNoun;
+        public bool ProperNoun;
 
         public LivingCreature(Name name, int HP, bool knownNoun, bool properNoun)
         {
-            this.name = name;
+            this.Name = name;
             this.currentHP = HP;
             this.maximumHP = HP;
-            this.knownNoun = knownNoun;
-            this.properNoun = properNoun;
+            this.KnownNoun = knownNoun;
+            this.ProperNoun = properNoun;
         }
         public LivingCreature(int HP, bool knownNoun, bool properNoun)
         {
             this.currentHP = HP;
             this.maximumHP = HP;
-            this.knownNoun = knownNoun;
-            this.properNoun = properNoun;
+            this.KnownNoun = knownNoun;
+            this.ProperNoun = properNoun;
         }
 
         public LivingCreature()
@@ -33,6 +33,6 @@ namespace CRPGNamespace
 
         }
 
-        public virtual void TakeDamage(int damage) { }
+        public abstract void TakeDamage(int damage);
     }
 }

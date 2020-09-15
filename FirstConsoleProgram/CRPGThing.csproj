@@ -12,9 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Itemsxlsx.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Pictures\Rogue.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
