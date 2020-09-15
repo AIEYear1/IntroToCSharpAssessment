@@ -267,6 +267,22 @@ namespace CRPGNamespace
             Utils.Add("\tequip: lets you equip a specified item");
             Utils.Add("\tattack: attacks the current monster in the area");
             Utils.Add("\tquit: quits the game");
+            Utils.Add("\thelp color: explains the text color scheme");
+        }
+        public static void HelpColor()
+        {
+            Utils.Add("Color Reference:");
+            Utils.Add("\tWhite: normal text");
+            Utils.Add("\t" + Utils.ColorText("Red", TextColor.RED) + ": Monster");
+            Utils.Add("\t" + Utils.ColorText("Magenta", TextColor.MAGENTA) + ": quest objective");
+            Utils.Add("\t" + Utils.ColorText("Green", TextColor.GREEN) + ": XP");
+            Utils.Add("\t" + Utils.ColorText("Yellow", TextColor.YELLOW) + ": Gold");
+            Utils.Add("\t" + Utils.ColorText("Blue", TextColor.BLUE) + ": Damage");
+            Utils.Add("\t" + Utils.ColorText("Salmon", TextColor.SALMON) + ": Weapon");
+            Utils.Add("\t" + Utils.ColorText("Light Blue", TextColor.LIGHTBLUE) + ": Armor");
+            Utils.Add("\t" + Utils.ColorText("Gold", TextColor.GOLD) + ": General Item");
+            Utils.Add("\t" + Utils.ColorText("Dark Red", TextColor.DARKRED) + ": player death");
+            //Utils.Add("\t" + Utils.ColorText("Pink", TextColor.PINK) + ": Consumable");
         }
     }
 }

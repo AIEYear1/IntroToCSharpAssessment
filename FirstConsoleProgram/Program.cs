@@ -170,7 +170,20 @@ namespace CRPGNamespace
         {
             switch (input)
             {
-                case "help":                                            //1st case "help"
+                case string help when help.StartsWith("help"):          //1st case "help"
+                    if(help.Length > 5)
+                    {
+                        switch (help.Substring(5))
+                        {
+                            case "color":
+                                World.HelpColor();
+                                break;
+                            default:
+                                World.Help();
+                                break;
+                        }
+                        break;
+                    }
                     World.Help();
                     break;
                 case "who am i":                                        //2nd case "who am i"
