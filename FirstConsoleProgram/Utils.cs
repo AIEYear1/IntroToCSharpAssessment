@@ -16,7 +16,8 @@ enum TextColor
     SALMON = 9,
     LIGHTBLUE = 14,
     GOLD = 3,
-    DARKRED = 88
+    DARKRED = 88,
+    PINK = 199
 }
 
 struct Utils

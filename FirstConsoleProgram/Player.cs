@@ -430,7 +430,7 @@ namespace CRPGNamespace
 
         public override void TakeDamage(int damage)
         {
-            damage = (int)MathF.Max(0, damage - ((currentArmor != null) ? currentArmor.ac : 0));
+            damage = (int)MathF.Max(1, damage - CurrentAc);
             currentHP -= damage;
             Utils.Add($"You took {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
             if (currentHP <= 0)

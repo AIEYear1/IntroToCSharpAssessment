@@ -156,6 +156,7 @@ namespace RaylibWindowNamespace
         }
         void InitMermaidSpear()
         {
+            spearNum = 0;
             spears = new List<LineSprite>();
             for (int x = 0; x < 15; x++)
             {

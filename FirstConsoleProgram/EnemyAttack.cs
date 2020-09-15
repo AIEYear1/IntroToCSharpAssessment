@@ -146,7 +146,7 @@ namespace RaylibWindowNamespace
         {
             monster.position = new Vector2(monster.radius, Window.screenHeight - monster.radius);
             monster.sensitivity = 3;
-            monster.speed = 200;
+            monster.speed = 250;
 
             player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.sensitivity = 4;
@@ -272,6 +272,10 @@ namespace RaylibWindowNamespace
             player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.sensitivity = 4;
             player.speed = 400;
+
+            holdTimer.Reset();
+            stallTimer.Reset();
+            waitTimer.Reset();
 
             initialized = true;
         }
