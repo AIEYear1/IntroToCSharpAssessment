@@ -8,13 +8,15 @@ namespace CRPGNamespace
     {
         public Name name;
         readonly string talkLine;
+        readonly string description;
         public bool knownNoun;
         public bool properNoun;
 
-        public NPC(Name name, string talkLine, bool knownNoun, bool properNoun)
+        public NPC(Name name, string talkLine, string description, bool knownNoun, bool properNoun)
         {
             this.name = name;
             this.talkLine = talkLine;
+            this.description = description;
             this.knownNoun = knownNoun;
             this.properNoun = properNoun;
         }
@@ -22,6 +24,12 @@ namespace CRPGNamespace
         public virtual void Talk()
         {
             Utils.Add(talkLine);
+        }
+
+        public void Look()
+        {
+            Utils.Add(name.FullName);
+            Utils.Add(description);
         }
     }
 }

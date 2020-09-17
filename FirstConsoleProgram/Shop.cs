@@ -11,7 +11,7 @@ namespace CRPGNamespace
         public List<InventoryItem> stock = new List<InventoryItem>();
         readonly int priceAugment;
 
-        public Shop(Name name, string talkLine, string question, List<InventoryItem> stockToAdd, int priceAugment, bool knownNoun = false, bool properNoun = false) : base(name, talkLine, question, knownNoun, properNoun)
+        public Shop(Name name, string talkLine, string description, string question, List<InventoryItem> stockToAdd, int priceAugment, bool knownNoun = false, bool properNoun = false) : base(name, talkLine, description, question, knownNoun, properNoun)
         {
             this.priceAugment = priceAugment;
 

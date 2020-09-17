@@ -20,7 +20,7 @@ enum TextColor
     PINK = 199
 }
 
-struct Utils
+class Utils
 {
     private static string outputToConsole = "";
 

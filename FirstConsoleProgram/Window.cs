@@ -26,6 +26,7 @@ using static Raylib_cs.Color;
 using static Raylib_cs.Raylib;
 using CRPGNamespace;
 using System.IO.Compression;
+using System;
 
 namespace RaylibWindowNamespace
 {
@@ -56,6 +57,7 @@ namespace RaylibWindowNamespace
             InitializeCharacters();
 
             HideWindow();
+            Console.Clear();
         }
 
         public void StartAttack(Player curPlayer, Monster curMonster)

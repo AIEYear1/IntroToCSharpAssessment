@@ -4,7 +4,7 @@ using static Raylib_cs.Raylib;
 
 namespace RaylibWindowNamespace
 {
-    public struct Input
+    public class Input
     {
         public static void  Start()
         {
@@ -39,19 +39,6 @@ namespace RaylibWindowNamespace
                     return (MathF.Abs(hInput1) < dead) ? 0f : hInput1;
                 default:
                     return 0;
-            }
-        }
-
-        public static bool GetButtonDown(string button)
-        {
-            switch (button)
-            {
-                case "Attack":
-                    if (IsKeyPressed(KeyboardKey.KEY_SPACE))
-                        return true;
-                    return false;
-                default:
-                    return false;
             }
         }
     }

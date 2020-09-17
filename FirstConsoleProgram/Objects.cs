@@ -5,7 +5,7 @@ using static Raylib_cs.Raylib;
 
 namespace RaylibWindowNamespace
 {
-    public struct Objects
+    public class Objects
     {
         public static Texture2D playerTexture;
         public static Texture2D enemyTexture;

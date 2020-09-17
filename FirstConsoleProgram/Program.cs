@@ -27,14 +27,9 @@ namespace CRPGNamespace
 
         public static string fileToLoad = "";
         public static bool loadSave = false;
-
         static void Main()
         {
-            player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_STICK), 1));
-            player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_CLOTHES), 1));
-
-            Console.Clear();
-
+            //Startup loop to select a new game or load an old save
             while (!initialized)
             {
                 while (loadSave)
@@ -64,7 +59,7 @@ namespace CRPGNamespace
                 }
             }
 
-            //Loop Start
+            //Main gameplay loop
             while (running)
             {
                 while (loadSave)
@@ -78,6 +73,9 @@ namespace CRPGNamespace
                     combatWindow.Run();
                 }
 
+                if (!running)
+                    break;
+
                 ParseInput(Utils.GetInput());
             }
 
@@ -86,19 +84,21 @@ namespace CRPGNamespace
 
         static void Initialize()
         {
+            player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_STICK), 1));
+            player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_CLOTHES), 1));
+
             player.SetName();
 
-            player.MoveTo(player.home);
+            player.MoveTo(player.home, true);
+
             if (running)
                 Utils.Print();
 
             initialized = true;
         }
 
-        static bool attempted = false;
         static bool AttemptLoad(string fileToAttmept)
         {
-            string filePath = @".\";
             string[] files = Directory.GetFiles(@".\", "*.save");
 
             if(files.Length == 0)
@@ -110,11 +110,11 @@ namespace CRPGNamespace
 
             string input = fileToAttmept;
 
-            if (fileToAttmept == "" || attempted)
+            if (fileToAttmept == "")
             {
                 for (int x = 0; x < files.Length; x++)
                 {
-                    Utils.Add("\t" + files[x].Substring(filePath.Length).Trim());
+                    Utils.Add("\t" + files[x].Substring(2).Trim());
                 }
                 Utils.Print();
 
@@ -128,7 +128,7 @@ namespace CRPGNamespace
                         return true;
                     case "back":
                         loadSave = false;
-                        attempted = false;
+                        fileToLoad = "";
                         return false;
                     case "help":
                         Utils.Add("back to return to game, quit to leave");
@@ -137,7 +137,7 @@ namespace CRPGNamespace
                         file = file.Substring(7);
                         for (int x = 0; x < files.Length; x++)
                         {
-                            if (file == files[x].Substring(filePath.Length).Trim().ToLower() || file == files[x].Substring(filePath.Length).Trim().ToLower().Split('.')[0])
+                            if (file == files[x].Substring(2).Trim().ToLower() || file == files[x].Substring(2).Trim().ToLower().Split('.')[0])
                             {
                                 File.Delete(files[x]);
                                 Utils.Add("save successfully deleted");
@@ -150,21 +150,22 @@ namespace CRPGNamespace
 
             for (int x = 0; x < files.Length; x++)
             {
-                if(input == files[x].Substring(filePath.Length).Trim().ToLower() || input == files[x].Substring(filePath.Length).Trim().ToLower().Split('.')[0])
+                if(input == files[x].Substring(2).Trim().ToLower() || input == files[x].Substring(2).Trim().ToLower().Split('.')[0])
                 {
-                    Player.Load(files[x].Substring(filePath.Length).Split('.')[0]);
+                    Player.Load(files[x].Substring(2).Split('.')[0]);
                     loadSave = false;
-                    attempted = false;
+                    fileToLoad = "";
                     Utils.Add("save successfully loaded");
                     return true;
                 }
             }
 
             Utils.Add("no save file of that name found");
-            attempted = true;
+            fileToLoad = "";
             return false;
         }
 
+/////////////////////////////////Parse Input//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //TODO: Implement NPC interaction and shopping
         static void ParseInput(string input)
         {
@@ -225,7 +226,7 @@ namespace CRPGNamespace
                     }
                     break;
                 case string move when move.StartsWith("move "):         //7th case "move"
-                    MovePlayer(move.Substring(5).Trim());
+                    player.Move(move.Substring(5).Trim());
                     break;
                 case string save when save.StartsWith("save "):         //8th case "save"
                     player.Save(save.Substring(5).Trim());
@@ -244,7 +245,16 @@ namespace CRPGNamespace
                 case "attack":                                          //11th case "attack"
                     player.Attack(player.currentLocation.monsterLivingHere);
                     break;
-                case "quit":                                            //12th case "quit"
+                case "talk":                                            //12th case "talk"
+                    if (player.currentLocation.npcLivingHere != null)
+                    {
+                        player.currentLocation.npcLivingHere.Talk();
+                        break;
+                    }
+
+                    Utils.Add("You talk to the air");
+                    break;
+                case "quit":                                            //13th case "quit"
                     running = false;
                     break;
                 default:                                                //Overflow
@@ -253,36 +263,6 @@ namespace CRPGNamespace
             }
 
             Utils.Print();
-        }
-
-        static void MovePlayer(string arg)
-        {
-            switch (arg)
-            {
-                case "north":
-                case "up":
-                case "n":
-                    player.MoveNorth();
-                    break;
-                case "east":
-                case "right":
-                case "e":
-                    player.MoveEast();
-                    break;
-                case "south":
-                case "down":
-                case "s":
-                    player.MoveSouth();
-                    break;
-                case "west":
-                case "left":
-                case "w":
-                    player.MoveWest();
-                    break;
-                default:
-                    Utils.Add("that's not a direction");
-                    break;
-            }
         }
     }
 }

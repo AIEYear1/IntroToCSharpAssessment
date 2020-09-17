@@ -8,7 +8,7 @@ namespace CRPGNamespace
     {
         readonly int price;
 
-        public Inn(Name name, string talkLine, string question, int price, bool knownNoun = false, bool properNoun = false) : base(name, talkLine, question, knownNoun, properNoun)
+        public Inn(Name name, string talkLine, string description, string question, int price, bool knownNoun = false, bool properNoun = false) : base(name, talkLine, description, question, knownNoun, properNoun)
         {
             this.price = price;
         }

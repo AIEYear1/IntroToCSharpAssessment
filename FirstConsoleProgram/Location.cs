@@ -59,49 +59,51 @@ namespace CRPGNamespace
             }
         }
 
-        public void LookNorth()
+        public void LookDirection(string dir)
         {
-            if(locationToNorth == null)
+            switch (dir)
             {
-                Utils.Add("There is nothing to the North");
-                return;
-            }
+                case "North":
+                    if (locationToNorth == null)
+                    {
+                        Utils.Add("There is nothing to the North");
+                        return;
+                    }
 
-            locationToNorth.knownNoun = true;
-            Utils.Add(locationToNorth.description);
-        }
-        public void LookEast()
-        {
-            if (locationToEast == null)
-            {
-                Utils.Add("There is nothing to the East");
-                return;
-            }
+                    locationToNorth.knownNoun = true;
+                    Utils.Add(locationToNorth.description);
+                    return;
+                case "East":
+                    if (locationToEast == null)
+                    {
+                        Utils.Add("There is nothing to the East");
+                        return;
+                    }
 
-            locationToEast.knownNoun = true;
-            Utils.Add(locationToEast.description);
-        }
-        public void LookSouth()
-        {
-            if (locationToSouth == null)
-            {
-                Utils.Add("There is nothing to the South");
-                return;
-            }
+                    locationToEast.knownNoun = true;
+                    Utils.Add(locationToEast.description);
+                    return;
+                case "South":
+                    if (locationToSouth == null)
+                    {
+                        Utils.Add("There is nothing to the South");
+                        return;
+                    }
 
-            locationToSouth.knownNoun = true;
-            Utils.Add(locationToSouth.description);
-        }
-        public void LookWest()
-        {
-            if (locationToWest == null)
-            {
-                Utils.Add("There is nothing to the West");
-                return;
-            }
+                    locationToSouth.knownNoun = true;
+                    Utils.Add(locationToSouth.description);
+                    return;
+                case "West":
+                    if (locationToWest == null)
+                    {
+                        Utils.Add("There is nothing to the West");
+                        return;
+                    }
 
-            locationToWest.knownNoun = true;
-            Utils.Add(locationToWest.description);
+                    locationToWest.knownNoun = true;
+                    Utils.Add(locationToWest.description);
+                    return;
+            }
         }
     }
 }

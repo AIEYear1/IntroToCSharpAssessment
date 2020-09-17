@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using RaylibWindowNamespace;
-using static RaylibWindowNamespace.Objects;
-using CsvHelper;
-using Raylib_cs;
-using System.Globalization;
-using System.Linq;
 using System.Collections;
-using System.Security.Cryptography.X509Certificates;
+using System.Collections.Generic;
+using static RaylibWindowNamespace.Objects;
 
 namespace CRPGNamespace
 {
-    struct World
+    static class World
     {
         #region Object Lists
         public static readonly List<Item> Items = new List<Item>();
@@ -30,7 +22,9 @@ namespace CRPGNamespace
         public const int ITEM_ID_MERMAIDSPEAR = 8;
         public const int ITEM_ID_BANDITGARB = 16;
 
-        public const int NPC_ID_STEVESHOP = 0;
+        public const int NPC_ID_STEVE = 0;
+        public const int NPC_ID_KVORKYSINN = 1;
+        public const int NPC_ID_KVORKYSSHOP = 2;
 
         public const int MONSTER_ID_WOLF = 0;
         public const int MONSTER_ID_MERMAID = 1;
@@ -81,14 +75,14 @@ namespace CRPGNamespace
         private static void PopulateNPCs()
         {
             NPCs.Clear();
-            NPCs.Add(new NPC(new Name("Steve"), "'ello, welcome to Kvorkys", false, true));
-            NPCs.Add(new Inn(new Name("Kvorkys", "Inn"), "'ello", "Would you like to rent a room for the night?", 10));
-            PopulateShops();
-        }
-        private static void PopulateShops()
-        {
+            //Parameters: Name, Talk Line, Description
             List<InventoryItem> shopStock = new List<InventoryItem>();
-            NPCs.Add(new Shop(new Name("Kvorkys", "Shop"), "'ello", "Buyin' or sellin'?", shopStock, 2));
+            NPCs.Add(new NPC(new Name("Steve"), "'ello, welcome to Kvorkys", "The entrance guard to Kvorkys", false, true));
+            NPCs.Add(new Inn(new Name("Kvorkys", "Inn"), "'ello", "The town inn", "Would you like to rent a room for the night?", 10));
+            #region Kvorkys Stock
+
+            #endregion
+            NPCs.Add(new Shop(new Name("Kvorkys", "Shop"), "'ello", "the town shop", "Buyin' or sellin'?", shopStock, 2));
         }
 
         private static void PopulateMonsters()
@@ -238,21 +232,8 @@ namespace CRPGNamespace
         }
         #endregion
 
-        public static int[] ParseIDs(int IDs)
-        {
-            byte[] bytes = BitConverter.GetBytes(IDs);
-            BitArray bitArray = new BitArray(bytes);
-            List<int> ints = new List<int>();
-            for (int x = 0; x < bitArray.Count; x++)
-            {
-                if (((bitArray[x]) ? 1 : 0) << x != 0)
-                {
-                    ints.Add(1 << x);
-                }
-            }
-            return ints.ToArray();
-        }
 
+        #region Help
         public static void Help()
         {
             Utils.Add("Possible Commands: ");
@@ -284,5 +265,6 @@ namespace CRPGNamespace
             Utils.Add("\t" + Utils.ColorText("Dark Red", TextColor.DARKRED) + ": player death");
             //Utils.Add("\t" + Utils.ColorText("Pink", TextColor.PINK) + ": Consumable");
         }
+        #endregion
     }
 }

@@ -8,7 +8,7 @@ namespace CRPGNamespace
     {
         public string question;
 
-        public QueryNPC(Name name, string talkLine, string question, bool knownNoun = false, bool properNoun = false) : base(name, talkLine, knownNoun, properNoun)
+        public QueryNPC(Name name, string talkLine, string description, string question, bool knownNoun = false, bool properNoun = false) : base(name, talkLine, description, knownNoun, properNoun)
         {
             this.question = question;
         }

@@ -220,7 +220,7 @@ namespace RaylibWindowNamespace
             if (!waitTimer.Check(false))
                 return;
 
-            if (stallTimer.timer == 0)
+            if (stallTimer.Time == 0)
             {
                 spaceToUse = Utils.NumberBetween(0, attackSpaces.Count - 1);
                 while(spaceToUse == prevSpace)

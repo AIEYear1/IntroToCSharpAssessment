@@ -25,6 +25,10 @@ namespace CRPGNamespace
         public List<Quest> activeQuests = new List<Quest>();
 
         #region current stat vals
+        public int Level
+        {
+            get => level;
+        }
         public int CurrentAc
         {
             get
@@ -82,7 +86,7 @@ namespace CRPGNamespace
             home = World.LocationByID(tempInt);
 
             int.TryParse(saveData[11], out tempInt);
-            int[] tmpBytes = World.ParseIDs(tempInt);
+            int[] tmpBytes = ParseIDs(tempInt);
             for(int x = 0; x < tmpBytes.Length; x++)
             {
                 int.TryParse(saveData[12 + x], out tempInt);
@@ -90,7 +94,7 @@ namespace CRPGNamespace
             }
             int buffer = tmpBytes.Length;
             int.TryParse(saveData[12 + buffer], out tempInt);
-            tmpBytes = World.ParseIDs(tempInt);
+            tmpBytes = ParseIDs(tempInt);
             for (int x = 0; x < tmpBytes.Length; x++)
             {
                 int.TryParse(saveData[13 + buffer + x], out tempInt);
@@ -100,7 +104,7 @@ namespace CRPGNamespace
             }
             buffer += tmpBytes.Length;
             int.TryParse(saveData[13 + buffer], out tempInt);
-            tmpBytes = World.ParseIDs(tempInt);
+            tmpBytes = ParseIDs(tempInt);
             for (int x = 0; x < tmpBytes.Length; x++)
             {
                 World.LocationByID(tmpBytes[x]).monsterLivingHere = null;
@@ -203,6 +207,20 @@ namespace CRPGNamespace
 
             Utils.Add("save successful");
         }
+        public static int[] ParseIDs(int IDs)
+        {
+            byte[] bytes = BitConverter.GetBytes(IDs);
+            BitArray bitArray = new BitArray(bytes);
+            List<int> ints = new List<int>();
+            for (int x = 0; x < bitArray.Count; x++)
+            {
+                if (((bitArray[x]) ? 1 : 0) << x != 0)
+                {
+                    ints.Add(1 << x);
+                }
+            }
+            return ints.ToArray();
+        }
 
         public static void Load(string saveName)
         {
@@ -221,6 +239,9 @@ namespace CRPGNamespace
                 return;
             }
 
+            if ((loc is LockedLocation lockLoc) && !lockLoc.Enter())
+                return;
+
             if(loc.monsterLivingHere != null)
             {
                 loc.monsterLivingHere.currentHP = loc.monsterLivingHere.maximumHP;
@@ -238,48 +259,53 @@ namespace CRPGNamespace
             currentLocation.LookHere();
         }
 
-        public void MoveNorth()
+        public void Move(string arg)
         {
-            if (currentLocation.locationToNorth != null)
+            switch (arg)
             {
-                MoveTo(currentLocation.locationToNorth);
-            }
-            else
-            {
-                Utils.Add("you cannot move north");
-            }
-        }
-        public void MoveEast()
-        {
-            if (currentLocation.locationToEast != null)
-            {
-                MoveTo(currentLocation.locationToEast);
-            }
-            else
-            {
-                Utils.Add("you cannot move east");
-            }
-        }
-        public void MoveSouth()
-        {
-            if (currentLocation.locationToSouth != null)
-            {
-                MoveTo(currentLocation.locationToSouth);
-            }
-            else
-            {
-                Utils.Add("you cannot move south");
-            }
-        }
-        public void MoveWest()
-        {
-            if (currentLocation.locationToWest != null)
-            {
-                MoveTo(currentLocation.locationToWest);
-            }
-            else
-            {
-                Utils.Add("you cannot move West");
+                case "north":
+                case "up":
+                case "n":
+                    if (currentLocation.locationToNorth != null)
+                    {
+                        MoveTo(currentLocation.locationToNorth);
+                        return;
+                    }
+                    Utils.Add("you cannot move North");
+                    return;
+                case "east":
+                case "right":
+                case "e":
+                    if (currentLocation.locationToEast != null)
+                    {
+                        MoveTo(currentLocation.locationToEast);
+                        return;
+                    }
+                    Utils.Add("you cannot move East");
+                    return;
+                case "south":
+                case "down":
+                case "s":
+                    if (currentLocation.locationToSouth != null)
+                    {
+                        MoveTo(currentLocation.locationToSouth);
+                        return;
+                    }
+                    Utils.Add("you cannot move South");
+                    return;
+                case "west":
+                case "left":
+                case "w":
+                    if (currentLocation.locationToWest != null)
+                    {
+                        MoveTo(currentLocation.locationToWest);
+                        return;
+                    }
+                    Utils.Add("you cannot move West");
+                    return;
+                default:
+                    Utils.Add("that's not a direction");
+                    break;
             }
         }
         #endregion
@@ -361,41 +387,54 @@ namespace CRPGNamespace
         {
             switch (arg)
             {
+                //1st case Location North
                 case "north":
                 case "up":
                 case "n":
-                    currentLocation.LookNorth();
-                    break;
+                    currentLocation.LookDirection("North");
+                    return;
+                //2nd case Location East
                 case "east":
                 case "right":
                 case "e":
-                    currentLocation.LookEast();
-                    break;
+                    currentLocation.LookDirection("East");
+                    return;
+                //3rd case Location South 
                 case "south":
                 case "down":
                 case "s":
-                    currentLocation.LookSouth();
-                    break;
+                    currentLocation.LookDirection("South");
+                    return;
+                //4th case Location West
                 case "west":
                 case "left":
                 case "w":
-                    currentLocation.LookWest();
-                    break;
+                    currentLocation.LookDirection("West");
+                    return;
+                //5th case Current Location
                 case "here":
                     currentLocation.LookHere();
-                    break;
+                    return;
+                //6th case an item in the inventory
                 case string item when Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != null:
                     Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item).details.Look();
-                    break;
+                    return;
+                //7th case Current Monster
                 case string monster when currentLocation.monsterLivingHere != null && currentLocation.monsterLivingHere.Name.FullName.ToLower() == monster:
                     currentLocation.monsterLivingHere.LookAt();
-                    break;
+                    return;
+                //7th case Current NPC
+                case string npc when currentLocation.npcLivingHere != null && currentLocation.npcLivingHere.name.FullName.ToLower() == npc:
+                    //we'll see where it goes
+                    return;
+                //8th case a quest the player has
                 case string quest when activeQuests.SingleOrDefault(x => x.name.ToLower() == quest) != null:
                     activeQuests.SingleOrDefault(x => x.name.ToLower() == quest).LookQuest();
-                    break;
+                    return;
+                //overflow
                 default:
                     Utils.Add("Please specify what to look at");
-                    break;
+                    return;
             }
         }
 
