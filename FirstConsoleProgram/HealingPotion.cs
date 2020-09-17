@@ -15,6 +15,7 @@ namespace CRPGNamespace
 
         public override void Consume(Player player)
         {
+            Utils.Add($"You use a {Name} healing {amountToHeal} health");
             player.currentHP = (int)MathF.Min(player.currentHP + amountToHeal, player.maximumHP);
         }
     }

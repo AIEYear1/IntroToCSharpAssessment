@@ -108,7 +108,6 @@ namespace CRPGNamespace
             tmpBytes = ParseIDs(tempInt);
             for (int x = 0; x < tmpBytes.Length; x++)
             {
-                int.TryParse(saveData[14 + buffer + x], out tempInt);
                 Quest tmpQuest = World.QuestByID(tmpBytes[x]);
                 completedQuests.Add(tmpQuest);
                 tmpQuest.complete = true;
@@ -339,6 +338,24 @@ namespace CRPGNamespace
         #endregion
 
         #region Item gaining and equiping
+        public void Use(string arg)
+        {
+            if(Inventory.SingleOrDefault(item => item.details.Name == arg || item.details.NamePlural == arg) == InventoryItem.Empty)
+            {
+                Utils.Add("You don't have an item of that name");
+                return;
+            }
+
+            Item tmpItem = Inventory.SingleOrDefault(item => item.details.Name == arg || item.details.NamePlural == arg).details;
+            if(tmpItem is Consumable consumable)
+            {
+                consumable.Consume(Program.player);
+                return;
+            }
+
+            Utils.Add("You can't use this item");
+        }
+
         public void AddItemToInventory(InventoryItem itemToAdd)
         {
             if(itemToAdd.details is QuestItem)

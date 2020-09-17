@@ -97,7 +97,7 @@ namespace CRPGNamespace
             #endregion
             NPCs.Add(new Shop(new Name("Markus"), "'ello", "the town shop", "Buyin' or sellin'?", shopStock, 1.02f, false, true));
             shopStock.Clear();
-            NPCs.Add(new QuestNPC(new Name("Townsfolk"), "'ello", "was there anything else you needed?", "Townsfolk of Kvorkys, hangin' out in the town square", QuestByID(QUEST_ID_TUTORIALQUEST), 2, false, true));
+            NPCs.Add(new QuestNPC(new Name("Townsfolk"), "'ello", "was there anything else you needed?", "Townsfolk of Kvorkys, hangin' out in the town square", QuestByID(QUEST_ID_TUTORIALQUEST), 2, true));
         }
 
         private static void PopulateMonsters()
