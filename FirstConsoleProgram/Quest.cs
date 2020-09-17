@@ -20,7 +20,7 @@ namespace CRPGNamespace
         public string completionText;
         public Quest followUpQuest;
 
-        public Quest(int iD, string name, string description, List<(string name, string completionText)> Objectives, int rewardGold, int rewardXP, string questGainedText, string completionText, Quest followUpQuest = null, bool mainQuest = false, bool complete = false)
+        public Quest(int iD, string name, string description, List<(string name, string completionText)> Objectives, int rewardGold, int rewardXP, string questGainedText, string completionText, bool mainQuest = false, bool complete = false)
         {
             ID = iD;
             this.name = name;
@@ -31,7 +31,6 @@ namespace CRPGNamespace
             this.mainQuest = mainQuest;
             this.complete = complete;
             this.completionText = completionText;
-            this.followUpQuest = followUpQuest;
             for(int x = 0; x < Objectives.Count; x++)
             {
                 objectives.Add(new Objective(Objectives[x].name, objectives.Count, Objectives[x].completionText));
@@ -77,6 +76,8 @@ namespace CRPGNamespace
             {
                 Program.player.GainQuest(followUpQuest);
             }
+            Program.player.completedQuests.Add(this);
+            Program.player.activeQuests.Remove(this);
         }
 
         public void LookQuest()

@@ -7,7 +7,7 @@ namespace CRPGNamespace
     public class NPC
     {
         public Name name;
-        readonly string talkLine;
+        public string talkLine;
         readonly string description;
         public bool knownNoun;
         public bool properNoun;

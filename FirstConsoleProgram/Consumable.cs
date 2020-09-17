@@ -11,6 +11,6 @@ namespace CRPGNamespace
 
         }
 
-        public abstract void Effect(Player player);
+        public abstract void Consume(Player player);
     }
 }

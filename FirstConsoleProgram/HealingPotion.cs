@@ -13,7 +13,7 @@ namespace CRPGNamespace
             this.amountToHeal = amountToHeal;
         }
 
-        public override void Effect(Player player)
+        public override void Consume(Player player)
         {
             player.currentHP = (int)MathF.Min(player.currentHP + amountToHeal, player.maximumHP);
         }

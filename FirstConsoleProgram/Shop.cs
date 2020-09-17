@@ -9,9 +9,9 @@ namespace CRPGNamespace
     class Shop : QueryNPC
     {
         public List<InventoryItem> stock = new List<InventoryItem>();
-        readonly int priceAugment;
+        readonly float priceAugment;
 
-        public Shop(Name name, string talkLine, string description, string question, List<InventoryItem> stockToAdd, int priceAugment, bool knownNoun = false, bool properNoun = false) : base(name, talkLine, description, question, knownNoun, properNoun)
+        public Shop(Name name, string talkLine, string description, string question, List<InventoryItem> stockToAdd, float priceAugment, bool knownNoun = false, bool properNoun = false) : base(name, talkLine, description, question, knownNoun, properNoun)
         {
             this.priceAugment = priceAugment;
 
@@ -27,12 +27,33 @@ namespace CRPGNamespace
         public override void Talk()
         {
             base.Talk();
+            Utils.Add("shop Items:");
+            for (int x = 0; x < stock.Count; x++)
+            {
+                if (stock[x].details is Weapon)
+                {
+                    Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.SALMON)} : {stock[x].quantity}");
+                    continue;
+                }
+                if (stock[x].details is Armor)
+                {
+                    Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.LIGHTBLUE)} : {stock[x].quantity}");
+                    continue;
+                }
+                if (stock[x].details is Consumable)
+                {
+                    Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.PINK)} : {stock[x].quantity}");
+                    continue;
+                }
+
+                Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.GOLD)} : {stock[x].quantity}");
+            }
             Utils.Print();
             switch (Utils.AskQuestion(question))
             {
                 case string item when item.StartsWith("buy "):
                     item = item.Substring(4);
-                    if(stock.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != null)
+                    if(stock.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != InventoryItem.Empty)
                     {
                         Buy(stock.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item));
                         break;
@@ -41,12 +62,18 @@ namespace CRPGNamespace
                     break;
                 case string item when item.StartsWith("sell "):
                     item = item.Substring(5);
-                    if (Program.player.Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != null)
+                    if (Program.player.Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != InventoryItem.Empty)
                     {
                         Sell(Program.player.Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item));
                         break;
                     }
                     Utils.Add("you don't have that");
+                    break;
+                case "back":
+                    Utils.Add("If ya change yer mind talk to me again");
+                    break;
+                default:
+                    Utils.Add("If yer just gonna loiter around leave");
                     break;
             }
         }
@@ -89,9 +116,11 @@ namespace CRPGNamespace
         {
             for (int y = 0; y < stock.Count; y++)
             {
-                if (stock[y].details == itemToAdd.details)
+                if (stock[y] == itemToAdd)
                 {
-                    stock[y].quantity++;
+                    InventoryItem tmpItem = stock[y];
+                    tmpItem.quantity++;
+                    stock[y] = tmpItem;
                     return;
                 }
             }
@@ -100,13 +129,15 @@ namespace CRPGNamespace
         }
         public void RemoveItemFromStock(InventoryItem itemToRemove)
         {
-            if (itemToRemove.quantity > 1)
+            InventoryItem tmpItem = stock.Find(s => s == itemToRemove);
+            if (tmpItem.quantity > 1)
             {
-                itemToRemove.quantity--;
+                tmpItem.quantity--;
+                stock[stock.FindIndex(s => s == tmpItem)] = tmpItem;
                 return;
             }
 
-            stock.Remove(itemToRemove);
+            stock.Remove(tmpItem);
         }
 
         public void Buy(InventoryItem itemToBuy)
@@ -122,8 +153,10 @@ namespace CRPGNamespace
                 return;
             }
 
-            Program.player.gold -= itemToBuy.details.Value + priceAugment;
+            Program.player.gold -= (int)(itemToBuy.details.Value * priceAugment);
+            itemToBuy.quantity = 1;
             Program.player.AddItemToInventory(itemToBuy);
+            Utils.Add("You buy a " + itemToBuy.details.Name);
 
             RemoveItemFromStock(itemToBuy);
 
@@ -137,9 +170,20 @@ namespace CRPGNamespace
                 Utils.Add("you don't have this item");
                 return;
             }
+            if(itemToSell.details is QuestItem)
+            {
+                Utils.Add("You can't sell quest items");
+                return;
+            }
+            if (itemToSell == Program.player.currentWeapon || itemToSell == Program.player.currentArmor)
+            {
+                Utils.Add("You can't sell what you're wearing");
+                return;
+            }
 
-            Program.player.gold += itemToSell.details.Value - priceAugment;
+            Program.player.gold += itemToSell.details.Value - (int)MathF.Abs(itemToSell.details.Value - (itemToSell.details.Value * priceAugment));
             Program.player.RemoveItemFromInventory(itemToSell);
+            Utils.Add("You sell a " + itemToSell.details.Name);
 
             AddItemToStock(itemToSell);
 

@@ -17,7 +17,8 @@ enum TextColor
     LIGHTBLUE = 14,
     GOLD = 3,
     DARKRED = 88,
-    PINK = 199
+    PINK = 199,
+    SEAGREEN = 48
 }
 
 class Utils

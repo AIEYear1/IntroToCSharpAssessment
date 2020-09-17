@@ -211,11 +211,7 @@ namespace CRPGNamespace
                     break;
                 case "inventory":                                       //5th case "inventory" "i"
                 case "i":
-                    Utils.Add("Current Inventory: ");
-                    foreach (InventoryItem invItem in player.Inventory)
-                    {
-                        Utils.Add($"\t{Utils.ColorText(invItem.details.Name, (invItem.details is Weapon) ? TextColor.SALMON : ((invItem.details is Armor) ? TextColor.LIGHTBLUE : TextColor.GOLD))} : {invItem.quantity}");
-                    }
+                    player.InventoryCheck();
                     break;
                 case "quests":                                          //6th case "quest" "q"
                 case "q":

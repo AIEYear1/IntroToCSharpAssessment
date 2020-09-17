@@ -15,9 +15,8 @@ namespace CRPGNamespace
         readonly LockedLocationIndex index;
         readonly string lockedText;
 
-        public LockedLocation(int iD, string name, string description, bool canEnter, LockedLocationIndex locationIndex, string lockedText) : base(iD, name, description)
+        public LockedLocation(int iD, string name, string description, LockedLocationIndex locationIndex, string lockedText) : base(iD, name, description)
         {
-            this.canEnter = canEnter;
             this.index = locationIndex;
             this.lockedText = lockedText;
         }
@@ -34,7 +33,11 @@ namespace CRPGNamespace
                     Utils.Add("You unlock " + Utils.PrefixNoun(name, properNoun, knownNoun));
                     break;
                 case LockedLocationIndex.NORTH:
-
+                    if (Program.player.completedQuests.Contains(World.QuestByID(World.QUEST_ID_TUTORIALQUEST)))
+                    {
+                        Utils.Add("This is the current end of the demo");
+                        return false;
+                    }
                     break;
             }
 

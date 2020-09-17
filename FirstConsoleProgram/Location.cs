@@ -55,7 +55,7 @@ namespace CRPGNamespace
             }
             if(npcLivingHere != null)
             {
-                Utils.Add($"There is{Utils.PrefixNoun(npcLivingHere.name.FullName, npcLivingHere.properNoun, npcLivingHere.knownNoun, TextColor.RED)} here");
+                Utils.Add($"There is {Utils.PrefixNoun(npcLivingHere.name.FullName, npcLivingHere.properNoun, npcLivingHere.knownNoun, TextColor.SEAGREEN)} here");
             }
         }
 

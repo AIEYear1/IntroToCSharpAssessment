@@ -23,6 +23,7 @@ namespace CRPGNamespace
         public Location home;
         public List<InventoryItem> Inventory = new List<InventoryItem>();
         public List<Quest> activeQuests = new List<Quest>();
+        public List<Quest> completedQuests = new List<Quest>();
 
         #region current stat vals
         public int Level
@@ -107,6 +108,15 @@ namespace CRPGNamespace
             tmpBytes = ParseIDs(tempInt);
             for (int x = 0; x < tmpBytes.Length; x++)
             {
+                int.TryParse(saveData[14 + buffer + x], out tempInt);
+                Quest tmpQuest = World.QuestByID(tmpBytes[x]);
+                completedQuests.Add(tmpQuest);
+                tmpQuest.complete = true;
+            }
+            int.TryParse(saveData[14 + buffer], out tempInt);
+            tmpBytes = ParseIDs(tempInt);
+            for (int x = 0; x < tmpBytes.Length; x++)
+            {
                 World.LocationByID(tmpBytes[x]).monsterLivingHere = null;
             }
 
@@ -152,6 +162,18 @@ namespace CRPGNamespace
             }
         }
 
+        public void GainQuest(Quest quest)
+        {
+            if (quest.playerHasQuest || quest.complete)
+            {
+                return;
+            }
+
+            Utils.Add(Utils.ColorText(quest.questGainedText, TextColor.MAGENTA));
+            activeQuests.Add(quest);
+            quest.playerHasQuest = true;
+        }
+
         #region save and load
         public void Save(string saveName)
         {
@@ -181,6 +203,11 @@ namespace CRPGNamespace
                     }
                 }
             }
+            int compQuests = 0;
+            for(int x = 0; x < completedQuests.Count; x++)
+            {
+                compQuests += completedQuests[x].ID;
+            }
             int clearedLocs = 0;
             for (int x = 0; x < World.Locations.Count; x++)
             {
@@ -201,6 +228,7 @@ namespace CRPGNamespace
             saveText += "," + home.ID;
             saveText += $",{invTypes},{Utils.ToString(invQuants, ",")}";
             saveText += $",{quests},{Utils.ToString(questProgress, ",")}";
+            saveText += "," + compQuests;
             saveText += "," + clearedLocs;
 
             File.AppendAllText(saveName + ".save", saveText);
@@ -318,11 +346,13 @@ namespace CRPGNamespace
                 (itemToAdd.details as QuestItem).CallQuest();
             }
 
-            foreach(InventoryItem item in Inventory)
+            for(int x = 0; x<Inventory.Count; x++)
             {
-                if(itemToAdd.details == item.details)
+                if (itemToAdd == Inventory[x])
                 {
-                    item.quantity++;
+                    InventoryItem tmpItem = Inventory[x];
+                    tmpItem.quantity++;
+                    Inventory[x] = tmpItem;
                     return;
                 }
             }
@@ -331,19 +361,11 @@ namespace CRPGNamespace
         }
         public void RemoveItemFromInventory(InventoryItem itemToRemove)
         {
-            if (itemToRemove.details is QuestItem)
+            if (itemToRemove.quantity > 1)
             {
-                Utils.Add("Can't sell quest items");
-            }
-            if (!Inventory.Contains(itemToRemove))
-            {
-                Utils.Add("You don't have this item");
-                return;
-            }
-
-            if(itemToRemove.quantity > 1)
-            {
-                itemToRemove.quantity--;
+                InventoryItem tmpItem = Inventory.Find(s => s == itemToRemove);
+                tmpItem.quantity--;
+                Inventory[Inventory.FindIndex(s => s == tmpItem)] = tmpItem;
                 return;
             }
 
@@ -382,7 +404,6 @@ namespace CRPGNamespace
         #endregion
 
         #region Looking and info
-
         public void Look(string arg)
         {
             switch (arg)
@@ -416,7 +437,7 @@ namespace CRPGNamespace
                     currentLocation.LookHere();
                     return;
                 //6th case an item in the inventory
-                case string item when Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != null:
+                case string item when Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != InventoryItem.Empty:
                     Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item).details.Look();
                     return;
                 //7th case Current Monster
@@ -425,7 +446,7 @@ namespace CRPGNamespace
                     return;
                 //7th case Current NPC
                 case string npc when currentLocation.npcLivingHere != null && currentLocation.npcLivingHere.name.FullName.ToLower() == npc:
-                    //we'll see where it goes
+                    currentLocation.npcLivingHere.Look();
                     return;
                 //8th case a quest the player has
                 case string quest when activeQuests.SingleOrDefault(x => x.name.ToLower() == quest) != null:
@@ -453,33 +474,33 @@ namespace CRPGNamespace
             Utils.Add($"\tGold: \t\t{gold}");
         }
 
+        public void InventoryCheck()
+        {
+            Utils.Add("Current Inventory: ");
+            for (int x = 0; x < Inventory.Count; x++)
+            {
+                if (Inventory[x].details is Weapon)
+                {
+                    Utils.Add($"\t{Utils.ColorText(Inventory[x].details.Name, TextColor.SALMON)} : {Inventory[x].quantity}");
+                    continue;
+                }
+                if (Inventory[x].details is Armor)
+                {
+                    Utils.Add($"\t{Utils.ColorText(Inventory[x].details.Name, TextColor.LIGHTBLUE)} : {Inventory[x].quantity}");
+                    continue;
+                }
+                if (Inventory[x].details is Consumable)
+                {
+                    Utils.Add($"\t{Utils.ColorText(Inventory[x].details.Name, TextColor.PINK)} : {Inventory[x].quantity}");
+                    continue;
+                }
+
+                Utils.Add($"\t{Utils.ColorText(Inventory[x].details.Name, TextColor.GOLD)} : {Inventory[x].quantity}");
+            }
+        }
         #endregion
 
-        public void GainQuest(Quest quest)
-        {
-            if(quest.playerHasQuest || quest.complete)
-            {
-                return;
-            }
-
-            Utils.Add(Utils.ColorText(quest.questGainedText, TextColor.MAGENTA));
-            activeQuests.Add(quest);
-            quest.playerHasQuest = true;
-        }
-
-        public override void TakeDamage(int damage)
-        {
-            damage = (int)MathF.Max(1, damage - CurrentAc);
-            currentHP -= damage;
-            Utils.Add($"You took {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
-            if (currentHP <= 0)
-            {
-                Utils.Add(Utils.ColorText(Name.FullName + " has died!", TextColor.DARKRED));
-                MoveTo(home, true);
-                Program.combatWindow.EndAttack();
-            }
-        }
-
+        #region Combat
         public void Attack(Monster enemToAttack)
         {
             if (currentWeapon == null)
@@ -497,5 +518,19 @@ namespace CRPGNamespace
 
             Program.combatWindow.StartAttack(this, enemToAttack);
         }
+
+        public override void TakeDamage(int damage)
+        {
+            damage = (int)MathF.Max(1, damage - CurrentAc);
+            currentHP -= damage;
+            Utils.Add($"You took {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
+            if (currentHP <= 0)
+            {
+                Utils.Add(Utils.ColorText(Name.FullName + " has died!", TextColor.DARKRED));
+                MoveTo(home, true);
+                Program.combatWindow.EndAttack();
+            }
+        }
+        #endregion
     }
 }

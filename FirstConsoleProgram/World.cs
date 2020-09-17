@@ -16,44 +16,53 @@ namespace CRPGNamespace
         #endregion
 
         #region Object IDs
-        public const int ITEM_ID_STICK = 1;
-        public const int ITEM_ID_CLOTHES = 2;
-        public const int ITEM_ID_FANG = 4;
-        public const int ITEM_ID_MERMAIDSPEAR = 8;
-        public const int ITEM_ID_BANDITGARB = 16;
+        public const int ITEM_ID_STICK = 1<<0;
+        public const int ITEM_ID_CLOTHES = 1<<1;
+        public const int ITEM_ID_FANG = 1<<2;
+        public const int ITEM_ID_MERMAIDSPEAR = 1<<3;
+        public const int ITEM_ID_BANDITGARB = 1<<4;
+        public const int ITEM_ID_LESSERHEALINGPOTION = 1<<5;
+        public const int ITEM_ID_HEALINGPOTION = 1<<6;
 
         public const int NPC_ID_STEVE = 0;
         public const int NPC_ID_KVORKYSINN = 1;
         public const int NPC_ID_KVORKYSSHOP = 2;
+        public const int NPC_ID_KVORKYSFOLKS = 3;
 
         public const int MONSTER_ID_WOLF = 0;
         public const int MONSTER_ID_MERMAID = 1;
         public const int MONSTER_ID_LOOTER = 2;
         public const int MONSTER_ID_TROLL = 3;
 
-        public const int LOCATION_ID_CLEARING = 1;
-        public const int LOCATION_ID_PATH = 2;
-        public const int LOCATION_ID_BUSHES = 4;
-        public const int LOCATION_ID_LAKE = 8;
-        public const int LOCATION_ID_FORESTEDGE = 16;
-        public const int LOCATION_ID_PAVEDROAD = 32;
+        public const int LOCATION_ID_CLEARING = 1<<0;
+        public const int LOCATION_ID_PATH = 1<<1;
+        public const int LOCATION_ID_BUSHES = 1<<2;
+        public const int LOCATION_ID_LAKE = 1<<3;
+        public const int LOCATION_ID_FORESTEDGE = 1<<4;
+        public const int LOCATION_ID_PAVEDROAD = 1<<5;
+        public const int LOCATION_ID_TOWNENTRANCE = 1<<6;
+        public const int LOCATION_ID_TOWNSHOP = 1<<7;
+        public const int LOCATION_ID_TOWNINN = 1<<8;
+        public const int LOCATION_ID_TOWNSQUARE = 1<<9;
+        public const int LOCATION_ID_ROADNORTH = 1<<10;
 
-        public const int QUEST_ID_TUTORIALQUEST = 1;
+        public const int QUEST_ID_TUTORIALQUEST = 1<<0;
+        public const int QUEST_ID_MAINQUEST = 1<<1;
         #endregion
 
         static World()
         {
             PopulateItems();
-            PopulateNPCs();
             PopulateQuests();
+            PopulateNPCs();
             PopulateMonsters();
             PopulateLocations();
         }
         public static void Reload()
         {
             PopulateItems();
-            PopulateNPCs();
             PopulateQuests();
+            PopulateNPCs();
             PopulateMonsters();
             PopulateLocations();
         }
@@ -70,19 +79,25 @@ namespace CRPGNamespace
             Items.Add(new Item(ITEM_ID_FANG, "Wolf Fang", "Wolf Fangs", "The fang of a wolf, pretty useless", 1));
             Items.Add(new Weapon(ITEM_ID_MERMAIDSPEAR, "Mermaid Spear", "Mermaid Spears", "A simple yet elegant spear", 7, mermaidSpearAttack));
             Items.Add(new Armor(ITEM_ID_BANDITGARB, "Bandit Garb", "Bandit Garb", "A simple set of thrown together armor", 10, 5));
+            Items.Add(new HealingPotion(ITEM_ID_LESSERHEALINGPOTION, "Lesser Healing Potion", "Lesser Healing Potions", "A cheap healing potion", 25, 4));
+            Items.Add(new HealingPotion(ITEM_ID_HEALINGPOTION, "Healing Potion", "Healing Potions", "A decent healing potion", 50, 10));
         }
 
         private static void PopulateNPCs()
         {
             NPCs.Clear();
             //Parameters: Name, Talk Line, Description
+            //QueryNPC: Parameters
             List<InventoryItem> shopStock = new List<InventoryItem>();
             NPCs.Add(new NPC(new Name("Steve"), "'ello, welcome to Kvorkys", "The entrance guard to Kvorkys", false, true));
-            NPCs.Add(new Inn(new Name("Kvorkys", "Inn"), "'ello", "The town inn", "Would you like to rent a room for the night?", 10));
+            NPCs.Add(new Inn(new Name("Mileena"), "'ello", "The town inn", "Would you like to rent a room for the night?", 10, false, true));
             #region Kvorkys Stock
-
+            shopStock.Add(new InventoryItem(ItemByID(ITEM_ID_LESSERHEALINGPOTION), 5));
+            shopStock.Add(new InventoryItem(ItemByID(ITEM_ID_HEALINGPOTION), 5));
             #endregion
-            NPCs.Add(new Shop(new Name("Kvorkys", "Shop"), "'ello", "the town shop", "Buyin' or sellin'?", shopStock, 2));
+            NPCs.Add(new Shop(new Name("Markus"), "'ello", "the town shop", "Buyin' or sellin'?", shopStock, 1.02f, false, true));
+            shopStock.Clear();
+            NPCs.Add(new QuestNPC(new Name("Townsfolk"), "'ello", "was there anything else you needed?", "Townsfolk of Kvorkys, hangin' out in the town square", QuestByID(QUEST_ID_TUTORIALQUEST), 2, false, true));
         }
 
         private static void PopulateMonsters()
@@ -116,17 +131,35 @@ namespace CRPGNamespace
             {
                 monsterLivingHere = MonsterByID(MONSTER_ID_LOOTER)
             };
-            Location smallLake = new Location(LOCATION_ID_LAKE, "Lake", "a small lake, seems peaceful")
+            Location smallLake = new Location(LOCATION_ID_LAKE, "Lake", "A small lake, seems peaceful")
             {
                 monsterLivingHere = MonsterByID(MONSTER_ID_MERMAID)
             };
-            Location forestEdge = new Location(LOCATION_ID_FORESTEDGE, "Forest Edge", "you can see the forest give way to what looks like grasslands", true);
+            LockedLocation forestEdge = new LockedLocation(LOCATION_ID_FORESTEDGE, "Forest Edge", "You can see the forest give way to what looks like grasslands", LockedLocationIndex.FORESTEDGE, "Something tells you, you need to be stronger before you can move on");
             QuestLocation pavedRoad = new QuestLocation(LOCATION_ID_PAVEDROAD, "Paved Road", "A paved road the first sign of civilization", QuestByID(QUEST_ID_TUTORIALQUEST), 0)
             {
                 monsterLivingHere = MonsterByID(MONSTER_ID_TROLL)
             };
+            Location townEntrance = new Location(LOCATION_ID_TOWNENTRANCE, "Town Entrance", "Entrance to the town of Kvorkys")
+            {
+                npcLivingHere = NPCByID(NPC_ID_STEVE)
+            };
+            Location townShop = new Location(LOCATION_ID_TOWNSHOP, "Town Shop", "Town's gneral store")
+            {
+                npcLivingHere = NPCByID(NPC_ID_KVORKYSSHOP)
+            };
+            Location townInn = new Location(LOCATION_ID_TOWNINN, "Town Inn", "Town's Inn")
+            {
+                npcLivingHere = NPCByID(NPC_ID_KVORKYSINN)
+            };
+            Location townSquare = new Location(LOCATION_ID_TOWNSQUARE, "Town Square", "The Town Square, where a lot of people spend their time")
+            {
+                npcLivingHere = NPCByID(NPC_ID_KVORKYSFOLKS)
+            };
+            LockedLocation roadNorth = new LockedLocation(LOCATION_ID_ROADNORTH, "Road North", "A road leading north", LockedLocationIndex.NORTH, "You should head to the town first");
 
 
+            #region Intro Forest
             clearing.locationToNorth = path;
 
             path.locationToNorth = forestEdge;
@@ -140,6 +173,23 @@ namespace CRPGNamespace
 
             forestEdge.locationToSouth = path;
             forestEdge.locationToNorth = pavedRoad;
+            #endregion
+
+            pavedRoad.locationToNorth = roadNorth;
+            pavedRoad.locationToEast = townEntrance;
+
+            #region Kvorkys Town
+            townEntrance.locationToWest = pavedRoad;
+            townEntrance.locationToNorth = townShop;
+            townEntrance.locationToSouth = townInn;
+            townEntrance.locationToEast = townSquare;
+
+            townShop.locationToSouth = townEntrance;
+
+            townInn.locationToNorth = townEntrance;
+
+            townSquare.locationToWest = townEntrance;
+            #endregion
 
 
             Locations.Add(clearing);
@@ -148,6 +198,11 @@ namespace CRPGNamespace
             Locations.Add(smallLake);
             Locations.Add(forestEdge);
             Locations.Add(pavedRoad);
+            Locations.Add(townEntrance);
+            Locations.Add(townShop);
+            Locations.Add(townInn);
+            Locations.Add(townSquare);
+            Locations.Add(roadNorth);
         }
 
         public static void PopulateQuests()
@@ -159,12 +214,20 @@ namespace CRPGNamespace
             #region tutorial objectives
             objectives.Add(("Figure out where you are", "As you walk along the road you see a city being attacked by a troll!\nDefeat the troll and protect the villagers!"));
             objectives.Add(("Defeat the troll", "With the troll defeated the town is now safe, perhaps there you can find answers there"));
-            objectives.Add(("Talk with the townsfolk", ""));
+            objectives.Add(("Talk with the townsfolk", "You're lost? Oh well this is Kvorkys a small town in the southern portion of Bjork.\nYou may be able to find out more at the capital, if you head out of the town you should see a road north,\nthat'll lead you to the capital"));
             #endregion
             Quest tutorialQuest = new Quest(QUEST_ID_TUTORIALQUEST, "Lost in the Forest!", "You've no idea where you are, you should start looking around for anything familiar", objectives, 7, 20, "You wake up in a clearing, where is this place? You should figure out where you are.", "well, looks like it's time to adventure");
             objectives.Clear();
 
+            #region Main Objectives
+            objectives.Add(("Make your way to the capital", ""));
+            #endregion
+            Quest mainQuest = new Quest(QUEST_ID_MAINQUEST, "To the Capital!", "In order to figure out more about where you are and where you're going you need to head to the capital", objectives, 25, 56, "Alright, now you have a location, head out on a journey to reach the capital", "", true);
+
+            tutorialQuest.followUpQuest = mainQuest;
+
             Quests.Add(tutorialQuest);
+            Quests.Add(mainQuest);
         }
         #endregion
 
@@ -179,7 +242,7 @@ namespace CRPGNamespace
                     return Items[x];
                 }
             }
-            Utils.Add("Not an Item");
+            Utils.Add("Invalid Item ID");
             return null;
         }
 
@@ -187,7 +250,7 @@ namespace CRPGNamespace
         {
             if (ID >= NPCs.Count)
             {
-                Utils.Add("Invalid Item ID");
+                Utils.Add("Invalid NPC ID");
                 return null;
             }
 
@@ -214,7 +277,7 @@ namespace CRPGNamespace
                     return Locations[x];
                 }
             }
-            Utils.Add("Not a location");
+            Utils.Add("Invalid Location ID");
             return null;
         }
 
@@ -227,7 +290,7 @@ namespace CRPGNamespace
                     return Quests[x];
                 }
             }
-            Utils.Add("Not an Item");
+            Utils.Add("Invalid Quest ID");
             return null;
         }
         #endregion
@@ -263,7 +326,8 @@ namespace CRPGNamespace
             Utils.Add("\t" + Utils.ColorText("Light Blue", TextColor.LIGHTBLUE) + ": Armor");
             Utils.Add("\t" + Utils.ColorText("Gold", TextColor.GOLD) + ": General Item");
             Utils.Add("\t" + Utils.ColorText("Dark Red", TextColor.DARKRED) + ": player death");
-            //Utils.Add("\t" + Utils.ColorText("Pink", TextColor.PINK) + ": Consumable");
+            Utils.Add("\t" + Utils.ColorText("Pink", TextColor.PINK) + ": Consumable");
+            Utils.Add("\t" + Utils.ColorText("Sea Green", TextColor.SEAGREEN) + ": NPC");
         }
         #endregion
     }

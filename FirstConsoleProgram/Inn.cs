@@ -30,6 +30,13 @@ namespace CRPGNamespace
                     Utils.Add("You sleep for the night");
                     Program.player.SetHome();
                     break;
+                case "no":
+                case "n":
+                    Utils.Add("Okay, talk to me again if you change your mind");
+                    break;
+                default:
+                    Utils.Add("uh, alright?");
+                    break;
             }
         }
     }
