@@ -379,15 +379,15 @@ namespace CRPGNamespace
         }
         public void RemoveItemFromInventory(InventoryItem itemToRemove)
         {
-            if (itemToRemove.quantity > 1)
+            InventoryItem tmpItem = Inventory.Find(s => s == itemToRemove);
+            if (tmpItem.quantity > 1)
             {
-                InventoryItem tmpItem = Inventory.Find(s => s == itemToRemove);
                 tmpItem.quantity--;
                 Inventory[Inventory.FindIndex(s => s == tmpItem)] = tmpItem;
                 return;
             }
 
-            Inventory.Remove(itemToRemove);
+            Inventory.Remove(tmpItem);
         }
 
         public void EquipItem(string arg)

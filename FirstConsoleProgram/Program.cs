@@ -5,6 +5,9 @@ using System.Runtime.InteropServices;
 
 namespace CRPGNamespace
 {
+    /// <summary>
+    /// Main Class
+    /// </summary>
     class Program
     {
         #region color changing stuff

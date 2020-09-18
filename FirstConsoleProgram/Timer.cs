@@ -1,5 +1,8 @@
 ﻿using static Raylib_cs.Raylib;
 
+/// <summary>
+/// Used as an actual timer or can be used as a value counter
+/// </summary>
 public struct Timer
 {
     /// <summary>

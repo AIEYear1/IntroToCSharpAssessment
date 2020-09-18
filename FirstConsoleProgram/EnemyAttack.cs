@@ -1,22 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using static RaylibWindowNamespace.Objects;
 using static Raylib_cs.Color;
 using static Raylib_cs.Raylib;
-using CRPGNamespace;
+using static RaylibWindowNamespace.Objects;
 
 namespace RaylibWindowNamespace
 {
+    /// <summary>
+    /// Holds all possible enmy attacks
+    /// </summary>
     public enum EnemyAttackIndex { WOLFATTACK, LOOTERATTACK, MERMAIDATTACK, TROLLATTACK }
+    /// <summary>
+    /// This class handles an enemy's attack
+    /// </summary>
     public class EnemyAttack
     {
+        /// <summary>
+        /// The least damage the attack can do per hit
+        /// </summary>
         public int minDamage;
+        /// <summary>
+        /// The most damage the attack can do per hit
+        /// </summary>
         public int maxDamage;
+        /// <summary>
+        /// Attack description
+        /// </summary>
         public string description;
+        /// <summary>
+        /// The attack type this attack is
+        /// </summary>
         readonly EnemyAttackIndex index;
-
-        bool initialized = false;
 
         public EnemyAttack(int minDamage, int maxDamage, string description, EnemyAttackIndex index)
         {
@@ -26,11 +41,31 @@ namespace RaylibWindowNamespace
             this.index = index;
         }
 
+        /// <summary>
+        /// Initializes the main attack
+        /// </summary>
         public void Start()
         {
-            initialized = false;
+            switch (index)
+            {
+                case EnemyAttackIndex.WOLFATTACK:
+                    InitWolf();
+                    break;
+                case EnemyAttackIndex.LOOTERATTACK:
+                    InitLooter();
+                    break;
+                case EnemyAttackIndex.MERMAIDATTACK:
+                    InitMermaid();
+                    break;
+                case EnemyAttackIndex.TROLLATTACK:
+                    InitTroll();
+                    break;
+            }
         }
 
+        /// <summary>
+        /// Updates the main atttack
+        /// </summary>
         public void Update()
         {
             switch (index)
@@ -51,23 +86,23 @@ namespace RaylibWindowNamespace
         }
 
         #region Wolf Attack
-        List<AI> wolves;
+        readonly List<AI> wolves = new List<AI>();
         void WolfAttack()
         {
-            //put player in bottom left corner have him try to catch enemy on collision enemy takes damage
+            //Wolves spawn randomly throughout the scene over time and if a wolf collides with player, player takes damage
 
-            if (!initialized)
-                InitWolf();
-
+            //Update the player
             player.Update();
             player.Draw();
 
+            //Update Wolves
             for (int x = 0; x < MathF.Min(wolves.Count * Window.attackTimer.PercentComplete * 2, wolves.Count); x++)
             {
                 wolves[x].SetDirection(player.position - wolves[x].position);
                 wolves[x].Update();
                 wolves[x].Draw();
 
+                //make sure the wolves never overlap
                 for (int y = 0; y < wolves.Count; y++)
                 {
                     if (CollisionManager.Colliding(wolves[x], wolves[y]))
@@ -76,6 +111,7 @@ namespace RaylibWindowNamespace
                     }
                 }
 
+                //Check to see if a wolf hit the player
                 if (CollisionManager.Colliding(player, wolves[x]))
                 {
                     player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
@@ -91,7 +127,8 @@ namespace RaylibWindowNamespace
         }
         void InitWolf()
         {
-            wolves = new List<AI>();
+            wolves.Clear();
+            //Initialize the wolves
             for (int x = 0; x < 5; x++) 
             {
                 wolves.Add(new AI(monster.texture,
@@ -103,37 +140,36 @@ namespace RaylibWindowNamespace
                 wolves[x].sensitivity = 1.5f;
             }
 
+            //Initialize the player
             player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.speed = 300;
             player.sensitivity = 3;
-
-            initialized = true;
         }
         #endregion
 
         #region Looter Attack
         void LooterAttack()
         {
-            //one looter spawned randomly in the scene, player cannot see the looter when it is behind them
-            if (!initialized)
-                InitLooter();
+            //one looter spawned in the bottom left corner of the scene, player cannot see the looter when it is behind them, on collision player takes damage
+            #region Create and update player view triangle
+            Vector2 triPoint2 = player.position + Utils.RotationMatrix(Utils.LockMagnitude(player.direction, 1), Utils.DegToRad(-70), Window.screenWidth / MathF.Cos(Utils.DegToRad(-70)));
+            Vector2 triPoint3 = player.position + Utils.RotationMatrix(Utils.LockMagnitude(player.direction, 1), Utils.DegToRad(70), Window.screenWidth / MathF.Cos(Utils.DegToRad(70)));
+            DrawTriangle(player.position, triPoint2, triPoint3, GRAY);
+            #endregion
 
             player.Update();
+            player.Draw();
 
             monster.SetDirection(player.position - monster.position);
             monster.Update();
 
-            Vector2 triPoint2 = player.position + Utils.RotationMatrix(Utils.LockMagnitude(player.direction, 1), Utils.DegToRad(-70), Window.screenWidth / MathF.Cos(Utils.DegToRad(-70)));
-            Vector2 triPoint3 = player.position + Utils.RotationMatrix(Utils.LockMagnitude(player.direction, 1), Utils.DegToRad(70), Window.screenWidth / MathF.Cos(Utils.DegToRad(70)));
-            DrawTriangle(player.position, triPoint2, triPoint3, GRAY);
-
-            player.Draw();
-
+            //If monster is within view of player draw it
             if (MathF.Abs(Utils.AngleBetween(Utils.LockMagnitude(player.direction, 1), monster.position - player.position)) < 70) 
             {
                 monster.Draw();
             }
 
+            //check to see if monster has collided with the player
             if (CollisionManager.Colliding(player, monster))
             {
                 player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
@@ -144,35 +180,36 @@ namespace RaylibWindowNamespace
         }
         void InitLooter()
         {
+            //Initialize monster
             monster.position = new Vector2(monster.radius, Window.screenHeight - monster.radius);
             monster.sensitivity = 3;
             monster.speed = 250;
 
+            //Initialize player
             player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.sensitivity = 4;
             player.speed = 400;
-
-            initialized = true;
         }
         #endregion
 
         #region Mermaid Attack
-        List<LineSprite> spears = new List<LineSprite>();
+        readonly List<LineSprite> spears = new List<LineSprite>();
         void MermaidAttack()
         {
             //spears appear pointing at the player and travel forward on collision player takes damage
-            if (!initialized)
-                InitMermaid();
 
+            //Update the player
             player.Update();
             player.Draw();
 
+            //Update spears
             for (int x = 0; x < MathF.Min((spears.Count + 1) * Window.attackTimer.PercentComplete, spears.Count); x++)
             {
                 spears[x].Spawn(player.position);
                 spears[x].Update();
                 spears[x].Draw();
 
+                //Check for collision
                 if (CollisionManager.Colliding(player, spears[x]))
                 {
                     player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
@@ -188,38 +225,59 @@ namespace RaylibWindowNamespace
         }
         void InitMermaid()
         {
-            spears = new List<LineSprite>();
+            spears.Clear();
+            //Initialize the spears
             for (int x = 0; x < 15; x++)
             {
                 spears.Add(new LineSprite(Vector2.Zero, Vector2.Zero, 100, 10, 600, SKYBLUE));
             }
 
+            //Initialize the player
             player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.sensitivity = 4;
             player.speed = 400;
-
-            initialized = true;
         }
         #endregion
-        List<RectangleSprite> attackSpaces = new List<RectangleSprite>();
-        Timer waitTimer = new Timer(3);
+
+        #region Troll Attack
+        List<RectangleSprite> attackSpaces;
+        /// <summary>
+        /// waits to give the player some pause between attacks
+        /// </summary>
+        Timer waitTimer = new Timer(2.5f);
+        /// <summary>
+        /// stalls so the player can react to the incoming attack
+        /// </summary>
         Timer stallTimer = new Timer(1.5f);
+        /// <summary>
+        /// holds so the player can see the attack
+        /// </summary>
         Timer holdTimer = new Timer(.5f);
+        /// <summary>
+        /// attack space to use
+        /// </summary>
         int spaceToUse = -1;
+        /// <summary>
+        /// previous attack space used to limit repeats
+        /// </summary>
         int prevSpace = -1;
+        /// <summary>
+        /// keeps the player from being hit multiple times by the same attack
+        /// </summary>
         bool hit = false;
         void TrollAttack()
         {
             //troll will randomly attack the left right or center all of which take up have the screen player must avoid or take damage
-            if (!initialized)
-                InitTroll();
 
+            //Update the player
             player.Update();
             player.Draw();
 
+            //If it hasn't been long enough inbetween attack return
             if (!waitTimer.Check(false))
                 return;
 
+            //for the first frame decide which space to attack from
             if (stallTimer.Time == 0)
             {
                 spaceToUse = Utils.NumberBetween(0, attackSpaces.Count - 1);
@@ -230,14 +288,16 @@ namespace RaylibWindowNamespace
             }
 
             attackSpaces[spaceToUse].Draw();
-            player.Draw();
+            player.Draw();//Make sure to draw the player over the space
 
+            //if it hasn't been long enough to give the player a chance to react set color to grey and return
             if (!stallTimer.Check(false))
             {
                 attackSpaces[spaceToUse].color = GRAY;
                 return;
             }
 
+            //hold the damage zone so the player can see it
             if (!holdTimer.Check())
             {
                 attackSpaces[spaceToUse].color = RED;
@@ -254,6 +314,7 @@ namespace RaylibWindowNamespace
                 return;
             }
 
+            //reset and run again
             prevSpace = spaceToUse;
             stallTimer.Reset();
             waitTimer.Reset();
@@ -262,6 +323,7 @@ namespace RaylibWindowNamespace
         }
         void InitTroll()
         {
+            //Initialize attack spaces
             attackSpaces = new List<RectangleSprite>
             {
                 new RectangleSprite(Vector2.Zero, Window.screenWidth / 2, Window.screenHeight, BLANK),
@@ -269,15 +331,16 @@ namespace RaylibWindowNamespace
                 new RectangleSprite(Vector2.UnitX * (Window.screenWidth / 2), Window.screenWidth / 2, Window.screenHeight, BLANK)
             };
 
+            //Initialize the player
             player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.sensitivity = 4;
             player.speed = 400;
 
+            //Reset the timers
             holdTimer.Reset();
             stallTimer.Reset();
             waitTimer.Reset();
-
-            initialized = true;
         }
+        #endregion
     }
 }

@@ -5,6 +5,9 @@ using System.Text;
 
 namespace CRPGNamespace
 {
+    /// <summary>
+    /// Items stored with quantities
+    /// </summary>
     public struct InventoryItem
     {
         public Item details;
@@ -16,6 +19,9 @@ namespace CRPGNamespace
             this.quantity = quantity;
         }
 
+        /// <summary>
+        /// Empty InventoryItem for null checks
+        /// </summary>
         public static readonly InventoryItem Empty = new InventoryItem();
 
         public static bool operator ==(InventoryItem a, InventoryItem b)

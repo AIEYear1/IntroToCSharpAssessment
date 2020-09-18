@@ -3,6 +3,9 @@ using static RaylibWindowNamespace.Objects;
 
 namespace CRPGNamespace
 {
+    /// <summary>
+    /// Stores all CRPG related objects
+    /// </summary>
     static class World
     {
         //Lists with all of the stuff in the world: Items, NPCs, Monsters, Locations, Quests

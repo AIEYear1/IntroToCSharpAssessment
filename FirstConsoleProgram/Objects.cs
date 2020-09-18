@@ -5,6 +5,9 @@ using static Raylib_cs.Raylib;
 
 namespace RaylibWindowNamespace
 {
+    /// <summary>
+    /// Stores Raylib related objects
+    /// </summary>
     public class Objects
     {
         /// <summary>

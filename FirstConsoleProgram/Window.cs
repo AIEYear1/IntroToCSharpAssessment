@@ -29,6 +29,9 @@ using static RaylibWindowNamespace.Objects;
 
 namespace RaylibWindowNamespace
 {
+    /// <summary>
+    /// Raylib window for graphical things
+    /// </summary>
     public class Window
     {
         /// <summary>

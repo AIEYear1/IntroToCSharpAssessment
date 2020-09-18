@@ -4,6 +4,9 @@ using static Raylib_cs.Raylib;
 
 namespace RaylibWindowNamespace
 {
+    /// <summary>
+    /// Gets player input
+    /// </summary>
     public class Input
     {
         /// <summary>

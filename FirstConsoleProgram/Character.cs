@@ -1,64 +1,83 @@
-﻿using Raylib_cs;
+﻿using CRPGNamespace;
+using Raylib_cs;
 using System;
 using System.Numerics;
-using static RaylibWindowNamespace.Objects;
 using static Raylib_cs.Raylib;
-using CRPGNamespace;
 
 namespace RaylibWindowNamespace
 {
+    /// <summary>
+    /// Player character for window attacks
+    /// </summary>
     public class Character : AnimatedObject
     {
+        /// <summary>
+        /// speed of the character
+        /// </summary>
         public float speed = 300;
+        /// <summary>
+        /// Player velocity
+        /// </summary>
         public Vector2 velocity;
+        /// <summary>
+        /// Player's direction of travel
+        /// </summary>
         public Vector2 direction = new Vector2();
-        public float score = 0;
 
+        /// <summary>
+        /// How easily the player moves
+        /// </summary>
         public float sensitivity = 5;
 
-        public float posSpeedMod = 1;
-        public float negSpeedMod = 1;
-
+        /// <summary>
+        /// Creture it holds either Player or Monster
+        /// </summary>
         public LivingCreature creature;
 
-        public float SpeedMod
-        {
-            get
-            {
-                return posSpeedMod * negSpeedMod;
-            }
-        }
-
-
-        public Character(Texture2D image, Vector2 position, Color color, int tileSize, Vector2 frames, int radius) : base(image, position, color, tileSize, frames, radius)
-        {
-            SetState(3);
-        }
-        public Character()
+        /// <summary>
+        /// Identical to animatedObject
+        /// </summary>
+        /// <param name="image">Spritesheet to go off of</param>
+        /// <param name="position">Start position of the AI</param>
+        /// <param name="color">Color overlay</param>
+        /// <param name="tileSize">Pixel size of both the x and y of the tile</param>
+        /// <param name="frames">The total number of collumns (X) and Rows (Y)</param>
+        /// <param name="radius">Radius of the animated object</param>
+        /// <param name="framesSpeed">how fast the animation occurs</param>
+        public Character(Texture2D image, Vector2 position, Color color, int tileSize, Vector2 frames, int radius, float framesSpeed = 8) : base(image, position, color, tileSize, frames, radius, framesSpeed)
         {
             SetState(3);
         }
 
+        /// <summary>
+        /// Initializes Character on showing window
+        /// </summary>
         public virtual void Start()
         {
             direction = Vector2.Zero;
             velocity = Vector2.Zero;
         }
 
-        public override void Update()
+        /// <summary>
+        /// Update character for movement
+        /// </summary>
+        public virtual void Update()
         {
             direction.X = Input.GetAxis("Horizontal", sensitivity);
             direction.Y = Input.GetAxis("Vertical", sensitivity);
 
             direction = Utils.ClampMagnitude(direction, 1);
 
-            velocity = direction * (speed * SpeedMod) * GetFrameTime();
+            velocity = direction * speed * GetFrameTime();
             position += velocity;
             Border();
 
             SetPlayerAnimState();
         }
 
+        /// <summary>
+        /// Set Character Movement animation set
+        /// </summary>
         public void SetPlayerAnimState()
         {
             if (direction == Vector2.Zero)
@@ -93,25 +112,33 @@ namespace RaylibWindowNamespace
             }
         }
 
+        /// <summary>
+        /// Blocks characters from leaving the screen view
+        /// </summary>
         public void Border()
         {
-            if (position.X < Window.playZoneBarrier.X + radius)
+            Vector2 tmpPos = position;
+
+            if (tmpPos.X < Window.playZoneBarrier.X + radius)
             {
-                position.X = Window.playZoneBarrier.X + radius;
+
+                tmpPos.X = Window.playZoneBarrier.X + radius;
             }
-            else if (position.X > Window.playZoneBarrier.Z - radius)
+            else if (tmpPos.X > Window.playZoneBarrier.Z - radius)
             {
-                position.X = Window.playZoneBarrier.Z - radius;
+                tmpPos.X = Window.playZoneBarrier.Z - radius;
             }
 
-            if (position.Y < Window.playZoneBarrier.Y + radius)
+            if (tmpPos.Y < Window.playZoneBarrier.Y + radius)
             {
-                position.Y = Window.playZoneBarrier.Y + radius;
+                tmpPos.Y = Window.playZoneBarrier.Y + radius;
             }
-            else if (position.Y > Window.playZoneBarrier.W - radius)
+            else if (tmpPos.Y > Window.playZoneBarrier.W - radius)
             {
-                position.Y = Window.playZoneBarrier.W - radius;
+                tmpPos.Y = Window.playZoneBarrier.W - radius;
             }
+
+            position = tmpPos;
         }
     }
 }

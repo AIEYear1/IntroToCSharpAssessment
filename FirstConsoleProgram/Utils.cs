@@ -23,6 +23,9 @@ enum TextColor
     SEAGREEN = 48
 }
 
+/// <summary>
+/// A bunch of utility methods
+/// </summary>
 class Utils
 {
     /// <summary>

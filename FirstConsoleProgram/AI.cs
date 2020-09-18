@@ -1,44 +1,60 @@
 ﻿using Raylib_cs;
 using System;
 using System.Numerics;
-using static RaylibWindowNamespace.Objects;
 using static Raylib_cs.Raylib;
 
 namespace RaylibWindowNamespace
 {
+    /// <summary>
+    /// AI for Combat
+    /// </summary>
     public class AI : Character
     {
-        public AI(Texture2D image, Vector2 position, Color color, int tileSize, Vector2 frames, int radius) : base(image, position, color, tileSize, frames, radius)
+        /// <summary>
+        /// Identical to Character Constructor
+        /// </summary>
+        /// <param name="image">Spritesheet to go off of</param>
+        /// <param name="position">Start position of the AI</param>
+        /// <param name="color">Color overlay</param>
+        /// <param name="tileSize">Pixel size of both the x and y of the tile</param>
+        /// <param name="frames">The total number of collumns (X) and Rows (Y)</param>
+        /// <param name="radius">Radius of the animated object</param>
+        /// <param name="framesSpeed">how fast the animation occurs</param>
+        public AI(Texture2D image, Vector2 position, Color color, int tileSize, Vector2 frames, int radius, float framesSpeed = 8) : base(image, position, color, tileSize, frames, radius, framesSpeed)
         {
-            speed = 250;
-            sensitivity = 1.5f;
+
         }
 
-        public AI()
-        {
-            speed = 250;
-            sensitivity = 1.5f;
-        }
-
+        /// <summary>
+        /// Reset movement values to avoid erroneous initial movement
+        /// </summary>
         public override void Start()
         {
             vertDir = 0;
             horDir = 0;
         }
 
+        /// <summary>
+        /// Make the AI move
+        /// </summary>
         public override void Update()
         {
-            velocity = direction * (speed * SpeedMod) * GetFrameTime();
+            velocity = direction * speed * GetFrameTime();
             position += velocity;
             Border();
 
             SetPlayerAnimState();
         }
 
-        float vertDir = 0;
-        float horDir = 0;
+        //Holds the actual vertical and horizontal values so they get added to everytime instead of overwritten
+        float vertDir = 0, horDir = 0;
+        /// <summary>
+        /// Smoothly sets the direction the Ai will travel in
+        /// </summary>
+        /// <param name="directionToTravel">the direction in which the Ai will travel towards</param>
         public void SetDirection(Vector2 directionToTravel)
         {
+            //simplifies the Vector2 to a simple eight-directional direction
             if (directionToTravel.X > 0)
                 directionToTravel.X = 1;
             else if (directionToTravel.X < 0)

@@ -6,19 +6,42 @@ using static Raylib_cs.Raylib;
 
 namespace RaylibWindowNamespace
 {
+    /// <summary>
+    /// Line sprite that travels in one direction
+    /// </summary>
     class LineSprite
     {
+        /// <summary>
+        /// Center position of the line
+        /// </summary>
         public Vector2 position;
+        /// <summary>
+        /// How thick the line is for collision sake
+        /// </summary>
         public float thickness;
+        /// <summary>
+        /// Length of the line
+        /// </summary>
         public readonly float Length;
 
+        //Start position of the line
         Vector2 startPos;
+        //End position of the line
         Vector2 endPos;
+        //Direction of the line and where it travels
         Vector2 direction;
+        //speed of travel
         readonly float speed;
+        //Color of the line
         Color color;
 
+        /// <summary>
+        /// Start position of the line
+        /// </summary>
         public Vector2 StartPos { get => startPos; }
+        /// <summary>
+        /// End position of the line
+        /// </summary>
         public Vector2 EndPos { get => endPos; }
 
         public LineSprite(Vector2 position, Vector2 direction, float length, float thickness, float speed, Color color)
@@ -34,7 +57,13 @@ namespace RaylibWindowNamespace
             this.color = color;
         }
 
+        //bool to make sure the LineSprite doesn't get spawned multiple times
         bool spawned = false;
+        /// <summary>
+        /// Spawns one line sprite
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="overridePosition"></param>
         public void Spawn(Vector2 player, bool overridePosition = false)
         {
             if (spawned)
@@ -62,7 +91,7 @@ namespace RaylibWindowNamespace
         public void Update()
         {
             direction = Utils.LockMagnitude(direction, 1);
-            position += direction * speed * GetFrameTime();
+            position += direction * speed;
 
             startPos = position - (direction * (Length / 2));
             endPos = position + (direction * (Length / 2));
