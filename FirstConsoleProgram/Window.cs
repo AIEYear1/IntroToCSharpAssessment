@@ -19,14 +19,13 @@
 *
 ********************************************************************************************/
 
+using CRPGNamespace;
 using Raylib_cs;
+using System;
 using System.Numerics;
-using static RaylibWindowNamespace.Objects;
 using static Raylib_cs.Color;
 using static Raylib_cs.Raylib;
-using CRPGNamespace;
-using System.IO.Compression;
-using System;
+using static RaylibWindowNamespace.Objects;
 
 namespace RaylibWindowNamespace
 {

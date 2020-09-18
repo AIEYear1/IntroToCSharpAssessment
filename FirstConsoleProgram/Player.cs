@@ -10,13 +10,6 @@ namespace CRPGNamespace
 {
     public class Player : LivingCreature
     {
-        public int gold = 0;
-        public int XP = 0;
-        int XPToLevelUp = 0;
-        int level = 1;
-        int baseMaxDamage = 1;
-        int baseMinDamage = 0;
-        int baseAc = 0;
         public Weapon currentWeapon;
         public Armor currentArmor;
         public Location currentLocation;
@@ -24,6 +17,14 @@ namespace CRPGNamespace
         public List<InventoryItem> Inventory = new List<InventoryItem>();
         public List<Quest> activeQuests = new List<Quest>();
         public List<Quest> completedQuests = new List<Quest>();
+        public int gold = 0;
+        public int XP = 0;
+
+        int XPToLevelUp = 0;
+        int level = 1;
+        int baseMaxDamage = 1;
+        int baseMinDamage = 0;
+        int baseAc = 0;
 
         #region current stat vals
         public int Level

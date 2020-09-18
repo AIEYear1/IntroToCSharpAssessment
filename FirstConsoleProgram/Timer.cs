@@ -2,17 +2,33 @@
 
 public struct Timer
 {
+    /// <summary>
+    /// How long the timer is
+    /// </summary>
     public readonly float delay;
+    /// <summary>
+    /// The current time value of the Timer
+    /// </summary>
     public float Time { get;  private set; }
+    /// <summary>
+    /// The percent of time left in the timer
+    /// </summary>
     public float PercentComplete
     {
         get => Time / delay;
     }
+    /// <summary>
+    /// how much time is left in the timer
+    /// </summary>
     public float TimeRemaining
     {
         get => delay - Time;
     }
 
+    /// <summary>
+    /// Creates a timer where Time is set to 0 and the length is delay
+    /// </summary>
+    /// <param name="delay">how long the timer will be</param>
     public Timer(float delay)
     {
         this.Time = 0;

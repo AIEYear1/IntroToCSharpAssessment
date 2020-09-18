@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using static RaylibWindowNamespace.Objects;
 
 namespace CRPGNamespace
 {
     static class World
     {
+        //Lists with all of the stuff in the world: Items, NPCs, Monsters, Locations, Quests
         #region Object Lists
         public static readonly List<Item> Items = new List<Item>();
         public static readonly List<NPC> NPCs = new List<NPC>();
@@ -15,7 +14,9 @@ namespace CRPGNamespace
         public static readonly List<Quest> Quests = new List<Quest>();
         #endregion
 
+        //IDs for all of the stuff in the world
         #region Object IDs
+        //Item IDs
         public const int ITEM_ID_STICK = 1<<0;
         public const int ITEM_ID_CLOTHES = 1<<1;
         public const int ITEM_ID_FANG = 1<<2;
@@ -24,16 +25,19 @@ namespace CRPGNamespace
         public const int ITEM_ID_LESSERHEALINGPOTION = 1<<5;
         public const int ITEM_ID_HEALINGPOTION = 1<<6;
 
+        //NPC IDs
         public const int NPC_ID_STEVE = 0;
         public const int NPC_ID_KVORKYSINN = 1;
         public const int NPC_ID_KVORKYSSHOP = 2;
         public const int NPC_ID_KVORKYSFOLKS = 3;
 
+        //Monster IDs
         public const int MONSTER_ID_WOLF = 0;
         public const int MONSTER_ID_MERMAID = 1;
         public const int MONSTER_ID_LOOTER = 2;
         public const int MONSTER_ID_TROLL = 3;
 
+        //Location IDs
         public const int LOCATION_ID_CLEARING = 1<<0;
         public const int LOCATION_ID_PATH = 1<<1;
         public const int LOCATION_ID_BUSHES = 1<<2;
@@ -46,10 +50,14 @@ namespace CRPGNamespace
         public const int LOCATION_ID_TOWNSQUARE = 1<<9;
         public const int LOCATION_ID_ROADNORTH = 1<<10;
 
+        //Quest IDs
         public const int QUEST_ID_TUTORIALQUEST = 1<<0;
         public const int QUEST_ID_MAINQUEST = 1<<1;
         #endregion
 
+        /// <summary>
+        /// World constructor, never called just initializes everything
+        /// </summary>
         static World()
         {
             PopulateItems();
@@ -58,6 +66,9 @@ namespace CRPGNamespace
             PopulateMonsters();
             PopulateLocations();
         }
+        /// <summary>
+        /// Same as wolrd constructor, called on load to reset and cleanup world
+        /// </summary>
         public static void Reload()
         {
             PopulateItems();
@@ -67,7 +78,11 @@ namespace CRPGNamespace
             PopulateLocations();
         }
 
+        //Populates all of the Lists with their respective stuff
         #region Population
+        /// <summary>
+        /// Populates all of the Items
+        /// </summary>
         private static void PopulateItems()
         {
             Items.Clear();
@@ -83,6 +98,9 @@ namespace CRPGNamespace
             Items.Add(new HealingPotion(ITEM_ID_HEALINGPOTION, "Healing Potion", "Healing Potions", "A decent healing potion", 50, 10));
         }
 
+        /// <summary>
+        /// Populates all of the NPCs
+        /// </summary>
         private static void PopulateNPCs()
         {
             NPCs.Clear();
@@ -100,6 +118,9 @@ namespace CRPGNamespace
             NPCs.Add(new QuestNPC(new Name("Townsfolk"), "'ello", "was there anything else you needed?", "Townsfolk of Kvorkys, hangin' out in the town square", QuestByID(QUEST_ID_TUTORIALQUEST), 2, true));
         }
 
+        /// <summary>
+        /// Populates all of the Monsters
+        /// </summary>
         private static void PopulateMonsters()
         {
             Monsters.Clear();
@@ -118,6 +139,9 @@ namespace CRPGNamespace
             Monsters.Add(troll);
         }
 
+        /// <summary>
+        /// Populates all of the Locations
+        /// </summary>
         private static void PopulateLocations()
         {
             Locations.Clear();
@@ -205,6 +229,9 @@ namespace CRPGNamespace
             Locations.Add(roadNorth);
         }
 
+        /// <summary>
+        /// Populates all of the Quests
+        /// </summary>
         public static void PopulateQuests()
         {
             Quests.Clear();
@@ -231,8 +258,13 @@ namespace CRPGNamespace
         }
         #endregion
 
-
+        //Methods for Lists to get their respective things by their IDs
         #region GetByID
+        /// <summary>
+        /// Gets an Item with the specified ID
+        /// </summary>
+        /// <param name="ID">ID of the Item you want</param>
+        /// <returns>Returns an Item of a specified ID if there is one</returns>
         public static Item ItemByID(int ID)
         {
             for(int x = 0; x < Items.Count; x++)
@@ -246,6 +278,11 @@ namespace CRPGNamespace
             return null;
         }
 
+        /// <summary>
+        /// Gets an NPC with the specified ID
+        /// </summary>
+        /// <param name="ID">ID of the NPC you want</param>
+        /// <returns>Returns an NPC of a specified ID if there is one</returns>
         public static NPC NPCByID(int ID)
         {
             if (ID >= NPCs.Count)
@@ -257,6 +294,11 @@ namespace CRPGNamespace
             return NPCs[ID];
         }
 
+        /// <summary>
+        /// Gets a Monster with the specified ID
+        /// </summary>
+        /// <param name="ID">ID of the Monster you want</param>
+        /// <returns>Returns a Monster of a specified ID if there is one</returns>
         public static Monster MonsterByID(int ID)
         {
             if (ID >= Monsters.Count)
@@ -268,6 +310,11 @@ namespace CRPGNamespace
             return Monsters[ID];
         }
 
+        /// <summary>
+        /// Gets a Location with the specified ID
+        /// </summary>
+        /// <param name="ID">ID of the Location you want</param>
+        /// <returns>Returns a Location of a specified ID if there is one</returns>
         public static Location LocationByID(int ID)
         {
             for (int x = 0; x < Locations.Count; x++)
@@ -281,6 +328,11 @@ namespace CRPGNamespace
             return null;
         }
 
+        /// <summary>
+        /// Gets a Quest with the specified ID
+        /// </summary>
+        /// <param name="ID">ID of the Quest you want</param>
+        /// <returns>Returns a Quest of a specified ID if there is one</returns>
         public static Quest QuestByID(int ID)
         {
             for (int x = 0; x < Quests.Count; x++)
@@ -295,8 +347,11 @@ namespace CRPGNamespace
         }
         #endregion
 
-
+        //Help methods that add the helps lines to be printed
         #region Help
+        /// <summary>
+        /// Adds all of the general help commands to the string to upload
+        /// </summary>
         public static void Help()
         {
             Utils.Add("Possible Commands: ");
@@ -313,6 +368,9 @@ namespace CRPGNamespace
             Utils.Add("\tquit: quits the game");
             Utils.Add("\thelp color: explains the text color scheme");
         }
+        /// <summary>
+        /// Adds all of the Color help commands to the string to upload
+        /// </summary>
         public static void HelpColor()
         {
             Utils.Add("Color Reference:");
