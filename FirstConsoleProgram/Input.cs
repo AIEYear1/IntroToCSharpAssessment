@@ -33,6 +33,7 @@ namespace RaylibWindowNamespace
 
             switch (axis)
             {
+                //1st case "Vertical", returns between 1 (S key) and -1 (W key)
                 case "Vertical":
                     if (IsKeyDown(KeyboardKey.KEY_W))
                         target = -1;
@@ -41,6 +42,7 @@ namespace RaylibWindowNamespace
 
                     toReturnVertical = Utils.Lerp(toReturnVertical, target, sensitivity * GetFrameTime());
                     return (MathF.Abs(toReturnVertical) < dead) ? 0f : toReturnVertical;
+                //2nd case "Horizontal", returns between 1 (D key) and -1 (A key)
                 case "Horizontal":
                     if (IsKeyDown(KeyboardKey.KEY_D))
                         target = 1;
@@ -49,6 +51,7 @@ namespace RaylibWindowNamespace
 
                     toReturnHorizontal = Utils.Lerp(toReturnHorizontal, target, sensitivity * GetFrameTime());
                     return (MathF.Abs(toReturnHorizontal) < dead) ? 0f : toReturnHorizontal;
+                //Overflow
                 default:
                     return 0;
             }

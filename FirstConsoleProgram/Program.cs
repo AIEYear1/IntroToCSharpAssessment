@@ -21,13 +21,18 @@ namespace CRPGNamespace
         //two bools which are used in Main to manage the two important loops
         public static bool running = true, initialized = false;
 
-        //The main player essential to doing anything
+        /// <summary>
+        /// The main player, essential to gameplay, retainer of all relevant data
+        /// </summary>
         public static Player player = new Player(10, 0, 50, 1, (Weapon)World.ItemByID(World.ITEM_ID_STICK), 
             (Armor)World.ItemByID(World.ITEM_ID_CLOTHES), World.LocationByID(World.LOCATION_ID_CLEARING), 15);
 
-        //The main Combat Window, where attacking will take place
+        /// <summary>
+        /// The main Combat Window, where attacking will take place
+        /// </summary>
         public static Window combatWindow = new Window();
 
+        //Main, where everything begins, contains all main loops
         static void Main()
         {
             //Startup loop to select a new game or load an old save
