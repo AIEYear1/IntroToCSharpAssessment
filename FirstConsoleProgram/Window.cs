@@ -81,11 +81,10 @@ namespace RaylibWindowNamespace
         public void StartAttack(Player curPlayer, Monster curMonster)
         {
             stage = CombatPhase.START;
-            //assign player and monsters creature
             player.creature = curPlayer;
             monster.creature = curMonster;
 
-            //Initialize the player and monster attacks
+            //Initialize everything
             (player.creature as Player).currentWeapon.WeaponAttack.Start();
             (monster.creature as Monster).enemyAttack.Start();
             player.Start();
@@ -94,7 +93,6 @@ namespace RaylibWindowNamespace
 
             //Reset timer to three seconds before completion to anticipate messy GetFrameTime()
             attackTimer.Reset(attackTimer.delay - 3);
-            //Reveal the window to the player
             UnhideWindow();
         }
 
@@ -132,7 +130,6 @@ namespace RaylibWindowNamespace
                         healthBar.Position = vec;
                         healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
 
-                        //Change stage to the PlayerAttackPhase
                         stage = CombatPhase.PLAYERATTACK;
                     }
                     break;
@@ -155,7 +152,6 @@ namespace RaylibWindowNamespace
                         healthBar.Position = vec;
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
 
-                        //Change stage to the EnemyAttackPhase
                         stage = CombatPhase.ENEMYATTACK;
                     }
                     break;
@@ -168,7 +164,6 @@ namespace RaylibWindowNamespace
                     EndAttack();
                     break;
             }
-            //Draw the UI
             DrawUI(stage);
             EndDrawing();
         }

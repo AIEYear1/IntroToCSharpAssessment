@@ -105,7 +105,10 @@ namespace CRPGNamespace
         {
             NPCs.Clear();
             //Parameters: Name, Talk Line, Description
-            //QueryNPC: Parameters
+            //QuestNPC: Parameters, post quest line, relating quest, objective marker
+            //QueryNPC: Parameters, Question to ask
+            //Inn: QueryNPC, Cost to stay at the inn
+            //shop: QueryNPC, Price augement
             List<InventoryItem> shopStock = new List<InventoryItem>();
             NPCs.Add(new NPC(new Name("Steve"), "'ello, welcome to Kvorkys", "The entrance guard to Kvorkys", false, true));
             NPCs.Add(new Inn(new Name("Mileena"), "'ello", "The town inn", "Would you like to rent a room for the night?", 10, false, true));
@@ -124,7 +127,8 @@ namespace CRPGNamespace
         private static void PopulateMonsters()
         {
             Monsters.Clear();
-            //Parameters: Name, Description, Health, Max Damage, Min Damage, Reward XP, Reward Gold(, Quest it's connected to, Objective Marker it's related to) < Only for Quest Monsters
+            //Parameters: Name, Description, Health, Max Damage, Min Damage, Reward XP, Reward Gold
+            //QuestMonster: Parameters, relating quest, objective marker it calls
             Monster wolf = new Monster(new Name("Wolf"), "A lone wolf prowling", 12, WolfAttack, 11, 5);
             wolf.lootTable.Add(new LootItem(ItemByID(ITEM_ID_FANG), 100, true));
             Monster mermaid = new Monster(new Name("Mermaid"), "a mermaid sitting on the edge of the lake", 15, mermaidAttack, 23, 3);
@@ -145,7 +149,9 @@ namespace CRPGNamespace
         private static void PopulateLocations()
         {
             Locations.Clear();
-            //Parameters: Name, Description(, Quest it's connected to, Objective Marker it's related to) < Only for Quest Locations
+            //Parameters: Name, Description
+            //QuestLocation: Parameters, relating quest, objective marker to be called
+            //LockedLocation: Parameters, Location Index, Locked text
             QuestLocation clearing = new QuestLocation(LOCATION_ID_CLEARING, "Clearing", "A small clearing, forest surrounds you", QuestByID(QUEST_ID_TUTORIALQUEST), -1)
             {
                 monsterLivingHere = MonsterByID(MONSTER_ID_WOLF)

@@ -83,13 +83,12 @@ class Utils
         //A quick string of vowels for determining if the noun starts with a vowel
         string vowels = "aeiou";
 
-        //if the color is n ot white change it
+        //if the color is not white change it
         if(color != TextColor.WHITE)
         {
             noun = ColorText(noun, color);
         }
 
-        //if the noun is known return the + noun
         if (nounKnown)
         {
             return "the " + noun;
@@ -163,7 +162,7 @@ class Utils
         return x + ((y - x) * increment);
     }
 
-
+    //Random number generator for the random methods
     private static readonly Random _generator = new Random(Guid.NewGuid().GetHashCode());
     /// <summary>
     /// Returns an int based on a skewed chance
@@ -173,31 +172,50 @@ class Utils
     /// <returns>Returns value between 0 and values-1</returns>
     public static int SkewedNum(int values, float[] probabilities)
     {
-        float totalP = 0, miscHold = 0;
+        ///Holds the total probability of anything accuring
+        float totalProbability = 0;
+        ///Temporarily holds the probability for each individual outcome
+        float tmpProbability = 0;
+        ///Holds a random number between o and 1, the end result is based off this
+        float randomNum = Utils.NumberBetween(0, 100) / 100.0f;
 
-        float[] oneToHundred = new float[probabilities.Length + 1];
+        ///Holds probability of relating int ast a decimal between 0 and 1
+        float[] augementedProbabilities = new float[probabilities.Length + 1];
 
+        ///holds all of the possible outcomes
         int[] valStorage = new int[values];
         for (int x = 0; x < values; x++)
+        {
             valStorage[x] = x;
+        }
 
-        float[] augmentedP = probabilities;
-
-        for (int counter = 0; counter < augmentedP.Length; counter++)
-            if (augmentedP[counter] != -1)
-                totalP += augmentedP[counter];
-
-        for (int counter = 0; counter < augmentedP.Length; counter++)
-            if (augmentedP[counter] != -1)
+        //Sets the total probability
+        for (int counter = 0; counter < probabilities.Length; counter++)
+        {
+            if (probabilities[counter] != -1)
             {
-                miscHold += augmentedP[counter];
-                oneToHundred[counter + 1] = (miscHold / totalP) - 0.01f;
+                totalProbability += probabilities[counter];
             }
+        }
 
-        float hold = (float)_generator.NextDouble();
-        for (int counter = 1; counter < oneToHundred.Length; counter++)
-            if (oneToHundred[counter - 1] <= hold && hold < oneToHundred[counter])
+        //Sets the augemented probabilities
+        for (int counter = 0; counter < probabilities.Length; counter++)
+        {
+            if (probabilities[counter] != -1)
+            {
+                tmpProbability += probabilities[counter];
+                augementedProbabilities[counter + 1] = (tmpProbability / totalProbability) - 0.01f;
+            }
+        }
+
+        //Finds the smallest probability that is less than the random number
+        for (int counter = 1; counter < augementedProbabilities.Length; counter++)
+        {
+            if (augementedProbabilities[counter - 1] <= randomNum && randomNum < augementedProbabilities[counter])
+            {
                 return valStorage[counter - 1];
+            }
+        }
 
         return valStorage[0];
     }

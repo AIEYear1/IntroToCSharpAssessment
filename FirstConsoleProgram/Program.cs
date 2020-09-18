@@ -32,13 +32,11 @@ namespace CRPGNamespace
         /// </summary>
         public static Window combatWindow = new Window();
 
-        //Main, where everything begins, contains all main loops
         static void Main()
         {
             //Startup loop to select a new game or load an old save
             while (!initialized)
             {
-                //Determine whether the player wants to start a new game
                 switch (Utils.AskQuestion("new or load?"))
                 {
                     //1st case "New", start a new game
@@ -69,7 +67,6 @@ namespace CRPGNamespace
                     combatWindow.Run();
                 }
 
-                //Get the player's input and parse it
                 ParseInput(Utils.GetInput());
             }
 
@@ -82,14 +79,12 @@ namespace CRPGNamespace
         /// </summary>
         static void Initialize()
         {
-            //Add two initial items to the players inventory
             player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_STICK), 1));
             player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_CLOTHES), 1));
 
-            //Set the players name
             player.SetName();
 
-            //move the player to the games starting point
+            //move the player to the game's starting point
             player.MoveTo(player.home, true);
 
             //if player didn't quit already print out the startup text
@@ -106,10 +101,8 @@ namespace CRPGNamespace
         /// <returns>returns true if a file was succefully loaded</returns>
         static bool AttemptLoad(string fileToAttmept)
         {
-            //list of save file names
             string[] files = Directory.GetFiles(@".\", "*.save");
 
-            //If there are no save files exit out and return to normal code
             if(files.Length == 0)
             {
                 Utils.Add("No save files found");
@@ -124,14 +117,12 @@ namespace CRPGNamespace
                 //If the player didn't give a file name to load initially
                 if (input == "")
                 {
-                    //print out all saves files the game has
                     for (int x = 0; x < files.Length; x++)
                     {
                         Utils.Add("\t" + files[x].Substring(2).Trim());
                     }
                     Utils.Print();
 
-                    //get the save file the player wants load
                     input = Utils.AskQuestion("which save do you wish to load?");
 
                     //check for other commands the player might've given
@@ -204,7 +195,6 @@ namespace CRPGNamespace
                     {
                         switch (help.Substring(5))
                         {
-                            //if the player wants to know what the colors mean
                             case "color":
                                 World.HelpColor();
                                 break;
@@ -229,7 +219,6 @@ namespace CRPGNamespace
                     //otherwise ask the player to give one
                     input = Utils.AskQuestion("You did not give us your name would you like to? Yes or No");
 
-                    //if the player said yes set their name
                     if (input == "yes")
                     {
                         player.SetName();
