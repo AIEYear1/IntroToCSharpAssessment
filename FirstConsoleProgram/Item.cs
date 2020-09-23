@@ -1,6 +1,4 @@
-﻿using CsvHelper.Configuration;
-
-namespace CRPGNamespace
+﻿namespace CRPGNamespace
 {
     /// <summary>
     /// Base class for all Items

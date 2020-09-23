@@ -1,7 +1,5 @@
 ﻿using Raylib_cs;
-using System;
 using System.Numerics;
-using static Raylib_cs.Color;
 using static Raylib_cs.Raylib;
 
 namespace RaylibWindowNamespace
@@ -60,34 +58,34 @@ namespace RaylibWindowNamespace
         //bool to make sure the LineSprite doesn't get spawned multiple times
         bool spawned = false;
         /// <summary>
-        /// Spawns one line sprite
+        /// Sets the position and direction of the line sprite
         /// </summary>
-        /// <param name="player"></param>
-        /// <param name="overridePosition"></param>
-        public void Spawn(Vector2 player, bool overridePosition = false)
+        /// <param name="player">Vector to aim at</param>
+        public void Spawn(Vector2 player)
         {
             if (spawned)
                 return;
 
-            if (!overridePosition)
+            Vector2 pos = new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X + 10), (int)(Window.playZoneBarrier.Z - 10)),
+                                  Utils.NumberBetween((int)(Window.playZoneBarrier.Y + 10), (int)(Window.playZoneBarrier.W - 10)));
+
+            float incrementer = 0;
+            while (Vector2.Distance(pos, player) < Length * 3)
             {
-                Vector2 pos = new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X + 10), (int)(Window.playZoneBarrier.Z - 10)),
-                                      Utils.NumberBetween((int)(Window.playZoneBarrier.Y + 10), (int)(Window.playZoneBarrier.W - 10)));
-
-                float incrementer = 0;
-                while (Vector2.Distance(pos, player) < Length * 3)
-                {
-                    incrementer += Length * 3;
-                    pos = new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X - incrementer + 10), (int)(Window.playZoneBarrier.Z + incrementer - 10)),
-                                         Utils.NumberBetween((int)(Window.playZoneBarrier.Y - incrementer + 10), (int)(Window.playZoneBarrier.W + incrementer - 10)));
-                }
-
-                position = pos;
+                incrementer += Length * 3;
+                pos = new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X - incrementer + 10), (int)(Window.playZoneBarrier.Z + incrementer - 10)),
+                                     Utils.NumberBetween((int)(Window.playZoneBarrier.Y - incrementer + 10), (int)(Window.playZoneBarrier.W + incrementer - 10)));
             }
+
+            position = pos;
+
             direction = player - position;
             spawned = true;
         }
 
+        /// <summary>
+        /// Update lines position
+        /// </summary>
         public void Update()
         {
             direction = Utils.LockMagnitude(direction, 1);
@@ -97,6 +95,9 @@ namespace RaylibWindowNamespace
             endPos = position + (direction * (Length / 2));
         }
 
+        /// <summary>
+        /// Draws the line
+        /// </summary>
         public void Draw()
         {
             DrawLineV(startPos, endPos, color);

@@ -1,25 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CRPGNamespace
+﻿namespace CRPGNamespace
 {
+    /// <summary>
+    /// Base Location type
+    /// </summary>
     public class Location
     {
+        /// <summary>
+        /// ID reference for finding specific locations
+        /// </summary>
         public int ID;
+        /// <summary>
+        /// Name of the location
+        /// </summary>
         public string name;
+        /// <summary>
+        /// Description of the location
+        /// </summary>
         public string description;
-        public Item itemRequiredToEnter;
+        /// <summary>
+        /// Monster that is held in the location
+        /// </summary>
         public Monster monsterLivingHere;
+        /// <summary>
+        /// NPC that is held in the location
+        /// </summary>
         public NPC npcLivingHere;
+        /// <summary>
+        /// Location to the north
+        /// </summary>
         public Location locationToNorth;
+        /// <summary>
+        /// Location to the east
+        /// </summary>
         public Location locationToEast;
+        /// <summary>
+        /// Location to the west
+        /// </summary>
         public Location locationToWest;
+        /// <summary>
+        /// Location to the south
+        /// </summary>
         public Location locationToSouth;
-
+        /// <summary>
+        /// Whether the noun is proper or normal
+        /// </summary>
         public bool properNoun;
+        /// <summary>
+        /// Whether the noun is specific or abstract
+        /// </summary>
         public bool knownNoun;
 
+        /// Parameters
+        /// <param name="iD">ID reference for finding specific locations</param>
+        /// <param name="name">Name of the location</param>
+        /// <param name="description">Description of the location</param>
+        /// <param name="knownNoun">Whether the noun is Specific or abstract</param>
+        /// <param name="properNoun">Whether the noun is proper or normal</param>
         public Location(int iD, string name, string description, bool knownNoun = false, bool properNoun = false)
         {
             ID = iD;
@@ -29,6 +65,9 @@ namespace CRPGNamespace
             this.properNoun = properNoun;
         }
 
+        /// <summary>
+        /// Gives a summary of everything in the location
+        /// </summary>
         public void LookHere()
         {
             Utils.Add(description);
@@ -59,6 +98,10 @@ namespace CRPGNamespace
             }
         }
 
+        /// <summary>
+        /// Looks in a specific direction
+        /// </summary>
+        /// <param name="dir">Direction to look</param>
         public void LookDirection(string dir)
         {
             switch (dir)

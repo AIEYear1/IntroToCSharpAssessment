@@ -15,15 +15,15 @@ namespace RaylibWindowNamespace
         public Timer alphaFade;
 
         //Text to show
-        string text;
+        readonly string text;
         //Position of the text
         Vector2 position;
         //Size of the font
-        int fontsize;
+        readonly int fontsize;
         //Color of the text
         Color color;
         //Speed of movement
-        int movementSpeed;
+        readonly int movementSpeed;
         //Direction of movement
         Vector2 direction;
 

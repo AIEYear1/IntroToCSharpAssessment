@@ -549,6 +549,14 @@ namespace CRPGNamespace
                 Program.combatWindow.EndAttack();
             }
         }
+
+        /// <summary>
+        /// Override for abstract class NOT IMPLEMENTED
+        /// </summary>
+        public override void TakeDamage()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

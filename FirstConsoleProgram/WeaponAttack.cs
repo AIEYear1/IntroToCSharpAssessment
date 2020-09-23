@@ -61,7 +61,7 @@ namespace RaylibWindowNamespace
 
             if(CollisionManager.Colliding(player, monster))
             {
-                monster.creature.TakeDamage(0);
+                monster.creature.TakeDamage();
                 if(monster.creature != null)
                     healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
                 Window.attackTimer.Reset(Window.attackTimer.delay);
@@ -84,7 +84,6 @@ namespace RaylibWindowNamespace
         #region Mermaid Spear Attack
         List<LineSprite> spears = new List<LineSprite>();
         Vector2 spawnPoint;
-        int spearNum = 0;
         Timer endTimer = new Timer(2);
         void MermaidSpearAttack()
         {
@@ -92,7 +91,7 @@ namespace RaylibWindowNamespace
             if (!initialized)
                 InitMermaidSpear();
 
-            if(spearNum < spears.Count)
+            if(spears.Count < 15)
             {
                 if (IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
                 {
@@ -100,9 +99,7 @@ namespace RaylibWindowNamespace
                 }
                 if (IsMouseButtonReleased(MouseButton.MOUSE_LEFT_BUTTON))
                 {
-                    spears[spearNum].position = spawnPoint;
-                    spears[spearNum].Spawn(GetMousePosition(), true);
-                    spearNum++;
+                    spears.Add(new LineSprite(spawnPoint, GetMousePosition() - spawnPoint, 100, 10, 600, SKYBLUE));
                 }
             }
             else if (endTimer.Check())
@@ -111,7 +108,7 @@ namespace RaylibWindowNamespace
             }
             
             
-            if(spearNum == 0)
+            if(spears.Count == 0)
             {
                 monster.SetDirection(monster.position - GetMousePosition());
                 monster.Update();
@@ -121,18 +118,14 @@ namespace RaylibWindowNamespace
 
             float distance = Vector2.Distance(monster.position, spears[0].position);
             int spearToRunFrom = 0;
-            for (int x = 0; x < spearNum; x++) 
+            for (int x = 0; x < spears.Count; x++) 
             {
-                if(x >= spears.Count)
-                {
-                    break;
-                }
                 spears[x].Update();
                 spears[x].Draw();
 
                 if (CollisionManager.Colliding(monster, spears[x]))
                 {
-                    monster.creature.TakeDamage(0);
+                    monster.creature.TakeDamage();
                     if (monster.creature != null)
                         healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
                     spears.RemoveAt(x);
@@ -156,12 +149,7 @@ namespace RaylibWindowNamespace
         }
         void InitMermaidSpear()
         {
-            spearNum = 0;
             spears = new List<LineSprite>();
-            for (int x = 0; x < 15; x++)
-            {
-                spears.Add(new LineSprite(Vector2.Zero, Vector2.Zero, 100, 10, 600, SKYBLUE));
-            }
 
             monster.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             monster.sensitivity = 4;

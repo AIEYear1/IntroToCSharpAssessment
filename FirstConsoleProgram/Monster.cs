@@ -1,18 +1,38 @@
-﻿using System;
+﻿using RaylibWindowNamespace;
 using System.Collections.Generic;
-using System.Text;
-using RaylibWindowNamespace;
 
 namespace CRPGNamespace
 {
     public class Monster : LivingCreature
     {
+        /// <summary>
+        /// Description of the monster
+        /// </summary>
         public string description;
+        /// <summary>
+        /// Attack the enmy uses
+        /// </summary>
         public EnemyAttack enemyAttack;
+        /// <summary>
+        /// XP earned from defeating the monster
+        /// </summary>
         public int rewardXP = 0;
+        /// <summary>
+        /// Gold earned from defeating the monster
+        /// </summary>
         public int rewardGold = 0;
+        /// <summary>
+        /// List of all possible loot items you can get from this monster
+        /// </summary>
         public List<LootItem> lootTable = new List<LootItem>();
 
+        /// Parameters
+        /// <param name="name">Name of the monster</param>
+        /// <param name="description">Description of the monster</param>
+        /// <param name="HP">Health of the monster</param>
+        /// <param name="enemyAttack">Attack the enemy uses</param>
+        /// <param name="rewardXP">XP earned from defeating the monster</param>
+        /// <param name="rewardGold">Gold earned from defeating the monster</param>
         public Monster(Name name, string description, int HP, EnemyAttack enemyAttack, int rewardXP, int rewardGold, bool knownNoun = false, bool properNoun = false) : base(name, HP, knownNoun, properNoun)
         {
             this.Name = name;
@@ -22,6 +42,9 @@ namespace CRPGNamespace
             this.rewardGold = rewardGold;
         }
 
+        /// <summary>
+        /// Text which pops up when you look at a monster
+        /// </summary>
         public void LookAt()
         {
             KnownNoun = true;
@@ -32,9 +55,12 @@ namespace CRPGNamespace
             Utils.Add(description);
         }
 
-        public override void TakeDamage(int damage = 0)
+        /// <summary>
+        /// Monster taking damage
+        /// </summary>
+        public override void TakeDamage()
         {
-            damage = Utils.NumberBetween(Program.player.CurrentMinDamage, Program.player.CurrentMaxDamage);
+            int damage = Utils.NumberBetween(Program.player.CurrentMinDamage, Program.player.CurrentMaxDamage);
             currentHP -= damage;
             Utils.Add($"You hit {Utils.PrefixNoun(Name.FullName, ProperNoun, KnownNoun, TextColor.RED)} for {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
             if (currentHP <= 0)
@@ -44,6 +70,9 @@ namespace CRPGNamespace
             }
         }
 
+        /// <summary>
+        /// Monster dieing and giving loot to the player
+        /// </summary>
         public void Die(Player player)
         {
             player.gold += rewardGold;
@@ -97,6 +126,14 @@ namespace CRPGNamespace
             {
                 (this as QuestMonster).CallQuest();
             }
+        }
+
+        /// <summary>
+        /// Override for abstract class NOT IMPLEMENTED
+        /// </summary>
+        public override void TakeDamage(int damage)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CRPGNamespace
+﻿namespace CRPGNamespace
 {
-    public class LootItem
+    /// <summary>
+    /// Container for monster loot items
+    /// </summary>
+    public struct LootItem
     {
         public Item details;
         public int dropPercentage;

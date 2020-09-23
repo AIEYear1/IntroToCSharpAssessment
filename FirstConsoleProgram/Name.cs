@@ -1,16 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CRPGNamespace
+﻿namespace CRPGNamespace
 {
+    /// <summary>
+    /// Struct which contains a first middle and last name
+    /// </summary>
     public struct Name
     {
-        public string FirstName;    //Player's first name
-        public string MiddleName;   //Player's middle name
-        public string LastName;     //Player's last name
+        /// <summary>
+        /// Player's first name
+        /// </summary>
+        public string FirstName;
+        /// <summary>
+        /// Player's middle name
+        /// </summary>
+        public string MiddleName;
+        /// <summary>
+        /// Player's last name
+        /// </summary>
+        public string LastName;
 
-        public string FullName      //Player's full name with middle initial
+        /// <summary>
+        /// Player's full name with middle initial
+        /// </summary>
+        public string FullName
         {
             get
             {
