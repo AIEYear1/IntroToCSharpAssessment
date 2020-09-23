@@ -3,34 +3,71 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace CRPGNamespace
 {
+    /// <summary>
+    /// The player of the game, handles a number of the functions
+    /// </summary>
     public class Player : LivingCreature
     {
+        /// <summary>
+        /// Player's current weapon
+        /// </summary>
         public Weapon currentWeapon;
+        /// <summary>
+        /// Player's current armor
+        /// </summary>
         public Armor currentArmor;
+        /// <summary>
+        /// Player's current loccation
+        /// </summary>
         public Location currentLocation;
+        /// <summary>
+        /// Where the player will return to should they die or load a save
+        /// </summary>
         public Location home;
+        /// <summary>
+        /// Player's current inventory
+        /// </summary>
         public List<InventoryItem> Inventory = new List<InventoryItem>();
+        /// <summary>
+        /// Player's active quests
+        /// </summary>
         public List<Quest> activeQuests = new List<Quest>();
+        /// <summary>
+        /// Player's completed quests
+        /// </summary>
         public List<Quest> completedQuests = new List<Quest>();
+        /// <summary>
+        /// Player's total gold
+        /// </summary>
         public int gold = 0;
+        /// <summary>
+        /// Player's current XP
+        /// </summary>
         public int XP = 0;
 
+        //The amount of XP the player needs until they level up
         int XPToLevelUp = 0;
+        //The player's current level
         int level = 1;
+        //Base values to help make levels feel more important
         int baseMaxDamage = 1;
         int baseMinDamage = 0;
         int baseAc = 0;
 
         #region current stat vals
+        /// <summary>
+        /// Readonly version of level for referencing
+        /// </summary>
         public int Level
         {
             get => level;
         }
+        /// <summary>
+        /// Readonly AC value of the player
+        /// </summary>
         public int CurrentAc
         {
             get
@@ -38,6 +75,9 @@ namespace CRPGNamespace
                 return baseAc + (currentArmor != null ? currentArmor.ac : 0);
             }
         }
+        /// <summary>
+        /// Readonly Maximum damage value of the player
+        /// </summary>
         public int CurrentMaxDamage
         {
             get
@@ -45,6 +85,9 @@ namespace CRPGNamespace
                 return baseMaxDamage + (currentWeapon != null ? currentWeapon.WeaponAttack.maxDamage : 0);
             }
         }
+        /// <summary>
+        /// Readonly Minimum damage value of the player
+        /// </summary>
         public int CurrentMinDamage
         {
             get
@@ -52,8 +95,25 @@ namespace CRPGNamespace
                 return baseMinDamage + (currentWeapon != null ? currentWeapon.WeaponAttack.minDamage : 0);
             }
         }
+
+        /// <summary>
+        /// Writeonly value for stting player's home
+        /// </summary>
+        public Location Home
+        {
+            set => home = value;
+        }
         #endregion
 
+        /// Parameters
+        /// <param name="gold">Player's start gold amount</param>
+        /// <param name="xP">Player's start XP amount</param>
+        /// <param name="xPToLevelUp">Player's start XP to reach next level</param>
+        /// <param name="level">Player's start level</param>
+        /// <param name="currentWeapon">Player's start weapon</param>
+        /// <param name="currentArmor">Player's start armor</param>
+        /// <param name="home">Player's starting home</param>
+        /// <param name="HP">Player's start HP</param>
         public Player(int gold, int xP, int xPToLevelUp, int level, Weapon currentWeapon, Armor currentArmor, Location home, int HP, bool knownNoun = false, bool properNoun = false) : base(HP, knownNoun, properNoun)
         {
             this.gold = gold;
@@ -65,9 +125,15 @@ namespace CRPGNamespace
             this.home = home;
         }
 
+        /// <summary>
+        /// Player Constructor for loading a save file
+        /// </summary>
+        /// <param name="saveData">Data to load from</param>
         public Player(string[] saveData)
         {
             //name, gold, xp, xptolevelup, level, maximumHP, currentWeaponID, currentArmorID, homeID, Inventory, quests, clearedLocs
+
+            //parse out simple / base data
             Name = new Name(saveData[0], saveData[1], saveData[2]);
             int.TryParse(saveData[3], out gold);
             int.TryParse(saveData[4], out XP);
@@ -75,18 +141,24 @@ namespace CRPGNamespace
             int.TryParse(saveData[6], out level);
             int.TryParse(saveData[7], out maximumHP);
 
+            //Sets simple data that can be mathed off of player level
             currentHP = maximumHP;
             baseMaxDamage = level + (level - 1);
             baseMinDamage = level / 2;
             baseAc = (2 * level) - 2;
 
+
             int.TryParse(saveData[8], out int tempInt);
             currentWeapon = (Weapon)World.ItemByID(tempInt);
+
             int.TryParse(saveData[9], out tempInt);
             currentArmor = (Armor)World.ItemByID(tempInt);
+
             int.TryParse(saveData[10], out tempInt);
             home = World.LocationByID(tempInt);
 
+
+            //Fill out player inventory
             int.TryParse(saveData[11], out tempInt);
             int[] tmpBytes = ParseIDs(tempInt);
             for(int x = 0; x < tmpBytes.Length; x++)
@@ -94,7 +166,11 @@ namespace CRPGNamespace
                 int.TryParse(saveData[12 + x], out tempInt);
                 Inventory.Add(new InventoryItem(World.ItemByID(tmpBytes[x]), tempInt));
             }
+
+            ///Buffer accounts for the separation caused by values which fill out an abstract number of csv lines
             int buffer = tmpBytes.Length;
+
+            //Add all of the active quests and set their objectives
             int.TryParse(saveData[12 + buffer], out tempInt);
             tmpBytes = ParseIDs(tempInt);
             for (int x = 0; x < tmpBytes.Length; x++)
@@ -104,7 +180,10 @@ namespace CRPGNamespace
                 activeQuests.Add(tmpQuest);
                 tmpQuest.ObjectiveMarker(tempInt);
             }
+
             buffer += tmpBytes.Length;
+
+            //Adds all of the quests the player has completed
             int.TryParse(saveData[13 + buffer], out tempInt);
             tmpBytes = ParseIDs(tempInt);
             for (int x = 0; x < tmpBytes.Length; x++)
@@ -113,6 +192,8 @@ namespace CRPGNamespace
                 completedQuests.Add(tmpQuest);
                 tmpQuest.complete = true;
             }
+
+            //Sets all of the cleared locations to not have any monsters
             int.TryParse(saveData[14 + buffer], out tempInt);
             tmpBytes = ParseIDs(tempInt);
             for (int x = 0; x < tmpBytes.Length; x++)
@@ -123,11 +204,9 @@ namespace CRPGNamespace
             MoveTo(home, true);
         }
 
-        public void SetHome()
-        {
-            home = currentLocation;
-        }
-
+        /// <summary>
+        /// Set's the player's name
+        /// </summary>
         public void SetName()
         {
             string input = Utils.AskQuestion("What is your name");
@@ -144,30 +223,39 @@ namespace CRPGNamespace
             Utils.Add(Utils.ColorText($"Welcome {Name.FirstName}! type 'help' for commands", TextColor.LIME));
         }
 
+        /// <summary>
+        /// Gives the player XP and checks for level up
+        /// </summary>
+        /// <param name="XPEarned">XP to give the player</param>
         public void EarnXP(int XPEarned)
         {
             XP += XPEarned;
 
-            if (XP >= XPToLevelUp)
-            {
-                level++;
-                XP -= XPToLevelUp;
-                XPToLevelUp += (int)(XPToLevelUp * 0.3f);
+            //If the player shouldn't level up
+            if (XP < XPToLevelUp)
+                return;
 
-                maximumHP += (int)((float)maximumHP * ((float)level / 4f));
-                currentHP = maximumHP;
-                baseMaxDamage = level + (level - 1); 
-                baseMinDamage = level / 2;
-                baseAc = (2 * level) - 2;
-            }
+            //if the player should level up
+            level++;
+            XP -= XPToLevelUp;
+            XPToLevelUp += (int)(XPToLevelUp * 0.3f);
+
+            maximumHP += (int)((float)maximumHP * ((float)level / 4f));
+            currentHP = maximumHP;
+            baseMaxDamage = level + (level - 1); 
+            baseMinDamage = level / 2;
+            baseAc = (2 * level) - 2;
         }
 
+        /// <summary>
+        /// Gives the player a new quest
+        /// </summary>
+        /// <param name="quest">quest to give player</param>
         public void GainQuest(Quest quest)
         {
+            //If the player already has the quest or has already completed the quest, return
             if (quest.playerHasQuest || quest.complete)
-            {
                 return;
-            }
 
             Utils.Add(Utils.ColorText(quest.questGainedText, TextColor.MAGENTA));
             activeQuests.Add(quest);
@@ -175,13 +263,19 @@ namespace CRPGNamespace
         }
 
         #region save and load
+        /// <summary>
+        /// Saves the game as a csv
+        /// </summary>
+        /// <param name="saveName">Name of the file to save as</param>
         public void Save(string saveName)
         {
+            // overwrites old saves
             if(File.Exists(saveName + ".save"))
             {
                 File.Delete(saveName + ".save");
             }
 
+            //converts player inventory into data
             int invTypes = 0;
             int[] invQuants = new int[Inventory.Count];
             for (int x = 0; x < Inventory.Count; x++)
@@ -189,6 +283,8 @@ namespace CRPGNamespace
                 invTypes += Inventory[x].details.ID;
                 invQuants[x] = (Inventory[x].quantity);
             }
+
+            //converts player's active quests into data
             int quests = 0;
             int[] questProgress = new int[activeQuests.Count];
             for (int x = 0; x < activeQuests.Count; x++)
@@ -203,11 +299,13 @@ namespace CRPGNamespace
                     }
                 }
             }
+            //converts player's completed quests into data
             int compQuests = 0;
             for(int x = 0; x < completedQuests.Count; x++)
             {
                 compQuests += completedQuests[x].ID;
             }
+            //Marks all locations that don't have enemies so after loading the locations still won't have enemies
             int clearedLocs = 0;
             for (int x = 0; x < World.Locations.Count; x++)
             {
@@ -217,6 +315,7 @@ namespace CRPGNamespace
                 }
             }
 
+            //Takes all the data and manually converts it into a csv
             string saveText = $"{Name.FirstName},{Name.MiddleName},{Name.LastName}";
             saveText += "," + gold;
             saveText += "," + XP;
@@ -235,21 +334,31 @@ namespace CRPGNamespace
 
             Utils.Add("save successful");
         }
+
+        /// <summary>
+        /// convert int into binary array
+        /// </summary>
+        /// <param name="IDs">int which contains all of the bits</param>
+        /// <returns>returns an array of only the 1s from a binary array</returns>
         public static int[] ParseIDs(int IDs)
         {
+            List<int> toReturn = new List<int>();
             byte[] bytes = BitConverter.GetBytes(IDs);
             BitArray bitArray = new BitArray(bytes);
-            List<int> ints = new List<int>();
             for (int x = 0; x < bitArray.Count; x++)
             {
                 if (((bitArray[x]) ? 1 : 0) << x != 0)
                 {
-                    ints.Add(1 << x);
+                    toReturn.Add(1 << x);
                 }
             }
-            return ints.ToArray();
+            return toReturn.ToArray();
         }
 
+        /// <summary>
+        /// Reloads the world and player from a save file
+        /// </summary>
+        /// <param name="saveName">name of save file to load from</param>
         public static void Load(string saveName)
         {
             World.Reload();
@@ -259,14 +368,21 @@ namespace CRPGNamespace
         #endregion
 
         #region Location moving
+        /// <summary>
+        /// Move to the specified location
+        /// </summary>
+        /// <param name="loc">Location to move to</param>
+        /// <param name="ignoreMonster">Whether to ignore the monster when moving (for loading and dieing)</param>
         public void MoveTo(Location loc, bool ignoreMonster = false)
         {
+            //if there is a monster in your current location and you are not ignoring it get blocked
             if(!ignoreMonster && currentLocation != null && currentLocation.monsterLivingHere != null)
             {
                 Utils.Add($"The {currentLocation.monsterLivingHere.Name.FullName} blocks your path");
                 return;
             }
 
+            //If the location is locked and the player doesn't meet the requirements to enter
             if ((loc is LockedLocation lockLoc) && !lockLoc.Enter())
                 return;
 
@@ -287,10 +403,15 @@ namespace CRPGNamespace
             currentLocation.LookHere();
         }
 
-        public void Move(string arg)
+        /// <summary>
+        /// For player command movement checks all directional locations and attempts to move in that direction if there is a location there
+        /// </summary>
+        /// <param name="dir">direction to travel in</param>
+        public void Move(string dir)
         {
-            switch (arg)
+            switch (dir)
             {
+                //1st case "North", checks the north direction
                 case "north":
                 case "up":
                 case "n":
@@ -301,6 +422,7 @@ namespace CRPGNamespace
                     }
                     Utils.Add("you cannot move North");
                     return;
+                //2nd case "East", checks the east direction
                 case "east":
                 case "right":
                 case "e":
@@ -311,6 +433,7 @@ namespace CRPGNamespace
                     }
                     Utils.Add("you cannot move East");
                     return;
+                //3rd case "South", checks the south direction
                 case "south":
                 case "down":
                 case "s":
@@ -321,6 +444,7 @@ namespace CRPGNamespace
                     }
                     Utils.Add("you cannot move South");
                     return;
+                //4th case "West", checks the west direction
                 case "west":
                 case "left":
                 case "w":
@@ -331,6 +455,7 @@ namespace CRPGNamespace
                     }
                     Utils.Add("you cannot move West");
                     return;
+                //Overflow
                 default:
                     Utils.Add("that's not a direction");
                     break;
@@ -339,8 +464,13 @@ namespace CRPGNamespace
         #endregion
 
         #region Item gaining and equiping
+        /// <summary>
+        /// Attempts to use an item
+        /// </summary>
+        /// <param name="arg">name of the item the player is trying to use</param>
         public void Use(string arg)
         {
+            //Checks to see if the player has the item the player is asking for
             if(Inventory.SingleOrDefault(item => item.details.Name == arg || item.details.NamePlural == arg) == InventoryItem.Empty)
             {
                 Utils.Add("You don't have an item of that name");
@@ -357,6 +487,10 @@ namespace CRPGNamespace
             Utils.Add("You can't use this item");
         }
 
+        /// <summary>
+        /// Adds an item to the player's inventory
+        /// </summary>
+        /// <param name="itemToAdd">Item to add</param>
         public void AddItemToInventory(InventoryItem itemToAdd)
         {
             if(itemToAdd.details is QuestItem)
@@ -364,6 +498,7 @@ namespace CRPGNamespace
                 (itemToAdd.details as QuestItem).CallQuest();
             }
 
+            //If the player already has this item increase the quantity
             for(int x = 0; x<Inventory.Count; x++)
             {
                 if (itemToAdd == Inventory[x])
@@ -377,9 +512,15 @@ namespace CRPGNamespace
 
             Inventory.Add(itemToAdd);
         }
+        /// <summary>
+        /// Removes an item from the player's inventory
+        /// </summary>
+        /// <param name="itemToRemove">Item to remove</param>
         public void RemoveItemFromInventory(InventoryItem itemToRemove)
         {
             InventoryItem tmpItem = Inventory.Find(s => s == itemToRemove);
+
+            //if the player has more than one of said item decrease the quantity
             if (tmpItem.quantity > 1)
             {
                 tmpItem.quantity--;
@@ -390,22 +531,26 @@ namespace CRPGNamespace
             Inventory.Remove(tmpItem);
         }
 
+        /// <summary>
+        /// Attempts to equip and item
+        /// </summary>
+        /// <param name="arg">Item to equip</param>
         public void EquipItem(string arg)
         {
-            foreach(InventoryItem item in Inventory)
+            for(int x = 0; x <Inventory.Count; x++)
             {
-                if(item.details.Name.ToLower() == arg)
+                if (Inventory[x].details.Name.ToLower() == arg)
                 {
-                    Item tmpItem = item.details;
+                    Item tmpItem = Inventory[x].details;
 
-                    if(tmpItem is Weapon weapon)
+                    if (tmpItem is Weapon weapon)
                     {
                         currentWeapon = weapon;
                         Utils.Add("Equipped " + weapon.Name);
                         return;
                     }
 
-                    if (item.details is Armor armor)
+                    if (tmpItem is Armor armor)
                     {
                         currentArmor = armor;
                         Utils.Add("Equipped " + armor.Name);
@@ -422,6 +567,10 @@ namespace CRPGNamespace
         #endregion
 
         #region Looking and info
+        /// <summary>
+        /// Look Command manager
+        /// </summary>
+        /// <param name="arg"></param>
         public void Look(string arg)
         {
             switch (arg)
@@ -477,6 +626,9 @@ namespace CRPGNamespace
             }
         }
 
+        /// <summary>
+        /// shows player's current stats
+        /// </summary>
         public void Stats()
         {
             Utils.Add($"Stats for {Name.FullName}");
@@ -492,6 +644,9 @@ namespace CRPGNamespace
             Utils.Add($"\tGold: \t\t{gold}");
         }
 
+        /// <summary>
+        /// Shows the player's inventory
+        /// </summary>
         public void InventoryCheck()
         {
             Utils.Add("Current Inventory: ");
@@ -519,6 +674,10 @@ namespace CRPGNamespace
         #endregion
 
         #region Combat
+        /// <summary>
+        /// Begins the attack sequence
+        /// </summary>
+        /// <param name="enemToAttack">Enemy to attack</param>
         public void Attack(Monster enemToAttack)
         {
             if (currentWeapon == null)
@@ -537,6 +696,10 @@ namespace CRPGNamespace
             Program.combatWindow.StartAttack(this, enemToAttack);
         }
 
+        /// <summary>
+        /// Take damage from the enemy attack
+        /// </summary>
+        /// <param name="damage">damage to take</param>
         public override void TakeDamage(int damage)
         {
             damage = (int)MathF.Max(1, damage - CurrentAc);

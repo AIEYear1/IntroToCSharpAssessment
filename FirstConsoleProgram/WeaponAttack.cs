@@ -8,16 +8,37 @@ using static RaylibWindowNamespace.Objects;
 
 namespace RaylibWindowNamespace
 {
+    /// <summary>
+    /// Holds all possible weapon attacks
+    /// </summary>
     public enum WeaponAttackIndex { STICKATTACK, MERMAIDSPEARATTACK }
+    /// <summary>
+    /// This class handles a weapons's attack
+    /// </summary>
     public class WeaponAttack
     {
+        /// <summary>
+        /// Minimum damage this attack can do per hit
+        /// </summary>
         public int minDamage;
+        /// <summary>
+        /// Maximum damage this attack can do per hit
+        /// </summary>
         public int maxDamage;
+        /// <summary>
+        /// Description of the attack
+        /// </summary>
         public string description;
+        /// <summary>
+        /// What attack type this attack is
+        /// </summary>
         readonly WeaponAttackIndex index;
 
-        bool initialized = false;
-
+        /// Paramters
+        /// <param name="minDamage"></param>
+        /// <param name="maxDamage"></param>
+        /// <param name="description"></param>
+        /// <param name="index"></param>
         public WeaponAttack(int minDamage, int maxDamage, string description, WeaponAttackIndex index)
         {
             this.minDamage = minDamage;
@@ -25,11 +46,26 @@ namespace RaylibWindowNamespace
             this.description = description;
             this.index = index;
         }
+
+        /// <summary>
+        /// Initializes the weapon attack
+        /// </summary>
         public void Start()
         {
-            initialized = false;
+            switch (index)
+            {
+                case WeaponAttackIndex.STICKATTACK:
+                    InitStick();
+                    break;
+                case WeaponAttackIndex.MERMAIDSPEARATTACK:
+                    InitMermaidSpear();
+                    break;
+            }
         }
 
+        /// <summary>
+        /// Updates the weapon attack
+        /// </summary>
         public void Update()
         {
             switch (index)
@@ -47,11 +83,10 @@ namespace RaylibWindowNamespace
         void StickAttack()
         {
             //put player in bottom left corner have him try to catch enemy on collision enemy takes damage
-            if (!initialized)
-                InitStick();
 
             player.Update();
 
+            //Make the monster run away from the player and away from the direction the player is heading
             Vector2 playerCourse = player.position + (Utils.LockMagnitude(player.direction, 1) * Vector2.Distance(monster.position, player.position));
             monster.SetDirection(monster.position - playerCourse);
             monster.Update();
@@ -59,6 +94,7 @@ namespace RaylibWindowNamespace
             player.Draw();
             monster.Draw();
 
+            //Check for collision and if so damage the enemy and end the players turn
             if(CollisionManager.Colliding(player, monster))
             {
                 monster.creature.TakeDamage();
@@ -69,15 +105,15 @@ namespace RaylibWindowNamespace
         }
         void InitStick()
         {
+            //Initialize the player
             player.position = new Vector2(player.radius, Window.screenHeight - player.radius);
             player.sensitivity = 2.5f;
             player.speed = 400;
 
+            //Initialize the monster
             monster.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             monster.sensitivity = 3;
             monster.speed = 300;
-
-            initialized = true;
         }
         #endregion
 
@@ -88,9 +124,8 @@ namespace RaylibWindowNamespace
         void MermaidSpearAttack()
         {
             //spears appear pointing at the player and travel forward on collision player takes damage
-            if (!initialized)
-                InitMermaidSpear();
 
+            //if the player hasn't used up all their spears and press and release the left mouse button spawn a new spear traveling in the direction the player dragged
             if(spears.Count < 15)
             {
                 if (IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
@@ -105,9 +140,10 @@ namespace RaylibWindowNamespace
             else if (endTimer.Check())
             {
                 Window.attackTimer.Reset(Window.attackTimer.delay);
+                return;
             }
             
-            
+            //If there are no active spears make the monster run from the cursor and return
             if(spears.Count == 0)
             {
                 monster.SetDirection(monster.position - GetMousePosition());
@@ -118,17 +154,23 @@ namespace RaylibWindowNamespace
 
             float distance = Vector2.Distance(monster.position, spears[0].position);
             int spearToRunFrom = 0;
+            //Update spears
             for (int x = 0; x < spears.Count; x++) 
             {
                 spears[x].Update();
                 spears[x].Draw();
 
+                //Checks to see if monster was hit and if so, deal damage
                 if (CollisionManager.Colliding(monster, spears[x]))
                 {
                     monster.creature.TakeDamage();
+
                     if (monster.creature != null)
                         healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
+
                     spears.RemoveAt(x);
+
+                    //If no more spears end attack
                     if (spears.Count == 0)
                     {
                         Window.attackTimer.Reset(Window.attackTimer.delay);
@@ -136,6 +178,7 @@ namespace RaylibWindowNamespace
                     continue;
                 }
 
+                //Determine which spear to make the monster run from
                 if (distance > Vector2.Distance(monster.position, spears[x].position))
                 {
                     spearToRunFrom = x;
@@ -149,13 +192,13 @@ namespace RaylibWindowNamespace
         }
         void InitMermaidSpear()
         {
+            //Initialize spears
             spears = new List<LineSprite>();
 
+            //Initialize monster
             monster.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             monster.sensitivity = 4;
             monster.speed = 400;
-
-            initialized = true;
         }
         #endregion
     }

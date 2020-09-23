@@ -112,15 +112,13 @@ namespace CRPGNamespace
             //QueryNPC: Parameters, Question to ask
             //Inn: QueryNPC, Cost to stay at the inn
             //shop: QueryNPC, Price augement
-            List<InventoryItem> shopStock = new List<InventoryItem>();
             NPCs.Add(new NPC(new Name("Steve"), "'ello, welcome to Kvorkys", "The entrance guard to Kvorkys", false, true));
             NPCs.Add(new Inn(new Name("Mileena"), "'ello", "The town inn", "Would you like to rent a room for the night?", 10, false, true));
-            #region Kvorkys Stock
-            shopStock.Add(new InventoryItem(ItemByID(ITEM_ID_LESSERHEALINGPOTION), 5));
-            shopStock.Add(new InventoryItem(ItemByID(ITEM_ID_HEALINGPOTION), 5));
-            #endregion
-            NPCs.Add(new Shop(new Name("Markus"), "'ello", "the town shop", "Buyin' or sellin'?", shopStock, 1.02f, false, true));
-            shopStock.Clear();
+            Shop kvorkysShop = new Shop(new Name("Markus"), "'ello", "the town shop", "Buyin' or sellin'?", 1.02f, false, true);
+            kvorkysShop.stock.Add(new InventoryItem(ItemByID(ITEM_ID_LESSERHEALINGPOTION), 5));
+            kvorkysShop.stock.Add(new InventoryItem(ItemByID(ITEM_ID_HEALINGPOTION), 5));
+            kvorkysShop.SortByPrice();
+            NPCs.Add(kvorkysShop);
             NPCs.Add(new QuestNPC(new Name("Townsfolk"), "'ello", "was there anything else you needed?", "Townsfolk of Kvorkys, hangin' out in the town square", QuestByID(QUEST_ID_TUTORIALQUEST), 2, true));
         }
 

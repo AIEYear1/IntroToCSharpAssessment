@@ -41,7 +41,7 @@
                     }
                     Program.player.gold -= price;
                     Utils.Add("You sleep for the night");
-                    Program.player.SetHome();
+                    Program.player.Home = Program.player.currentLocation;
                     break;
                 case "no":
                 case "n":

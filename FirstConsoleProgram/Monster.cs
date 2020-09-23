@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace CRPGNamespace
 {
+    /// <summary>
+    /// Monsters that the player fights
+    /// </summary>
     public class Monster : LivingCreature
     {
         /// <summary>

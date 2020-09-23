@@ -1,33 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace CRPGNamespace
 {
+    /// <summary>
+    /// Shop NPCs for buying and selling
+    /// </summary>
     class Shop : QueryNPC
     {
+        /// <summary>
+        /// The NPCs shop stock
+        /// </summary>
         public List<InventoryItem> stock = new List<InventoryItem>();
+        /// <summary>
+        /// Price multiplier for cost augementing
+        /// </summary>
         readonly float priceAugment;
 
-        public Shop(Name name, string talkLine, string description, string question, List<InventoryItem> stockToAdd, float priceAugment, bool knownNoun = false, bool properNoun = false) : base(name, talkLine, description, question, knownNoun, properNoun)
+        /// Parameters
+        /// <param name="name">Name of the NPC</param>
+        /// <param name="talkLine">Line the NPC speaks when talked to</param>
+        /// <param name="description">Desciption of the NPC</param>
+        /// <param name="question">Question the NPC asks</param>
+        /// <param name="priceAugment">Price multiplier for cost augement</param>
+        public Shop(Name name, string talkLine, string description, string question, float priceAugment, bool knownNoun = false, bool properNoun = false) : base(name, talkLine, description, question, knownNoun, properNoun)
         {
             this.priceAugment = priceAugment;
-
-
-            for(int x = 0; x < stockToAdd.Count; x++)
-            {
-                AddItemToStock(stockToAdd[x]);
-            }
-
-            SortByPrice();
         }
 
+        /// <summary>
+        /// What happens when you talk to the NPC
+        /// </summary>
         public override void Talk()
         {
             base.Talk();
             Utils.Add("shop Items:");
+            //Show all possible items
             for (int x = 0; x < stock.Count; x++)
             {
                 if (stock[x].details is Weapon)
@@ -49,8 +58,10 @@ namespace CRPGNamespace
                 Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.GOLD)} : {stock[x].quantity}");
             }
             Utils.Print();
+
             switch (Utils.AskQuestion(question))
             {
+                //1st case "Buy", attempts to buy an item
                 case string item when item.StartsWith("buy "):
                     item = item.Substring(4);
                     if(stock.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != InventoryItem.Empty)
@@ -60,6 +71,7 @@ namespace CRPGNamespace
                     }
                     Utils.Add("The shop doesn't have that");
                     break;
+                //2nd case "Sell", attempts to sell an item
                 case string item when item.StartsWith("sell "):
                     item = item.Substring(5);
                     if (Program.player.Inventory.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != InventoryItem.Empty)
@@ -69,15 +81,20 @@ namespace CRPGNamespace
                     }
                     Utils.Add("you don't have that");
                     break;
+                //3rd case "Back", exits out of the options
                 case "back":
                     Utils.Add("If ya change yer mind talk to me again");
                     break;
+                //Overflow
                 default:
                     Utils.Add("If yer just gonna loiter around leave");
                     break;
             }
         }
 
+        /// <summary>
+        /// Sorts the Shop inventory by price
+        /// </summary>
         public void SortByPrice()
         {
             bool swapped = true;
@@ -112,6 +129,10 @@ namespace CRPGNamespace
             }
         }
 
+        /// <summary>
+        /// Adds an item to the Shops stock
+        /// </summary>
+        /// <param name="itemToAdd">Item to add</param>
         public void AddItemToStock(InventoryItem itemToAdd)
         {
             for (int y = 0; y < stock.Count; y++)
@@ -127,6 +148,10 @@ namespace CRPGNamespace
 
             stock.Add(itemToAdd);
         }
+        /// <summary>
+        /// Removes an item from the shops stock
+        /// </summary>
+        /// <param name="itemToRemove">Item to remove</param>
         public void RemoveItemFromStock(InventoryItem itemToRemove)
         {
             InventoryItem tmpItem = stock.Find(s => s == itemToRemove);
@@ -140,6 +165,10 @@ namespace CRPGNamespace
             stock.Remove(tmpItem);
         }
 
+        /// <summary>
+        /// Attempts to buy an item from the shop
+        /// </summary>
+        /// <param name="itemToBuy">Item to try to buy</param>
         public void Buy(InventoryItem itemToBuy)
         {
             if (Program.player.gold < itemToBuy.details.Value)
@@ -163,6 +192,10 @@ namespace CRPGNamespace
             SortByPrice();
         }
 
+        /// <summary>
+        /// Attempts to sell an item to the shop
+        /// </summary>
+        /// <param name="itemToSell">Item to try to sell</param>
         public void Sell(InventoryItem itemToSell)
         {
             if (!Program.player.Inventory.Contains(itemToSell))
