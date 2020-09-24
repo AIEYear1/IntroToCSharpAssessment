@@ -111,19 +111,21 @@ namespace CRPGNamespace
         /// <returns>returns true if a file was succefully loaded</returns>
         static bool AttemptLoad(string fileToAttmept)
         {
-            string[] files = Directory.GetFiles(@".\", "*.save");
-
-            if(files.Length == 0)
-            {
-                Utils.Add("No save files found");
-                return false;
-            }
-
+            string[] files;
             //Preempt by adding a file the player may be trying to load immediately
             string input = fileToAttmept;
 
             while (true)
             {
+                files = Directory.GetFiles(@".\", "*.save");
+
+                if (files.Length == 0)
+                {
+                    Utils.Add("No save files found");
+                    Utils.Print();
+                    return false;
+                }
+
                 //If the player didn't give a file name to load initially
                 if (input == "")
                 {

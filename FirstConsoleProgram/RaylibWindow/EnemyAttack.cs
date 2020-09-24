@@ -117,10 +117,12 @@ namespace RaylibWindowNamespace
                     int damage = Utils.NumberBetween(minDamage, maxDamage);
 
                     player.creature.TakeDamage(damage);
-                    player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage/monster.creature.maximumHP));
 
                     if(player.creature != null)
+                    {
+                        player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
+                    }
 
                     wolves.RemoveAt(x);
 
@@ -221,10 +223,12 @@ namespace RaylibWindowNamespace
                     int damage = Utils.NumberBetween(minDamage, maxDamage);
 
                     player.creature.TakeDamage(damage);
-                    player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
 
                     if (player.creature != null)
+                    {
+                        player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
+                    }
 
                     spears.RemoveAt(x);
 
@@ -319,10 +323,12 @@ namespace RaylibWindowNamespace
                     int damage = Utils.NumberBetween(minDamage, maxDamage);
 
                     player.creature.TakeDamage(damage);
-                    player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
 
                     if (player.creature != null)
+                    {
+                        player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
+                    }
 
                     hit = true;
                 }
