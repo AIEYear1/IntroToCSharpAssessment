@@ -68,8 +68,6 @@ namespace RaylibWindowNamespace
         /// </summary>
         public void Update()
         {
-            wolves.Clear();
-            spears.Clear();
             switch (index)
             {
                 case EnemyAttackIndex.WOLFATTACK:
@@ -119,7 +117,7 @@ namespace RaylibWindowNamespace
                     int damage = Utils.NumberBetween(minDamage, maxDamage);
 
                     player.creature.TakeDamage(damage);
-                    player.PopUp(damage.ToString());
+                    player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage/monster.creature.maximumHP));
 
                     if(player.creature != null)
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
@@ -135,6 +133,7 @@ namespace RaylibWindowNamespace
         }
         void InitWolf()
         {
+            wolves.Clear();
             //Initialize the wolves
             for (int x = 0; x < 5; x++) 
             {
@@ -222,7 +221,7 @@ namespace RaylibWindowNamespace
                     int damage = Utils.NumberBetween(minDamage, maxDamage);
 
                     player.creature.TakeDamage(damage);
-                    player.PopUp(damage.ToString());
+                    player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
 
                     if (player.creature != null)
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
@@ -238,6 +237,7 @@ namespace RaylibWindowNamespace
         }
         void InitMermaid()
         {
+            spears.Clear();
             //Initialize the spears
             for (int x = 0; x < 15; x++)
             {
@@ -319,7 +319,7 @@ namespace RaylibWindowNamespace
                     int damage = Utils.NumberBetween(minDamage, maxDamage);
 
                     player.creature.TakeDamage(damage);
-                    player.PopUp(damage.ToString());
+                    player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
 
                     if (player.creature != null)
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;

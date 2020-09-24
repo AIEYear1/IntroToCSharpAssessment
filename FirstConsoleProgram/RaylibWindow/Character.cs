@@ -92,23 +92,25 @@ namespace RaylibWindowNamespace
         /// Adds text popup to be shown
         /// </summary>
         /// <param name="text">Text for popup to show</param>
-        public void PopUp(string text)
+        public void PopUp(string text, int size)
         {
             //Determines where in the list this popup is
             int tmp = popUps.Count % 3;
+            size = (int)MathF.Max(20, size);
+
             switch (tmp)
             {
                 //1st case sends popup text to the left
                 case 0:
-                    popUps.Add(new PopUpText(text, Position + (-Vector2.One * radius), 15, RED, 150, Utils.LockMagnitude(new Vector2(-1, -2), 1), 1));
+                    popUps.Add(new PopUpText(text, Position + (-Vector2.One * radius), size, RED, 150, Utils.LockMagnitude(new Vector2(-1, -2), 1), 1));
                     break;
                 //2nd case sends popup text straight up
                 case 1:
-                    popUps.Add(new PopUpText(text, Position + (-Vector2.UnitY * radius), 15, RED, 150, -Vector2.UnitY, 1));
+                    popUps.Add(new PopUpText(text, Position + (-Vector2.UnitY * radius), size, RED, 150, -Vector2.UnitY, 1));
                     break;
                 //3rd case sends popup text to the right
                 case 2:
-                    popUps.Add(new PopUpText(text, Position + (new Vector2(1, -1) * radius), 15, RED, 150, Utils.LockMagnitude(new Vector2(1, -2), 1), 1));
+                    popUps.Add(new PopUpText(text, Position + (new Vector2(1, -1) * radius), size, RED, 150, Utils.LockMagnitude(new Vector2(1, -2), 1), 1));
                     break;
             }
         }

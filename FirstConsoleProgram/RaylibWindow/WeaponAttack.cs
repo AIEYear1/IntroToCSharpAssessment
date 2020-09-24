@@ -163,19 +163,22 @@ namespace RaylibWindowNamespace
                 //Checks to see if monster was hit and if so, deal damage
                 if (CollisionManager.Colliding(monster, spears[x]))
                 {
-                    monster.PopUp(monster.creature.TakeDamage().ToString());
+                    int damage = monster.creature.TakeDamage();
+                    monster.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / player.creature.maximumHP));
 
                     if (monster.creature != null)
                         healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
 
                     spears.RemoveAt(x);
 
-                    //If no more spears end attack
-                    if (spears.Count == 0)
-                    {
-                        Window.attackTimer.Reset(Window.attackTimer.delay);
-                    }
-                    continue;
+                    if (spears.Count != 0)
+                        continue;
+
+                    //if there are no spears run from mouse and don't continue
+                    monster.SetDirection(monster.Position - GetMousePosition());
+                    monster.Update();
+                    monster.Draw();
+                    return;
                 }
 
                 //Determine which spear to make the monster run from
@@ -192,8 +195,7 @@ namespace RaylibWindowNamespace
         }
         void InitMermaidSpear()
         {
-            //Initialize spears
-            spears = new List<LineSprite>();
+            spears.Clear();
 
             //Initialize monster
             monster.Position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);

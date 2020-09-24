@@ -89,7 +89,7 @@ namespace RaylibWindowNamespace
         public void Update()
         {
             direction = Utils.LockMagnitude(direction, 1);
-            position += direction * speed;
+            position += direction * speed * GetFrameTime();
 
             startPos = position - (direction * (Length / 2));
             endPos = position + (direction * (Length / 2));
