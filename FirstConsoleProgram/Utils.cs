@@ -78,11 +78,11 @@ class Utils
     /// Prefixs the specified noun with the proper prefix
     /// </summary>
     /// <param name="noun">string to prefix</param>
-    /// <param name="nonCountNoun">whether the noun is a NonCount Noun or a Count Noun</param>
+    /// <param name="properNoun">whether the noun is Proper or generic</param>
     /// <param name="nounKnown">Whether the Noun is Known or abstract</param>
     /// <param name="color">Color to make the text, assumed White</param>
     /// <returns>returns the prefixed noun</returns>
-    public static string PrefixNoun(string noun, bool nonCountNoun, bool nounKnown, TextColor color = TextColor.WHITE)
+    public static string PrefixNoun(string noun, bool properNoun, bool nounKnown, TextColor color = TextColor.WHITE)
     {
         //A quick string of vowels for determining if the noun starts with a vowel
         string vowels = "aeiou";
@@ -93,15 +93,15 @@ class Utils
             noun = ColorText(noun, color);
         }
 
+        //If the noun is non count return noun
+        if (properNoun)
+        {
+            return noun;
+        }
+
         if (nounKnown)
         {
             return "the " + noun;
-        }
-
-        //If the noun is non count return noun
-        if (nonCountNoun)
-        {
-            return noun;
         }
 
         //Otherwise return a|an = noun
