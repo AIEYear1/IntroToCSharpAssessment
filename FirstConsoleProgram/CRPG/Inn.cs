@@ -52,5 +52,11 @@
                     break;
             }
         }
+
+        public override void Look()
+        {
+            base.Look();
+            Utils.Add($"\t{price} gold to say the night");
+        }
     }
 }

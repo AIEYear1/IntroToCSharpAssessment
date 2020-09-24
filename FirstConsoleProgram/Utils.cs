@@ -20,7 +20,8 @@ enum TextColor
     GOLD = 3,
     DARKRED = 88,
     PINK = 199,
-    SEAGREEN = 48
+    SEAGREEN = 48,
+    PURPLE = 90
 }
 
 /// <summary>

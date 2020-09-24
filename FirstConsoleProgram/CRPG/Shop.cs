@@ -92,6 +92,32 @@ namespace CRPGNamespace
             }
         }
 
+        public override void Look()
+        {
+            base.Look();
+            Utils.Add("shop Items:");
+            for (int x = 0; x < stock.Count; x++)
+            {
+                if (stock[x].details is Weapon)
+                {
+                    Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.SALMON)} : {stock[x].quantity}");
+                    continue;
+                }
+                if (stock[x].details is Armor)
+                {
+                    Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.LIGHTBLUE)} : {stock[x].quantity}");
+                    continue;
+                }
+                if (stock[x].details is Consumable)
+                {
+                    Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.PINK)} : {stock[x].quantity}");
+                    continue;
+                }
+
+                Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.GOLD)} : {stock[x].quantity}");
+            }
+        }
+
         /// <summary>
         /// Sorts the Shop inventory by price
         /// </summary>

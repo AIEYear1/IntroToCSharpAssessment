@@ -27,9 +27,16 @@ namespace CRPGNamespace
         /// <param name="player"></param>
         public override void Consume(Player player)
         {
-            Utils.Add($"You use a {Name} healing {amountToHeal} health");
+            Utils.Add($"You use a {Name} healing {Utils.ColorText(amountToHeal.ToString(), TextColor.PURPLE)} health");
             player.currentHP = (int)MathF.Min(player.currentHP + amountToHeal, player.maximumHP);
             player.RemoveItemFromInventory(this);
+        }
+
+        public override void Look()
+        {
+            Utils.Add(Name);
+            Utils.Add($"\tHeals {Utils.ColorText(amountToHeal.ToString(), TextColor.PURPLE)} health");
+            Utils.Add(Description);
         }
     }
 }
