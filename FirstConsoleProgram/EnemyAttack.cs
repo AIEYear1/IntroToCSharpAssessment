@@ -98,7 +98,7 @@ namespace RaylibWindowNamespace
             //Update Wolves
             for (int x = 0; x < MathF.Min(wolves.Count * Window.attackTimer.PercentComplete * 2, wolves.Count); x++)
             {
-                wolves[x].SetDirection(player.position - wolves[x].position);
+                wolves[x].SetDirection(player.Position - wolves[x].Position);
                 wolves[x].Update();
                 wolves[x].Draw();
 
@@ -141,7 +141,7 @@ namespace RaylibWindowNamespace
             }
 
             //Initialize the player
-            player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
+            player.Position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.speed = 300;
             player.sensitivity = 3;
         }
@@ -152,19 +152,19 @@ namespace RaylibWindowNamespace
         {
             //one looter spawned in the bottom left corner of the scene, player cannot see the looter when it is behind them, on collision player takes damage
             #region Create and update player view triangle
-            Vector2 triPoint2 = player.position + Utils.RotationMatrix(Utils.LockMagnitude(player.direction, 1), Utils.DegToRad(-70), Window.screenWidth / MathF.Cos(Utils.DegToRad(-70)));
-            Vector2 triPoint3 = player.position + Utils.RotationMatrix(Utils.LockMagnitude(player.direction, 1), Utils.DegToRad(70), Window.screenWidth / MathF.Cos(Utils.DegToRad(70)));
-            DrawTriangle(player.position, triPoint2, triPoint3, GRAY);
+            Vector2 triPoint2 = player.Position + Utils.RotationMatrix(Utils.LockMagnitude(player.direction, 1), Utils.DegToRad(-70), Window.screenWidth / MathF.Cos(Utils.DegToRad(-70)));
+            Vector2 triPoint3 = player.Position + Utils.RotationMatrix(Utils.LockMagnitude(player.direction, 1), Utils.DegToRad(70), Window.screenWidth / MathF.Cos(Utils.DegToRad(70)));
+            DrawTriangle(player.Position, triPoint2, triPoint3, GRAY);
             #endregion
 
             player.Update();
             player.Draw();
 
-            monster.SetDirection(player.position - monster.position);
+            monster.SetDirection(player.Position - monster.Position);
             monster.Update();
 
             //If monster is within view of player draw it
-            if (MathF.Abs(Utils.AngleBetween(Utils.LockMagnitude(player.direction, 1), monster.position - player.position)) < 70) 
+            if (MathF.Abs(Utils.AngleBetween(Utils.LockMagnitude(player.direction, 1), monster.Position - player.Position)) < 70) 
             {
                 monster.Draw();
             }
@@ -181,12 +181,12 @@ namespace RaylibWindowNamespace
         void InitLooter()
         {
             //Initialize monster
-            monster.position = new Vector2(monster.radius, Window.screenHeight - monster.radius);
+            monster.Position = new Vector2(Window.playZoneBarrier.X + monster.radius, Window.playZoneBarrier.W - monster.radius);
             monster.sensitivity = 3;
             monster.speed = 250;
 
             //Initialize player
-            player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
+            player.Position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.sensitivity = 4;
             player.speed = 400;
         }
@@ -205,7 +205,7 @@ namespace RaylibWindowNamespace
             //Update spears
             for (int x = 0; x < MathF.Min((spears.Count + 1) * Window.attackTimer.PercentComplete, spears.Count); x++)
             {
-                spears[x].Spawn(player.position);
+                spears[x].Spawn(player.Position);
                 spears[x].Update();
                 spears[x].Draw();
 
@@ -233,7 +233,7 @@ namespace RaylibWindowNamespace
             }
 
             //Initialize the player
-            player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
+            player.Position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.sensitivity = 4;
             player.speed = 400;
         }
@@ -332,7 +332,7 @@ namespace RaylibWindowNamespace
             };
 
             //Initialize the player
-            player.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
+            player.Position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             player.sensitivity = 4;
             player.speed = 400;
 

@@ -15,13 +15,20 @@ namespace RaylibWindowNamespace
         /// </summary>
         public Texture2D texture = new Texture2D();
         /// <summary>
-        /// Position of Sprite (Top Left)
-        /// </summary>
-        public Vector2 position = new Vector2();
-        /// <summary>
         /// Color overlay on the texture
         /// </summary>
         public Color color = WHITE;
+
+        Vector2 position = new Vector2();
+
+        /// <summary>
+        /// Position of Sprite (Top Left)
+        /// </summary>
+        public virtual Vector2 Position
+        {
+            get => position;
+            set => position = value;
+        }
 
         public ImageObject(Texture2D image, Vector2 position, Color color)
         {

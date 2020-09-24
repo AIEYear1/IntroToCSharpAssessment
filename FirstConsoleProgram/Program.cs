@@ -27,8 +27,8 @@ namespace CRPGNamespace
         /// <summary>
         /// The main player, essential to gameplay, retainer of all relevant data
         /// </summary>
-        public static Player player = new Player(10, 0, 50, 1, (Weapon)World.ItemByID(World.ITEM_ID_STICK), 
-            (Armor)World.ItemByID(World.ITEM_ID_CLOTHES), World.LocationByID(World.LOCATION_ID_CLEARING), 15);
+        public static Player player = new Player(10, 0, 50, 1, (Weapon)World.ItemByID((int)ItemIDs.STICK), 
+            (Armor)World.ItemByID((int)ItemIDs.CLOTHES), World.LocationByID((int)LocationIDs.CLEARING), 15);
 
         /// <summary>
         /// The main Combat Window, where attacking will take place
@@ -82,8 +82,8 @@ namespace CRPGNamespace
         /// </summary>
         static void Initialize()
         {
-            player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_STICK), 1));
-            player.AddItemToInventory(new InventoryItem(World.ItemByID(World.ITEM_ID_CLOTHES), 1));
+            player.AddItemToInventory(new InventoryItem(World.ItemByID((int)ItemIDs.STICK), 1));
+            player.AddItemToInventory(new InventoryItem(World.ItemByID((int)ItemIDs.CLOTHES), 1));
 
             player.SetName();
 

@@ -87,18 +87,18 @@ namespace RaylibWindowNamespace
             player.Update();
 
             //Make the monster run away from the player and away from the direction the player is heading
-            Vector2 playerCourse = player.position + (Utils.LockMagnitude(player.direction, 1) * Vector2.Distance(monster.position, player.position));
-            monster.SetDirection(monster.position - playerCourse);
+            Vector2 playerCourse = player.Position + (Utils.LockMagnitude(player.direction, 1) * Vector2.Distance(monster.Position, player.Position));
+            monster.SetDirection(monster.Position - playerCourse);
             monster.Update();
 
             player.Draw();
             monster.Draw();
 
             //Check for collision and if so damage the enemy and end the players turn
-            if(CollisionManager.Colliding(player, monster))
+            if (CollisionManager.Colliding(player, monster))
             {
                 monster.creature.TakeDamage();
-                if(monster.creature != null)
+                if (monster.creature != null)
                     healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
                 Window.attackTimer.Reset(Window.attackTimer.delay);
             }
@@ -106,12 +106,12 @@ namespace RaylibWindowNamespace
         void InitStick()
         {
             //Initialize the player
-            player.position = new Vector2(player.radius, Window.screenHeight - player.radius);
+            player.Position = new Vector2(Window.playZoneBarrier.X + player.radius, Window.playZoneBarrier.W - player.radius);
             player.sensitivity = 2.5f;
             player.speed = 400;
 
             //Initialize the monster
-            monster.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
+            monster.Position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             monster.sensitivity = 3;
             monster.speed = 300;
         }
@@ -146,13 +146,13 @@ namespace RaylibWindowNamespace
             //If there are no active spears make the monster run from the cursor and return
             if(spears.Count == 0)
             {
-                monster.SetDirection(monster.position - GetMousePosition());
+                monster.SetDirection(monster.Position - GetMousePosition());
                 monster.Update();
                 monster.Draw();
                 return;
             }
 
-            float distance = Vector2.Distance(monster.position, spears[0].position);
+            float distance = Vector2.Distance(monster.Position, spears[0].position);
             int spearToRunFrom = 0;
             //Update spears
             for (int x = 0; x < spears.Count; x++) 
@@ -179,14 +179,14 @@ namespace RaylibWindowNamespace
                 }
 
                 //Determine which spear to make the monster run from
-                if (distance > Vector2.Distance(monster.position, spears[x].position))
+                if (distance > Vector2.Distance(monster.Position, spears[x].position))
                 {
                     spearToRunFrom = x;
-                    distance = Vector2.Distance(monster.position, spears[x].position);
+                    distance = Vector2.Distance(monster.Position, spears[x].position);
                 }
             }
 
-            monster.SetDirection(monster.position - spears[spearToRunFrom].position);
+            monster.SetDirection(monster.Position - spears[spearToRunFrom].position);
             monster.Update();
             monster.Draw();
         }
@@ -196,7 +196,7 @@ namespace RaylibWindowNamespace
             spears = new List<LineSprite>();
 
             //Initialize monster
-            monster.position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
+            monster.Position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
             monster.sensitivity = 4;
             monster.speed = 400;
         }

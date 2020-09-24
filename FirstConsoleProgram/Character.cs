@@ -69,7 +69,7 @@ namespace RaylibWindowNamespace
             direction = Utils.ClampMagnitude(direction, 1);
 
             velocity = direction * speed * GetFrameTime();
-            position += velocity;
+            Position += velocity;
             Border();
 
             SetPlayerAnimState();
@@ -117,7 +117,7 @@ namespace RaylibWindowNamespace
         /// </summary>
         public void Border()
         {
-            Vector2 tmpPos = position;
+            Vector2 tmpPos = Position;
 
             if (tmpPos.X < Window.playZoneBarrier.X + radius)
             {
@@ -138,7 +138,7 @@ namespace RaylibWindowNamespace
                 tmpPos.Y = Window.playZoneBarrier.W - radius;
             }
 
-            position = tmpPos;
+            Position = tmpPos;
         }
     }
 }

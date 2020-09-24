@@ -40,7 +40,7 @@ namespace RaylibWindowNamespace
         public override void Update()
         {
             velocity = direction * speed * GetFrameTime();
-            position += velocity;
+            Position += velocity;
             Border();
 
             SetPlayerAnimState();

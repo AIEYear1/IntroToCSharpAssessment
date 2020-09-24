@@ -49,7 +49,7 @@
                     Utils.Add("You unlock " + Utils.PrefixNoun(name, properNoun, knownNoun));
                     break;
                 case LockedLocationIndex.NORTH:
-                    if (Program.player.completedQuests.Contains(World.QuestByID(World.QUEST_ID_TUTORIALQUEST)))
+                    if (Program.player.completedQuests.Contains(World.QuestByID((int)QuestIDs.TUTORIALQUEST)))
                     {
                         Utils.Add("This is the current end of the demo");
                         return false;

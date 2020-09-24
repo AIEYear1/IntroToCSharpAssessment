@@ -88,8 +88,6 @@ namespace RaylibWindowNamespace
             monster.creature = curMonster;
 
             //Initialize everything
-            (player.creature as Player).currentWeapon.WeaponAttack.Start();
-            (monster.creature as Monster).enemyAttack.Start();
             player.Start();
             monster.Start();
             Input.Start();
@@ -133,6 +131,7 @@ namespace RaylibWindowNamespace
                         healthBar.Position = vec;
                         healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
 
+                        (player.creature as Player).currentWeapon.WeaponAttack.Start();
                         stage = CombatPhase.PLAYERATTACK;
                     }
                     break;
@@ -155,6 +154,7 @@ namespace RaylibWindowNamespace
                         healthBar.Position = vec;
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
 
+                        (monster.creature as Monster).enemyAttack.Start();
                         stage = CombatPhase.ENEMYATTACK;
                     }
                     break;

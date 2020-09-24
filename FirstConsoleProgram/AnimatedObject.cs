@@ -43,7 +43,10 @@ namespace RaylibWindowNamespace
         /// </summary>
         Timer curFrame;
 
-        public new Vector2 position
+        /// <summary>
+        /// The position of the object, Camel case is used to overwrite other code
+        /// </summary>
+        public override Vector2 Position
         {
             get => new Vector2(mainRec.x, mainRec.y);
             set
