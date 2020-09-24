@@ -27,7 +27,7 @@ namespace CRPGNamespace
         /// <summary>
         /// The main player, essential to gameplay, retainer of all relevant data
         /// </summary>
-        public static Player player = new Player(10, 0, 50, 1, (Weapon)World.ItemByID((int)ItemIDs.STICK), 
+        public static Player player = new Player(10, 0, 50, 1, (Weapon)World.ItemByID((int)ItemIDs.STICK),
             (Armor)World.ItemByID((int)ItemIDs.CLOTHES), World.LocationByID((int)LocationIDs.CLEARING), 15);
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace CRPGNamespace
                         break;
                     //2nd case "Load", load a prexisting file, can also type the file name to load it faster
                     case string load when load.StartsWith("load"):
-                        if(AttemptLoad((load.Length > 5) ? load.Substring(5) : ""))
+                        if (AttemptLoad((load.Length > 5) ? load.Substring(5) : ""))
                         {
                             initialized = true;
                         }
@@ -191,7 +191,7 @@ namespace CRPGNamespace
             }
         }
 
-/////////////////////////////////Parse Input///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////Parse Input///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Parse the players input to read their commands
         /// </summary>
@@ -203,7 +203,7 @@ namespace CRPGNamespace
                 //1st case "help", give the player help
                 case string help when help.StartsWith("help"):
                     //if the player gave an advanced help command
-                    if(help.Length > 5)
+                    if (help.Length > 5)
                     {
                         switch (help.Substring(5))
                         {
@@ -220,7 +220,7 @@ namespace CRPGNamespace
                     World.Help();
                     break;
                 //2nd case "who am i", tell the player their name
-                case "who am i":  
+                case "who am i":
                     //If the player gave a proper name show it
                     if (player.Name.FirstName != "")
                     {
@@ -256,7 +256,7 @@ namespace CRPGNamespace
                 case "quests":
                 case "q":
                     Utils.Add("Current Quests: ");
-                    foreach(Quest q in player.activeQuests)
+                    foreach (Quest q in player.activeQuests)
                     {
                         Utils.Add("\t" + q.name);
                     }

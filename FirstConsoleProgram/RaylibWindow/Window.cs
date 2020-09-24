@@ -46,7 +46,7 @@ namespace RaylibWindowNamespace
         public static Timer attackTimer = new Timer(20);
 
         //This is for my boundries I decided using just ints was annoying
-        public static Vector4 playZoneBarrier = new Vector4(borderThickness, borderThickness, 
+        public static Vector4 playZoneBarrier = new Vector4(borderThickness, borderThickness,
             screenWidth - borderThickness, screenHeight - borderThickness);
 
         //The current stage of combat we're on

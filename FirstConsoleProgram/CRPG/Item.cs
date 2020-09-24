@@ -12,7 +12,7 @@
         /// <summary>
         /// Name of the item
         /// </summary>
-        public string Name = ""; 
+        public string Name = "";
         /// <summary>
         /// Plural name of the item
         /// </summary>

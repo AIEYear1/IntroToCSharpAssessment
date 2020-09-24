@@ -118,7 +118,7 @@ namespace CRPGNamespace
 
                 if (inventoryItem.quantity == 1)
                 {
-                    Utils.Add($"You loot {inventoryItem.quantity} {Utils.ColorText(inventoryItem.details.Name, (inventoryItem.details is Weapon) ? TextColor.SALMON: ((inventoryItem.details is Armor) ? TextColor.LIGHTBLUE : TextColor.GOLD))}");
+                    Utils.Add($"You loot {inventoryItem.quantity} {Utils.ColorText(inventoryItem.details.Name, (inventoryItem.details is Weapon) ? TextColor.SALMON : ((inventoryItem.details is Armor) ? TextColor.LIGHTBLUE : TextColor.GOLD))}");
                 }
                 else
                 {

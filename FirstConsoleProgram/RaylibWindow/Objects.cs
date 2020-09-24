@@ -72,7 +72,7 @@ namespace RaylibWindowNamespace
         //Health UI
         public static RectangleSprite healthBar = new RectangleSprite(Vector2.One * borderThickness, Window.screenWidth - borderThickness * 2, 20, GREEN);
         public static RectangleSprite healthBackground = new RectangleSprite(Vector2.One * borderThickness, Window.screenWidth - borderThickness * 2, 20, RED);
-        public static RectangleSprite healthBorder = new RectangleSprite(new Vector2(0, borderThickness+20), Window.screenWidth, borderThickness, DARKGRAY);
+        public static RectangleSprite healthBorder = new RectangleSprite(new Vector2(0, borderThickness + 20), Window.screenWidth, borderThickness, DARKGRAY);
 
         //Main borders
         public static RectangleSprite topBar = new RectangleSprite(Vector2.Zero, Window.screenWidth, borderThickness, DARKGRAY);

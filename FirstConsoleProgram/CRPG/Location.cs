@@ -72,7 +72,7 @@
         {
             Utils.Add(description);
 
-            if(locationToNorth != null)
+            if (locationToNorth != null)
             {
                 Utils.Add("\tTo the North is " + Utils.PrefixNoun(locationToNorth.name, locationToNorth.properNoun, locationToNorth.knownNoun));
             }
@@ -88,11 +88,11 @@
             {
                 Utils.Add("\tTo the South is " + Utils.PrefixNoun(locationToSouth.name, locationToSouth.properNoun, locationToSouth.knownNoun));
             }
-            if(monsterLivingHere != null)
+            if (monsterLivingHere != null)
             {
                 Utils.Add($"There is {Utils.PrefixNoun(monsterLivingHere.Name.FullName, monsterLivingHere.ProperNoun, monsterLivingHere.KnownNoun, TextColor.RED)} here");
             }
-            if(npcLivingHere != null)
+            if (npcLivingHere != null)
             {
                 Utils.Add($"There is {Utils.PrefixNoun(npcLivingHere.name.FullName, npcLivingHere.properNoun, npcLivingHere.knownNoun, TextColor.SEAGREEN)} here");
             }

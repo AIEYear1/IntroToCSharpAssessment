@@ -34,7 +34,7 @@
             {
                 case "yes":
                 case "y":
-                    if(Program.player.gold < price)
+                    if (Program.player.gold < price)
                     {
                         Utils.Add("You don't have enough gold");
                         return;

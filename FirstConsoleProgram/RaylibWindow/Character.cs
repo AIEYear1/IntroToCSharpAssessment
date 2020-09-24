@@ -3,8 +3,8 @@ using Raylib_cs;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using static Raylib_cs.Raylib;
 using static Raylib_cs.Color;
+using static Raylib_cs.Raylib;
 
 namespace RaylibWindowNamespace
 {
@@ -82,7 +82,7 @@ namespace RaylibWindowNamespace
         public override void Draw()
         {
             base.Draw();
-            for (int x = 0; x < popUps.Count; x++) 
+            for (int x = 0; x < popUps.Count; x++)
             {
                 popUps[x].Draw();
             }

@@ -5,47 +5,47 @@ namespace CRPGNamespace
 {
     //IDs for all of the stuff in the world
     #region Object IDs
-    public enum ItemIDs 
-    { 
-        STICK = 1 << 0, 
-        CLOTHES = 1 << 1, 
-        FANG = 1 << 2, 
-        MERMAIDSPEAR = 1 << 3, 
-        BANDITGARB = 1 << 4, 
-        LESSERHEALINGPOTION = 1 << 5, 
+    public enum ItemIDs
+    {
+        STICK = 1 << 0,
+        CLOTHES = 1 << 1,
+        FANG = 1 << 2,
+        MERMAIDSPEAR = 1 << 3,
+        BANDITGARB = 1 << 4,
+        LESSERHEALINGPOTION = 1 << 5,
         HEALINGPOTION = 1 << 6
     }
-    public enum NPCIDs 
-    { 
-        STEVE, 
-        KVORKYSINN, 
-        KVORKYSSHOP, 
+    public enum NPCIDs
+    {
+        STEVE,
+        KVORKYSINN,
+        KVORKYSSHOP,
         KVORKYSFOLKS
     }
-    public enum MonsterIDs 
-    { 
-        WOLF, 
-        MERMAID, 
-        LOOTER, 
+    public enum MonsterIDs
+    {
+        WOLF,
+        MERMAID,
+        LOOTER,
         TROLL
     }
-    public enum LocationIDs 
-    { 
-        CLEARING = 1 << 0, 
-        PATH = 1 << 1, 
-        BUSHES = 1 << 2, 
-        LAKE = 1 << 3, 
-        FORESTEDGE = 1 << 4, 
-        PAVEDROAD = 1 << 5, 
-        TOWNENTRANCE = 1 << 6, 
-        TOWNSHOP = 1 << 7, 
-        TOWNINN = 1 << 8, 
-        TOWNSQUARE = 1 << 9, 
+    public enum LocationIDs
+    {
+        CLEARING = 1 << 0,
+        PATH = 1 << 1,
+        BUSHES = 1 << 2,
+        LAKE = 1 << 3,
+        FORESTEDGE = 1 << 4,
+        PAVEDROAD = 1 << 5,
+        TOWNENTRANCE = 1 << 6,
+        TOWNSHOP = 1 << 7,
+        TOWNINN = 1 << 8,
+        TOWNSQUARE = 1 << 9,
         ROADNORTH = 1 << 10
     }
-    public enum QuestIDs 
-    { 
-        TUTORIALQUEST = 1 << 0, 
+    public enum QuestIDs
+    {
+        TUTORIALQUEST = 1 << 0,
         MAINQUEST = 1 << 1
     }
     #endregion
@@ -290,9 +290,9 @@ namespace CRPGNamespace
         /// <returns>Returns an Item of a specified ID if there is one</returns>
         public static Item ItemByID(int ID)
         {
-            for(int x = 0; x < Items.Count; x++)
+            for (int x = 0; x < Items.Count; x++)
             {
-                if(Items[x].ID == ID)
+                if (Items[x].ID == ID)
                 {
                     return Items[x];
                 }

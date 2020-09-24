@@ -1,5 +1,4 @@
 ﻿using Raylib_cs;
-using System;
 using System.Collections.Generic;
 using System.Numerics;
 using static Raylib_cs.Color;
@@ -126,7 +125,7 @@ namespace RaylibWindowNamespace
             //spears appear pointing at the player and travel forward on collision player takes damage
 
             //if the player hasn't used up all their spears and press and release the left mouse button spawn a new spear traveling in the direction the player dragged
-            if(spears.Count < 15)
+            if (spears.Count < 15)
             {
                 if (IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
                 {
@@ -142,9 +141,9 @@ namespace RaylibWindowNamespace
                 Window.attackTimer.Reset(Window.attackTimer.delay);
                 return;
             }
-            
+
             //If there are no active spears make the monster run from the cursor and return
-            if(spears.Count == 0)
+            if (spears.Count == 0)
             {
                 monster.SetDirection(monster.Position - GetMousePosition());
                 monster.Update();
@@ -155,7 +154,7 @@ namespace RaylibWindowNamespace
             float distance = Vector2.Distance(monster.Position, spears[0].position);
             int spearToRunFrom = 0;
             //Update spears
-            for (int x = 0; x < spears.Count; x++) 
+            for (int x = 0; x < spears.Count; x++)
             {
                 spears[x].Update();
                 spears[x].Draw();

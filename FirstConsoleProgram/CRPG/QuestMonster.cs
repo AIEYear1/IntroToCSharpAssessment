@@ -36,7 +36,7 @@ namespace CRPGNamespace
         /// </summary>
         public void CallQuest()
         {
-            if(objectiveMarker == -1)
+            if (objectiveMarker == -1)
             {
                 Program.player.GainQuest(relatingQuest);
                 return;

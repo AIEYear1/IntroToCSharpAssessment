@@ -12,7 +12,7 @@ namespace RaylibWindowNamespace
         /// <summary>
         /// Resets the floats to limit launching the player at the start
         /// </summary>
-        public static void  Start()
+        public static void Start()
         {
             toReturnHorizontal = 0;
             toReturnVertical = 0;

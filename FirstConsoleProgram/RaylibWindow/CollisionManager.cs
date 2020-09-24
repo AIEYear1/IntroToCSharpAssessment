@@ -58,7 +58,7 @@ namespace RaylibWindowNamespace
         /// </summary>
         public static bool Colliding(AnimatedObject spriteOne, LineSprite spriteTwo)
         {
-            float u = (spriteOne.Position.X - spriteTwo.StartPos.X) * (spriteTwo.EndPos.X - spriteTwo.StartPos.X); 
+            float u = (spriteOne.Position.X - spriteTwo.StartPos.X) * (spriteTwo.EndPos.X - spriteTwo.StartPos.X);
             u += (spriteOne.Position.Y - spriteTwo.StartPos.Y) * (spriteTwo.EndPos.Y - spriteTwo.StartPos.Y);
             u /= MathF.Pow((spriteTwo.EndPos - spriteTwo.StartPos).Length(), 2);
             u = MathF.Max(u, 0);

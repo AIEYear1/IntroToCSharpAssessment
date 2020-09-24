@@ -118,7 +118,7 @@ namespace RaylibWindowNamespace
 
                     player.creature.TakeDamage(damage);
 
-                    if(player.creature != null)
+                    if (player.creature != null)
                     {
                         player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
@@ -137,10 +137,10 @@ namespace RaylibWindowNamespace
         {
             wolves.Clear();
             //Initialize the wolves
-            for (int x = 0; x < 5; x++) 
+            for (int x = 0; x < 5; x++)
             {
                 wolves.Add(new AI(monster.texture,
-                                  new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X + 10), (int)(Window.playZoneBarrier.Z - 10)), 
+                                  new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X + 10), (int)(Window.playZoneBarrier.Z - 10)),
                                   Utils.NumberBetween((int)(Window.playZoneBarrier.Y + 10), (int)(Window.playZoneBarrier.W - 10))),
                                   WHITE, 16, Vector2.One * 4, 10));
 
@@ -172,7 +172,7 @@ namespace RaylibWindowNamespace
             monster.Update();
 
             //If monster is within view of player draw it
-            if (MathF.Abs(Utils.AngleBetween(Utils.LockMagnitude(player.direction, 1), monster.Position - player.Position)) < 70) 
+            if (MathF.Abs(Utils.AngleBetween(Utils.LockMagnitude(player.direction, 1), monster.Position - player.Position)) < 70)
             {
                 monster.Draw();
             }
@@ -297,7 +297,7 @@ namespace RaylibWindowNamespace
             if (stallTimer.Time == 0)
             {
                 spaceToUse = Utils.NumberBetween(0, attackSpaces.Count - 1);
-                while(spaceToUse == prevSpace)
+                while (spaceToUse == prevSpace)
                 {
                     spaceToUse = Utils.NumberBetween(0, attackSpaces.Count - 1);
                 }

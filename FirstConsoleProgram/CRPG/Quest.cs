@@ -111,9 +111,9 @@ namespace CRPGNamespace
             Utils.Add(Utils.ColorText(objectives[objectivePoint].CompletionText, TextColor.MAGENTA));
 
             //Checks to see if there are any objectives the player hasn't completed
-            for(int x = 0; x<objectives.Length; x++)
+            for (int x = 0; x < objectives.Length; x++)
             {
-                if(!objectives[x].Complete)
+                if (!objectives[x].Complete)
                     return;
             }
 
@@ -132,7 +132,7 @@ namespace CRPGNamespace
             Utils.Add($"You gained {Utils.ColorText(rewardGold.ToString(), TextColor.YELLOW)} gold");
             Utils.Add($"You earned {Utils.ColorText(rewardXP.ToString(), TextColor.GREEN)} XP");
 
-            if(followUpQuest != null)
+            if (followUpQuest != null)
             {
                 Program.player.GainQuest(followUpQuest);
             }

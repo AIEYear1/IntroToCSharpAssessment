@@ -22,7 +22,7 @@
         /// <param name="relatingQuest">Quest that this item is relating to</param>
         /// <param name="objectiveMarker">Objective that this item calls (-1 to add quest)</param>
         /// <param name="value">Value of the item</param>
-        public QuestItem(int iD, string name, string namePlural, string description, Quest relatingQuest, int objectiveMarker, int value) :base(iD, name, namePlural, description, value)
+        public QuestItem(int iD, string name, string namePlural, string description, Quest relatingQuest, int objectiveMarker, int value) : base(iD, name, namePlural, description, value)
         {
             this.relatingQuest = relatingQuest;
             this.objectiveMarker = objectiveMarker;

@@ -42,7 +42,7 @@
             switch (index)
             {
                 case LockedLocationIndex.FORESTEDGE:
-                    if(Program.player.Level < 2)
+                    if (Program.player.Level < 2)
                         break;
 
                     canEnter = true;

@@ -20,7 +20,7 @@
         /// <param name="description">Description of the location</param>
         /// <param name="relatingQuest">Quest that this item is relating to</param>
         /// <param name="objectiveMarker">Objective that this item calls (-1 to add quest)</param>
-        public QuestLocation(int iD, string name, string description, Quest relatingQuest, int objectiveMarker) :base(iD, name, description)
+        public QuestLocation(int iD, string name, string description, Quest relatingQuest, int objectiveMarker) : base(iD, name, description)
         {
             this.name = name;
             this.description = description;
@@ -33,7 +33,7 @@
         /// </summary>
         public void CallQuest()
         {
-            if(objectiveMarker == -1)
+            if (objectiveMarker == -1)
             {
                 Program.player.GainQuest(relatingQuest);
                 return;

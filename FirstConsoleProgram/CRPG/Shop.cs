@@ -64,7 +64,7 @@ namespace CRPGNamespace
                 //1st case "Buy", attempts to buy an item
                 case string item when item.StartsWith("buy "):
                     item = item.Substring(4);
-                    if(stock.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != InventoryItem.Empty)
+                    if (stock.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item) != InventoryItem.Empty)
                     {
                         Buy(stock.SingleOrDefault(x => x.details.Name.ToLower() == item || x.details.NamePlural.ToLower() == item));
                         break;
@@ -130,9 +130,9 @@ namespace CRPGNamespace
             {
                 swapped = false;
 
-                for(int x = 0; x < stock.Count - iteration - 1; x++)
+                for (int x = 0; x < stock.Count - iteration - 1; x++)
                 {
-                    if(stock[x].details.Value > stock[x + 1].details.Value)
+                    if (stock[x].details.Value > stock[x + 1].details.Value)
                     {
                         InventoryItem tmpHolder = stock[x + 1];
                         stock[x + 1] = stock[x];
@@ -140,7 +140,7 @@ namespace CRPGNamespace
                         swapped = true;
                     }
                 }
-                for (int x = stock.Count-1; x > 0 + iteration; x--)
+                for (int x = stock.Count - 1; x > 0 + iteration; x--)
                 {
                     if (stock[x].details.Value < stock[x - 1].details.Value)
                     {
@@ -202,7 +202,7 @@ namespace CRPGNamespace
                 Utils.Add("Not enough gold");
                 return;
             }
-            if(!stock.Contains(itemToBuy))
+            if (!stock.Contains(itemToBuy))
             {
                 Utils.Add("Shop doesn't have this item");
                 return;
@@ -230,7 +230,7 @@ namespace CRPGNamespace
                 Utils.Add("you don't have this item");
                 return;
             }
-            if(itemToSell.details is QuestItem)
+            if (itemToSell.details is QuestItem)
             {
                 Utils.Add("You can't sell quest items");
                 return;

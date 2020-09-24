@@ -88,7 +88,7 @@ class Utils
         string vowels = "aeiou";
 
         //If the color is not white change it
-        if(color != TextColor.WHITE)
+        if (color != TextColor.WHITE)
         {
             noun = ColorText(noun, color);
         }
@@ -262,7 +262,7 @@ class Utils
     public static float RadToDeg(float rad)
     {
         rad *= (180 / MathF.PI);
-        return  + ((rad > 180) ? rad - 360 : rad);
+        return +((rad > 180) ? rad - 360 : rad);
     }
 
     /// <summary>

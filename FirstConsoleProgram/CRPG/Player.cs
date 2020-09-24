@@ -161,7 +161,7 @@ namespace CRPGNamespace
             //Fill out player inventory
             int.TryParse(saveData[11], out tempInt);
             int[] tmpBytes = ParseIDs(tempInt);
-            for(int x = 0; x < tmpBytes.Length; x++)
+            for (int x = 0; x < tmpBytes.Length; x++)
             {
                 int.TryParse(saveData[12 + x], out tempInt);
                 Inventory.Add(new InventoryItem(World.ItemByID(tmpBytes[x]), tempInt));
@@ -242,7 +242,7 @@ namespace CRPGNamespace
 
             maximumHP += (int)((float)maximumHP * ((float)level / 4f));
             currentHP = maximumHP;
-            baseMaxDamage = level + (level - 1); 
+            baseMaxDamage = level + (level - 1);
             baseMinDamage = level / 2;
             baseAc = (2 * level) - 2;
         }
@@ -270,7 +270,7 @@ namespace CRPGNamespace
         public void Save(string saveName)
         {
             // overwrites old saves
-            if(File.Exists(saveName + ".save"))
+            if (File.Exists(saveName + ".save"))
             {
                 File.Delete(saveName + ".save");
             }
@@ -290,18 +290,18 @@ namespace CRPGNamespace
             for (int x = 0; x < activeQuests.Count; x++)
             {
                 quests += activeQuests[x].ID;
-                for(int y = 0; y < activeQuests[x].objectives.Length; y++)
+                for (int y = 0; y < activeQuests[x].objectives.Length; y++)
                 {
                     if (!activeQuests[x].objectives[y].Complete)
                     {
-                        questProgress[x] = y-1;
+                        questProgress[x] = y - 1;
                         break;
                     }
                 }
             }
             //converts player's completed quests into data
             int compQuests = 0;
-            for(int x = 0; x < completedQuests.Count; x++)
+            for (int x = 0; x < completedQuests.Count; x++)
             {
                 compQuests += completedQuests[x].ID;
             }
@@ -309,7 +309,7 @@ namespace CRPGNamespace
             int clearedLocs = 0;
             for (int x = 0; x < World.Locations.Count; x++)
             {
-                if(World.Locations[x].monsterLivingHere == null)
+                if (World.Locations[x].monsterLivingHere == null)
                 {
                     clearedLocs += World.Locations[x].ID;
                 }
@@ -376,7 +376,7 @@ namespace CRPGNamespace
         public void MoveTo(Location loc, bool ignoreMonster = false)
         {
             //if there is a monster in your current location and you are not ignoring it get blocked
-            if(!ignoreMonster && currentLocation != null && currentLocation.monsterLivingHere != null)
+            if (!ignoreMonster && currentLocation != null && currentLocation.monsterLivingHere != null)
             {
                 Utils.Add($"The {currentLocation.monsterLivingHere.Name.FullName} blocks your path");
                 return;
@@ -386,7 +386,7 @@ namespace CRPGNamespace
             if ((loc is LockedLocation lockLoc) && !lockLoc.Enter())
                 return;
 
-            if(loc.monsterLivingHere != null)
+            if (loc.monsterLivingHere != null)
             {
                 loc.monsterLivingHere.currentHP = loc.monsterLivingHere.maximumHP;
             }
@@ -395,7 +395,7 @@ namespace CRPGNamespace
             currentLocation = loc;
             currentLocation.knownNoun = true;
 
-            if(loc is QuestLocation)
+            if (loc is QuestLocation)
             {
                 (loc as QuestLocation).CallQuest();
             }
@@ -471,14 +471,14 @@ namespace CRPGNamespace
         public void Use(string arg)
         {
             //Checks to see if the player has the item the player is asking for
-            if(Inventory.SingleOrDefault(item => item.details.Name.ToLower() == arg || item.details.NamePlural.ToLower() == arg) == InventoryItem.Empty)
+            if (Inventory.SingleOrDefault(item => item.details.Name.ToLower() == arg || item.details.NamePlural.ToLower() == arg) == InventoryItem.Empty)
             {
                 Utils.Add("You don't have an item of that name");
                 return;
             }
 
             Item tmpItem = Inventory.SingleOrDefault(item => item.details.Name.ToLower() == arg || item.details.NamePlural.ToLower() == arg).details;
-            if(tmpItem is Consumable consumable)
+            if (tmpItem is Consumable consumable)
             {
                 consumable.Consume(Program.player);
                 return;
@@ -493,13 +493,13 @@ namespace CRPGNamespace
         /// <param name="itemToAdd">Item to add</param>
         public void AddItemToInventory(InventoryItem itemToAdd)
         {
-            if(itemToAdd.details is QuestItem)
+            if (itemToAdd.details is QuestItem)
             {
                 (itemToAdd.details as QuestItem).CallQuest();
             }
 
             //If the player already has this item increase the quantity
-            for(int x = 0; x<Inventory.Count; x++)
+            for (int x = 0; x < Inventory.Count; x++)
             {
                 if (itemToAdd == Inventory[x])
                 {
@@ -537,7 +537,7 @@ namespace CRPGNamespace
         /// <param name="arg">Item to equip</param>
         public void EquipItem(string arg)
         {
-            for(int x = 0; x <Inventory.Count; x++)
+            for (int x = 0; x < Inventory.Count; x++)
             {
                 if (Inventory[x].details.Name.ToLower() == arg || Inventory[x].details.NamePlural.ToLower() == arg)
                 {
@@ -634,7 +634,7 @@ namespace CRPGNamespace
             Utils.Add($"Stats for {Name.FullName}");
             Utils.Add($"\tHP: \t\t{currentHP}/{maximumHP}");
 
-            if(currentWeapon != null)
+            if (currentWeapon != null)
                 Utils.Add($"\tAttack Power: \t{CurrentMinDamage}-{CurrentMaxDamage}");
             if (currentArmor != null)
                 Utils.Add($"\tProtection: \t{CurrentAc}");

@@ -22,8 +22,8 @@ namespace RaylibWindowNamespace
         /// <summary>
         /// public rectangle getter / setter
         /// </summary>
-        public Rectangle Rectangle 
-        { 
+        public Rectangle Rectangle
+        {
             get => rectangle;
             set => rectangle = value;
         }
@@ -63,7 +63,7 @@ namespace RaylibWindowNamespace
         /// <param name="color">Color of the sprite</param>
         public RectangleSprite(Vector2 position, float width, float height, Color color)
         {
-            this.rectangle = new Rectangle(position.X,position.Y, width, height);
+            this.rectangle = new Rectangle(position.X, position.Y, width, height);
             this.color = color;
         }
 
