@@ -40,7 +40,7 @@
                         return;
                     }
                     Program.player.gold -= price;
-                    Utils.Add("You sleep for the night");
+                    Utils.Add($"You spend {Utils.ColorText(price.ToString(), TextColor.YELLOW)} gold and sleep for the night");
                     Program.player.Home = Program.player.currentLocation;
                     break;
                 case "no":
@@ -56,7 +56,7 @@
         public override void Look()
         {
             base.Look();
-            Utils.Add($"\t{price} gold to say the night");
+            Utils.Add($"\t{Utils.ColorText(price.ToString(), TextColor.YELLOW)} gold to say the night");
         }
     }
 }

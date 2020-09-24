@@ -409,6 +409,7 @@ namespace CRPGNamespace
             Utils.Add("\t" + Utils.ColorText("Dark Red", TextColor.DARKRED) + ": player death");
             Utils.Add("\t" + Utils.ColorText("Pink", TextColor.PINK) + ": Consumable");
             Utils.Add("\t" + Utils.ColorText("Sea Green", TextColor.SEAGREEN) + ": NPC");
+            Utils.Add("\t" + Utils.ColorText("Purple", TextColor.PURPLE) + ": Healing");
         }
         #endregion
     }

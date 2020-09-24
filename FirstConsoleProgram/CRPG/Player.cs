@@ -471,13 +471,13 @@ namespace CRPGNamespace
         public void Use(string arg)
         {
             //Checks to see if the player has the item the player is asking for
-            if(Inventory.SingleOrDefault(item => item.details.Name == arg || item.details.NamePlural == arg) == InventoryItem.Empty)
+            if(Inventory.SingleOrDefault(item => item.details.Name.ToLower() == arg || item.details.NamePlural.ToLower() == arg) == InventoryItem.Empty)
             {
                 Utils.Add("You don't have an item of that name");
                 return;
             }
 
-            Item tmpItem = Inventory.SingleOrDefault(item => item.details.Name == arg || item.details.NamePlural == arg).details;
+            Item tmpItem = Inventory.SingleOrDefault(item => item.details.Name.ToLower() == arg || item.details.NamePlural.ToLower() == arg).details;
             if(tmpItem is Consumable consumable)
             {
                 consumable.Consume(Program.player);
@@ -539,7 +539,7 @@ namespace CRPGNamespace
         {
             for(int x = 0; x <Inventory.Count; x++)
             {
-                if (Inventory[x].details.Name.ToLower() == arg)
+                if (Inventory[x].details.Name.ToLower() == arg || Inventory[x].details.NamePlural.ToLower() == arg)
                 {
                     Item tmpItem = Inventory[x].details;
 

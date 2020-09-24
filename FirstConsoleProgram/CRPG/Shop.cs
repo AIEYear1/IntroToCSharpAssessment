@@ -208,10 +208,11 @@ namespace CRPGNamespace
                 return;
             }
 
-            Program.player.gold -= (int)(itemToBuy.details.Value * priceAugment);
+            int cost = (int)(itemToBuy.details.Value * priceAugment);
+            Program.player.gold -= cost;
             itemToBuy.quantity = 1;
             Program.player.AddItemToInventory(itemToBuy);
-            Utils.Add("You buy a " + itemToBuy.details.Name);
+            Utils.Add($"You spend {Utils.ColorText(cost.ToString(), TextColor.YELLOW)} buy a {itemToBuy.details.Name}");
 
             RemoveItemFromStock(itemToBuy);
 
@@ -240,9 +241,10 @@ namespace CRPGNamespace
                 return;
             }
 
-            Program.player.gold += itemToSell.details.Value - (int)MathF.Abs(itemToSell.details.Value - (itemToSell.details.Value * priceAugment));
+            int cost = itemToSell.details.Value - (int)MathF.Abs(itemToSell.details.Value - (itemToSell.details.Value * priceAugment));
+            Program.player.gold += cost;
             Program.player.RemoveItemFromInventory(itemToSell);
-            Utils.Add("You sell a " + itemToSell.details.Name);
+            Utils.Add($"You sell a {itemToSell.details.Name} and gain {Utils.ColorText(cost.ToString(), TextColor.YELLOW)} gold");
 
             AddItemToStock(itemToSell);
 
