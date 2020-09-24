@@ -1,8 +1,10 @@
 ﻿using CRPGNamespace;
 using Raylib_cs;
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using static Raylib_cs.Raylib;
+using static Raylib_cs.Color;
 
 namespace RaylibWindowNamespace
 {
@@ -12,27 +14,24 @@ namespace RaylibWindowNamespace
     public class Character : AnimatedObject
     {
         /// <summary>
-        /// speed of the character
+        /// Creture it holds either Player or Monster
         /// </summary>
-        public float speed = 300;
-        /// <summary>
-        /// Player velocity
-        /// </summary>
-        public Vector2 velocity;
+        public LivingCreature creature;
         /// <summary>
         /// Player's direction of travel
         /// </summary>
         public Vector2 direction = new Vector2();
-
+        /// <summary>
+        /// speed of the character
+        /// </summary>
+        public float speed = 300;
         /// <summary>
         /// How easily the player moves
         /// </summary>
         public float sensitivity = 5;
 
-        /// <summary>
-        /// Creture it holds either Player or Monster
-        /// </summary>
-        public LivingCreature creature;
+        //Holds all the PopUps for this creature
+        List<PopUpText> popUps = new List<PopUpText>();
 
         /// <summary>
         /// Identical to animatedObject
@@ -55,7 +54,6 @@ namespace RaylibWindowNamespace
         public virtual void Start()
         {
             direction = Vector2.Zero;
-            velocity = Vector2.Zero;
         }
 
         /// <summary>
@@ -63,16 +61,60 @@ namespace RaylibWindowNamespace
         /// </summary>
         public virtual void Update()
         {
+            for (int x = 0; x < popUps.Count; x++)
+            {
+                //if (popUps[x].alphaFade.IsComplete())
+                //{
+                //    popUps.RemoveAt(x);
+                //    continue;
+                //}
+                popUps[x].Update();
+            }
+
             direction.X = Input.GetAxis("Horizontal", sensitivity);
             direction.Y = Input.GetAxis("Vertical", sensitivity);
 
             direction = Utils.ClampMagnitude(direction, 1);
 
-            velocity = direction * speed * GetFrameTime();
+            Vector2 velocity = direction * speed * GetFrameTime();
             Position += velocity;
             Border();
 
             SetPlayerAnimState();
+        }
+
+        public override void Draw()
+        {
+            base.Draw();
+            for (int x = 0; x < popUps.Count; x++) 
+            {
+                popUps[x].Draw();
+            }
+        }
+
+        /// <summary>
+        /// Adds text popup to be shown
+        /// </summary>
+        /// <param name="text">Text for popup to show</param>
+        public void PopUp(string text)
+        {
+            //Determines where in the list this popup is
+            int tmp = popUps.Count % 3;
+            switch (tmp)
+            {
+                //1st case sends popup text to the left
+                case 0:
+                    popUps.Add(new PopUpText(text, Position + (-Vector2.One * radius), 15, RED, 150, Utils.LockMagnitude(new Vector2(-1, -2), 1), 1));
+                    break;
+                //2nd case sends popup text straight up
+                case 1:
+                    popUps.Add(new PopUpText(text, Position + (-Vector2.UnitY * radius), 15, RED, 150, -Vector2.UnitY, 1));
+                    break;
+                //3rd case sends popup text to the right
+                case 2:
+                    popUps.Add(new PopUpText(text, Position + (new Vector2(1, -1) * radius), 15, RED, 150, Utils.LockMagnitude(new Vector2(1, -2), 1), 1));
+                    break;
+            }
         }
 
         /// <summary>

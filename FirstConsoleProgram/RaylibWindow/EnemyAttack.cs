@@ -114,10 +114,16 @@ namespace RaylibWindowNamespace
                 //Check to see if a wolf hit the player
                 if (CollisionManager.Colliding(player, wolves[x]))
                 {
-                    player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
+                    int damage = Utils.NumberBetween(minDamage, maxDamage);
+
+                    player.creature.TakeDamage(damage);
+                    player.PopUp(damage.ToString());
+
                     if(player.creature != null)
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
+
                     wolves.RemoveAt(x);
+
                     if (wolves.Count == 0)
                     {
                         Window.attackTimer.Reset(Window.attackTimer.delay);

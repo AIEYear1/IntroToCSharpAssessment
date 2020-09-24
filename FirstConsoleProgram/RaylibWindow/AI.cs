@@ -39,7 +39,7 @@ namespace RaylibWindowNamespace
         /// </summary>
         public override void Update()
         {
-            velocity = direction * speed * GetFrameTime();
+            Vector2 velocity = direction * speed * GetFrameTime();
             Position += velocity;
             Border();
 
