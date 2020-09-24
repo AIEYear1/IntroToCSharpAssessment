@@ -1,5 +1,7 @@
 ﻿namespace CRPGNamespace
 {
+#pragma warning disable CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
+#pragma warning disable CS0660 // Type defines operator == or operator != but does not override Object.Equals(object o)
     /// <summary>
     /// Items stored with quantities
     /// </summary>
