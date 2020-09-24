@@ -118,7 +118,7 @@ namespace RaylibWindowNamespace
         #endregion
 
         #region Mermaid Spear Attack
-        List<LineSprite> spears = new List<LineSprite>();
+        readonly List<LineSprite> spears = new List<LineSprite>();
         Vector2 spawnPoint;
         Timer endTimer = new Timer(2);
         void MermaidSpearAttack()

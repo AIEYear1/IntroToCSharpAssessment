@@ -37,6 +37,12 @@ namespace CRPGNamespace
 
         static void Main()
         {
+            #region Color Changing
+            var handle = GetStdHandle(-11);
+            GetConsoleMode(handle, out int mode);
+            SetConsoleMode(handle, mode | 0x4);
+            #endregion
+
             //Startup loop to select a new game or load an old save
             while (!initialized)
             {
