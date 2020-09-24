@@ -210,6 +210,9 @@ namespace CRPGNamespace
                             case "color":
                                 World.HelpColor();
                                 break;
+                            case "combat":
+                                World.HelpCombat();
+                                break;
                             //Overflow
                             default:
                                 World.Help();

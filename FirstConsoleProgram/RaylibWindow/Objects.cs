@@ -28,11 +28,11 @@ namespace RaylibWindowNamespace
         /// <summary>
         /// Attack for the Stick Weapon
         /// </summary>
-        public static WeaponAttack stickAttack = new WeaponAttack(3, 7, "You chase the enemy around and attempt to smack them", WeaponAttackIndex.STICKATTACK);
+        public static WeaponAttack stickAttack = new WeaponAttack(3, 7, "You chase the enemy around with 'wasd' and attempt to smack them", WeaponAttackIndex.STICKATTACK);
         /// <summary>
         /// Attack for the Mermaid Spear Attack
         /// </summary>
-        public static WeaponAttack mermaidSpearAttack = new WeaponAttack(1, 4, "You hold down left mouse button\nand release in the direction you wish to throw your spear,\nyou have 15 spears", WeaponAttackIndex.MERMAIDSPEARATTACK);
+        public static WeaponAttack mermaidSpearAttack = new WeaponAttack(1, 4, "You hold down left mouse button and release in the direction you wish to throw your spear.\nYou have 15 spears", WeaponAttackIndex.MERMAIDSPEARATTACK);
 
         //All of the Enemy Attack
         /// <summary>
@@ -42,7 +42,7 @@ namespace RaylibWindowNamespace
         /// <summary>
         /// Attack for the Looter Enemy
         /// </summary>
-        public static EnemyAttack looterAttack = new EnemyAttack(4, 7, "Looter attempts to sneak up behind you hiding in you blind spots", EnemyAttackIndex.LOOTERATTACK);
+        public static EnemyAttack looterAttack = new EnemyAttack(4, 7, "Looter attempts to sneak up behind you hiding in your blind spots", EnemyAttackIndex.LOOTERATTACK);
         /// <summary>
         /// Attack for the Mermaid Enemy
         /// </summary>

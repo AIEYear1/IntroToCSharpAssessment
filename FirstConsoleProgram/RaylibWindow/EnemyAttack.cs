@@ -260,11 +260,11 @@ namespace RaylibWindowNamespace
         /// <summary>
         /// waits to give the player some pause between attacks
         /// </summary>
-        Timer waitTimer = new Timer(2.5f);
+        Timer waitTimer = new Timer(2.25f);
         /// <summary>
         /// stalls so the player can react to the incoming attack
         /// </summary>
-        Timer stallTimer = new Timer(1.5f);
+        Timer stallTimer = new Timer(1.4f);
         /// <summary>
         /// holds so the player can see the attack
         /// </summary>

@@ -377,39 +377,53 @@ namespace CRPGNamespace
         /// </summary>
         public static void Help()
         {
-            Utils.Add("Possible Commands: ");
-            Utils.Add("\twho am i: tells you your name");
+            Utils.Add("Possible Commands:", TextColor.LIME);
+            Utils.Add("\twho am i: tells you your name", TextColor.LIME);
             Utils.Add("\tlook: lets you look at things\n\tSubCommands: \n\t\tNorth; East; South; West: lets you look at locations in that direction" +
                 "\n\t\there: lets you look here and tells you of everything in this area\n\t\tItem Names: lets you look at the specified item" +
-                "\n\t\tMonster Names: lets you look at the specified monster\n\t\tQuest Names: lets you look at the specified quest");
-            Utils.Add("\tstats: shows you your current stats");
-            Utils.Add("\tinventory: shows you all the items in your inventory");
-            Utils.Add("\tquests: shows you your current quests");
-            Utils.Add("\tmove: lets you move in a specified direction");
-            Utils.Add("\tequip: lets you equip a specified item");
-            Utils.Add("\tattack: attacks the current monster in the area");
-            Utils.Add("\tquit: quits the game");
-            Utils.Add("\thelp color: explains the text color scheme");
+                "\n\t\tMonster Names: lets you look at the specified monster\n\t\tQuest Names: lets you look at the specified quest", TextColor.LIME);
+            Utils.Add("\tstats: shows you your current stats", TextColor.LIME);
+            Utils.Add("\tinventory: shows you all the items in your inventory", TextColor.LIME);
+            Utils.Add("\tquests: shows you your current quests", TextColor.LIME);
+            Utils.Add("\tmove: lets you move in a specified direction", TextColor.LIME);
+            Utils.Add("\tequip: lets you equip a specified item", TextColor.LIME);
+            Utils.Add("\tattack: attacks the current monster in the area", TextColor.LIME);
+            Utils.Add("\tquit: quits the game", TextColor.LIME);
+            Utils.Add("\thelp color: explains the text color scheme", TextColor.LIME);
+            Utils.Add("\thelp combat: explains how combat works", TextColor.LIME);
         }
         /// <summary>
         /// Adds all of the Color help commands to the string to upload
         /// </summary>
         public static void HelpColor()
         {
-            Utils.Add("Color Reference:");
-            Utils.Add("\tWhite: normal text");
-            Utils.Add("\t" + Utils.ColorText("Red", TextColor.RED) + ": Monster");
-            Utils.Add("\t" + Utils.ColorText("Magenta", TextColor.MAGENTA) + ": quest objective");
-            Utils.Add("\t" + Utils.ColorText("Green", TextColor.GREEN) + ": XP");
-            Utils.Add("\t" + Utils.ColorText("Yellow", TextColor.YELLOW) + ": Gold");
-            Utils.Add("\t" + Utils.ColorText("Blue", TextColor.BLUE) + ": Damage");
-            Utils.Add("\t" + Utils.ColorText("Salmon", TextColor.SALMON) + ": Weapon");
-            Utils.Add("\t" + Utils.ColorText("Light Blue", TextColor.LIGHTBLUE) + ": Armor");
-            Utils.Add("\t" + Utils.ColorText("Gold", TextColor.GOLD) + ": General Item");
-            Utils.Add("\t" + Utils.ColorText("Dark Red", TextColor.DARKRED) + ": player death");
-            Utils.Add("\t" + Utils.ColorText("Pink", TextColor.PINK) + ": Consumable");
-            Utils.Add("\t" + Utils.ColorText("Sea Green", TextColor.SEAGREEN) + ": NPC");
-            Utils.Add("\t" + Utils.ColorText("Purple", TextColor.PURPLE) + ": Healing");
+            Utils.Add("Color Reference:", TextColor.LIME);
+            Utils.Add("\tWhite" + Utils.ColorText(": normal text", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Red", TextColor.RED) + Utils.ColorText(": Monster", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Magenta", TextColor.MAGENTA) + Utils.ColorText(": quest objective", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Green", TextColor.GREEN) + Utils.ColorText(": XP", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Yellow", TextColor.YELLOW) + Utils.ColorText(": Gold", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Blue", TextColor.BLUE) + Utils.ColorText(": Damage", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Salmon", TextColor.SALMON) + Utils.ColorText(": Weapon", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Light Blue", TextColor.LIGHTBLUE) + Utils.ColorText(": Armor", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Gold", TextColor.GOLD) + Utils.ColorText(": General Item", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Dark Red", TextColor.DARKRED) + Utils.ColorText(": player death", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Pink", TextColor.PINK) + Utils.ColorText(": Consumable", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Sea Green", TextColor.SEAGREEN) + Utils.ColorText(": NPC", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Purple", TextColor.PURPLE) + Utils.ColorText(": Healing", TextColor.LIME));
+            Utils.Add("Lime: Help", TextColor.LIME);
+        }
+        /// <summary>
+        /// gives a basic combat tutorial
+        /// </summary>
+        public static void HelpCombat()
+        {
+            Utils.Add("Combat:", TextColor.LIME);
+            Utils.Add("When you type the 'attack' command and there is a monster in the area a window will pop up,\n" +
+                "in this window you'll have a chance to attack.\n" +
+                "Each enemy has a unique attack and so does each weapon!\n" +
+                "To find out how your attacks work look at your weapon,\n" +
+                "you can also get a simple description of the enemy's attack by looking at them", TextColor.LIME);
         }
         #endregion
     }

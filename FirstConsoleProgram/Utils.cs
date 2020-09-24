@@ -64,6 +64,15 @@ class Utils
     {
         outputToConsole += strToAdd + (addNewLine ? "\n" : "");
     }
+    /// <summary>
+    /// Adds strToAdd to outputToConsole including an optional new line
+    /// </summary>
+    /// <param name="strToAdd">string to be added</param>
+    /// <param name="addNewLine">whether to add a new line, assumed true</param>
+    public static void Add(string strToAdd, TextColor color, bool addNewLine = true)
+    {
+        outputToConsole += Utils.ColorText(strToAdd, color) + (addNewLine ? "\n" : "");
+    }
 
     /// <summary>
     /// prints outputToConsole to the console
