@@ -27,7 +27,7 @@ namespace CRPGNamespace
         /// <summary>
         /// List of all possible loot items you can get from this monster
         /// </summary>
-        public List<LootItem> lootTable = new List<LootItem>();
+        public LootItem[] lootTable;
 
         /// Parameters
         /// <param name="name">Name of the monster</param>

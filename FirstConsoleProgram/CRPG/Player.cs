@@ -290,7 +290,7 @@ namespace CRPGNamespace
             for (int x = 0; x < activeQuests.Count; x++)
             {
                 quests += activeQuests[x].ID;
-                for(int y = 0; y < activeQuests[x].objectives.Count; y++)
+                for(int y = 0; y < activeQuests[x].objectives.Length; y++)
                 {
                     if (!activeQuests[x].objectives[y].Complete)
                     {

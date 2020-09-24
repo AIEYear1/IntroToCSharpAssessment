@@ -46,7 +46,7 @@ namespace CRPGNamespace
         /// <summary>
         /// List of all the Quest objectives
         /// </summary>
-        public List<Objective> objectives = new List<Objective>();
+        public Objective[] objectives;
         /// <summary>
         /// List of all possible items the player could earn from completing this quest
         /// </summary>
@@ -70,7 +70,7 @@ namespace CRPGNamespace
         /// <param name="questGainedText">Text shown when the player gains the quest</param>
         /// <param name="completionText">Text shown when the player completes the quest</param>
         /// <param name="mainQuest">Whether the quest is a main quest or side quest (assumed false)</param>
-        public Quest(int iD, string name, string description, List<(string name, string completionText)> Objectives, int rewardGold, int rewardXP, string questGainedText, string completionText, bool mainQuest = false)
+        public Quest(int iD, string name, string description, int rewardGold, int rewardXP, string questGainedText, string completionText, bool mainQuest = false)
         {
             ID = iD;
             this.name = name;
@@ -80,10 +80,6 @@ namespace CRPGNamespace
             this.rewardXP = rewardXP;
             this.mainQuest = mainQuest;
             this.completionText = completionText;
-            for(int x = 0; x < Objectives.Count; x++)
-            {
-                objectives.Add(new Objective(Objectives[x].name, objectives.Count, Objectives[x].completionText));
-            }
         }
 
         /// <summary>
@@ -115,7 +111,7 @@ namespace CRPGNamespace
             Utils.Add(Utils.ColorText(objectives[objectivePoint].CompletionText, TextColor.MAGENTA));
 
             //Checks to see if there are any objectives the player hasn't completed
-            for(int x = 0; x<objectives.Count; x++)
+            for(int x = 0; x<objectives.Length; x++)
             {
                 if(!objectives[x].Complete)
                     return;

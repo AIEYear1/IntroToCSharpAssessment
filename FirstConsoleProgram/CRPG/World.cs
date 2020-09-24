@@ -136,12 +136,18 @@ namespace CRPGNamespace
             Monsters.Clear();
             //Parameters: Name, Description, Health, Max Damage, Min Damage, Reward XP, Reward Gold
             //QuestMonster: Parameters, relating quest, objective marker it calls
-            Monster wolf = new Monster(new Name("Wolf"), "A lone wolf prowling", 12, WolfAttack, 11, 5);
-            wolf.lootTable.Add(new LootItem(ItemByID((int)ItemIDs.FANG), 100, true));
-            Monster mermaid = new Monster(new Name("Mermaid"), "a mermaid sitting on the edge of the lake", 15, mermaidAttack, 23, 3);
-            mermaid.lootTable.Add(new LootItem(ItemByID((int)ItemIDs.MERMAIDSPEAR), 100, true));
-            Monster looter = new Monster(new Name("Looter"), "A looter hiding in the bushes", 20, looterAttack, 18, 7);
-            looter.lootTable.Add(new LootItem(ItemByID((int)ItemIDs.BANDITGARB), 100, true));
+            Monster wolf = new Monster(new Name("Wolf"), "A lone wolf prowling", 12, WolfAttack, 11, 5)
+            {
+                lootTable = new LootItem[] { new LootItem(ItemByID((int)ItemIDs.FANG), 100, true) }
+            };
+            Monster mermaid = new Monster(new Name("Mermaid"), "a mermaid sitting on the edge of the lake", 15, mermaidAttack, 23, 3)
+            {
+                lootTable = new LootItem[] { new LootItem(ItemByID((int)ItemIDs.MERMAIDSPEAR), 100, true) }
+            };
+            Monster looter = new Monster(new Name("Looter"), "A looter hiding in the bushes", 20, looterAttack, 18, 7)
+            {
+                lootTable = new LootItem[] { new LootItem(ItemByID((int)ItemIDs.BANDITGARB), 100, true) }
+            };
             QuestMonster troll = new QuestMonster(new Name("Troll"), "A troll trying to attack the town", 30, trollAttack, 32, 10, QuestByID((int)QuestIDs.TUTORIALQUEST), 1);
 
             Monsters.Add(wolf);
@@ -249,20 +255,24 @@ namespace CRPGNamespace
         {
             Quests.Clear();
             //Parameters: Name, Description, Objectives, Reward Gold, Reward XP, Text played when quest gained, Text played when quest completed, quest following current quest-presumed null, Whther quest is main quest-presumed false, Quest complete-presumed false
-            List<(string, string)> objectives = new List<(string, string)>();
 
-            #region tutorial objectives
-            objectives.Add(("Figure out where you are", "As you walk along the road you see a city being attacked by a troll!\nDefeat the troll and protect the villagers!"));
-            objectives.Add(("Defeat the troll", "With the troll defeated the town is now safe, perhaps there you can find answers there"));
-            objectives.Add(("Talk with the townsfolk", "You're lost? Oh well this is Kvorkys a small town in the southern portion of Bjork.\nYou may be able to find out more at the capital, if you head out of the town you should see a road north,\nthat'll lead you to the capital"));
-            #endregion
-            Quest tutorialQuest = new Quest((int)QuestIDs.TUTORIALQUEST, "Lost in the Forest!", "You've no idea where you are, you should start looking around for anything familiar", objectives, 7, 20, "You wake up in a clearing, where is this place? You should figure out where you are.", "well, looks like it's time to adventure");
-            objectives.Clear();
+            Quest tutorialQuest = new Quest((int)QuestIDs.TUTORIALQUEST, "Lost in the Forest!", "You've no idea where you are, you should start looking around for anything familiar", 7, 20, "You wake up in a clearing, where is this place? You should figure out where you are.", "well, looks like it's time to adventure")
+            {
+                objectives = new Objective[]
+            {
+                new Objective("Figure out where you are", 0, "As you walk along the road you see a city being attacked by a troll!\nDefeat the troll and protect the villagers!"),
+                new Objective("Defeat the troll", 1, "With the troll defeated the town is now safe, perhaps there you can find answers there"),
+                new Objective("Talk with the townsfolk", 2, "You're lost? Oh well this is Kvorkys a small town in the southern portion of Bjork.\nYou may be able to find out more at the capital, if you head out of the town you should see a road north,\nthat'll lead you to the capital")
+            }
+            };
 
-            #region Main Objectives
-            objectives.Add(("Make your way to the capital", ""));
-            #endregion
-            Quest mainQuest = new Quest((int)QuestIDs.MAINQUEST, "To the Capital!", "In order to figure out more about where you are and where you're going you need to head to the capital", objectives, 25, 56, "Alright, now you have a location, head out on a journey to reach the capital", "", true);
+            Quest mainQuest = new Quest((int)QuestIDs.MAINQUEST, "To the Capital!", "In order to figure out more about where you are and where you're going you need to head to the capital", 25, 56, "Alright, now you have a location, head out on a journey to reach the capital", "", true)
+            {
+                objectives = new Objective[]
+            {
+                new Objective("Make your way to the capital", 0, "")
+            }
+            };
 
             tutorialQuest.followUpQuest = mainQuest;
 
