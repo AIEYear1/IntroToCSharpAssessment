@@ -30,8 +30,8 @@ namespace RaylibWindowNamespace
         /// </summary>
         public float sensitivity = 5;
 
-        //Holds all the PopUps for this creature
-        List<PopUpText> popUps = new List<PopUpText>();
+        // Holds all the PopUps for this creature
+        protected List<PopUpText> popUps = new List<PopUpText>();
 
         /// <summary>
         /// Identical to animatedObject
@@ -53,6 +53,7 @@ namespace RaylibWindowNamespace
         /// </summary>
         public virtual void Start()
         {
+            popUps.Clear();
             direction = Vector2.Zero;
         }
 
@@ -63,11 +64,6 @@ namespace RaylibWindowNamespace
         {
             for (int x = 0; x < popUps.Count; x++)
             {
-                //if (popUps[x].alphaFade.IsComplete())
-                //{
-                //    popUps.RemoveAt(x);
-                //    continue;
-                //}
                 popUps[x].Update();
             }
 

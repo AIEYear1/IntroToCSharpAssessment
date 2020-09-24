@@ -716,7 +716,7 @@ namespace CRPGNamespace
         /// <summary>
         /// Override for abstract class NOT IMPLEMENTED
         /// </summary>
-        public override void TakeDamage()
+        public override int TakeDamage()
         {
             throw new NotImplementedException();
         }

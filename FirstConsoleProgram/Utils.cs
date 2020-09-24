@@ -86,7 +86,7 @@ class Utils
         //A quick string of vowels for determining if the noun starts with a vowel
         string vowels = "aeiou";
 
-        //if the color is not white change it
+        //If the color is not white change it
         if(color != TextColor.WHITE)
         {
             noun = ColorText(noun, color);
@@ -97,13 +97,13 @@ class Utils
             return "the " + noun;
         }
 
-        //if the noun is non count return noun
+        //If the noun is non count return noun
         if (nonCountNoun)
         {
             return noun;
         }
 
-        //otherwise return a|an = noun
+        //Otherwise return a|an = noun
         return (vowels.Contains(noun[0]) ? "an " : "a ") + noun;
     }
 

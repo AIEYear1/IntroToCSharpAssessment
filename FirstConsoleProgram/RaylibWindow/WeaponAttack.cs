@@ -163,7 +163,7 @@ namespace RaylibWindowNamespace
                 //Checks to see if monster was hit and if so, deal damage
                 if (CollisionManager.Colliding(monster, spears[x]))
                 {
-                    monster.creature.TakeDamage();
+                    monster.PopUp(monster.creature.TakeDamage().ToString());
 
                     if (monster.creature != null)
                         healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;

@@ -30,6 +30,7 @@ namespace RaylibWindowNamespace
         /// </summary>
         public override void Start()
         {
+            popUps.Clear();
             vertDir = 0;
             horDir = 0;
         }
@@ -39,6 +40,11 @@ namespace RaylibWindowNamespace
         /// </summary>
         public override void Update()
         {
+            for (int x = 0; x < popUps.Count; x++)
+            {
+                popUps[x].Update();
+            }
+
             Vector2 velocity = direction * speed * GetFrameTime();
             Position += velocity;
             Border();

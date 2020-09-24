@@ -7,7 +7,7 @@ namespace RaylibWindowNamespace
     /// <summary>
     /// Popup text that disappears after a second
     /// </summary>
-    class PopUpText
+    public class PopUpText
     {
         /// <summary>
         /// Timer for alpha Fade

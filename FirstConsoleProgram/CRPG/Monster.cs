@@ -61,7 +61,7 @@ namespace CRPGNamespace
         /// <summary>
         /// Monster taking damage
         /// </summary>
-        public override void TakeDamage()
+        public override int TakeDamage()
         {
             int damage = Utils.NumberBetween(Program.player.CurrentMinDamage, Program.player.CurrentMaxDamage);
             currentHP -= damage;
@@ -71,6 +71,7 @@ namespace CRPGNamespace
                 Die(Program.player);
                 Program.combatWindow.EndAttack();
             }
+            return damage;
         }
 
         /// <summary>
