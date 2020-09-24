@@ -38,6 +38,7 @@ namespace CRPGNamespace
         static void Main()
         {
             #region Color Changing
+            //Necessary to make the colored text work
             var handle = GetStdHandle(-11);
             GetConsoleMode(handle, out int mode);
             SetConsoleMode(handle, mode | 0x4);
