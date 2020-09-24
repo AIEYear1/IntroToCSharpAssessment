@@ -92,6 +92,7 @@ namespace RaylibWindowNamespace
         /// Adds text popup to be shown
         /// </summary>
         /// <param name="text">Text for popup to show</param>
+        /// <param name="size">Font Size of the Popup</param>
         public void PopUp(string text, int size)
         {
             //Ensure the min font size is 20

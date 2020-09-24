@@ -61,9 +61,8 @@ namespace CRPGNamespace
         /// <summary>
         /// Monster taking damage
         /// </summary>
-        public override int TakeDamage()
+        public override void TakeDamage(int damage)
         {
-            int damage = Utils.NumberBetween(Program.player.CurrentMinDamage, Program.player.CurrentMaxDamage);
             currentHP -= damage;
             Utils.Add($"You hit {Utils.PrefixNoun(Name.FullName, ProperNoun, KnownNoun, TextColor.RED)} for {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
             if (currentHP <= 0)
@@ -71,7 +70,6 @@ namespace CRPGNamespace
                 Die(Program.player);
                 Program.combatWindow.EndAttack();
             }
-            return damage;
         }
 
         /// <summary>
@@ -130,14 +128,6 @@ namespace CRPGNamespace
             {
                 (this as QuestMonster).CallQuest();
             }
-        }
-
-        /// <summary>
-        /// Override for abstract class NOT IMPLEMENTED
-        /// </summary>
-        public override void TakeDamage(int damage)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

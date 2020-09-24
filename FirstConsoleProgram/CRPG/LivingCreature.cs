@@ -62,9 +62,5 @@
         /// </summary>
         /// <param name="damage">amount of damage taken</param>
         public abstract void TakeDamage(int damage);
-        public abstract int TakeDamage();
-        /// <summary>
-        /// Creature takes damage
-        /// </summary>
     }
 }

@@ -57,7 +57,7 @@ namespace CRPGNamespace
         int baseMinDamage = 0;
         int baseAc = 0;
 
-        #region current stat vals
+        #region Current Stat Properties
         /// <summary>
         /// Readonly version of level for referencing
         /// </summary>
@@ -70,30 +70,28 @@ namespace CRPGNamespace
         /// </summary>
         public int CurrentAc
         {
-            get
-            {
-                return baseAc + (currentArmor != null ? currentArmor.ac : 0);
-            }
+            get => baseAc + (currentArmor != null ? currentArmor.ac : 0);
         }
         /// <summary>
         /// Readonly Maximum damage value of the player
         /// </summary>
         public int CurrentMaxDamage
         {
-            get
-            {
-                return baseMaxDamage + (currentWeapon != null ? currentWeapon.WeaponAttack.maxDamage : 0);
-            }
+            get => baseMaxDamage + (currentWeapon != null ? currentWeapon.WeaponAttack.maxDamage : 0);
         }
         /// <summary>
         /// Readonly Minimum damage value of the player
         /// </summary>
         public int CurrentMinDamage
         {
-            get
-            {
-                return baseMinDamage + (currentWeapon != null ? currentWeapon.WeaponAttack.minDamage : 0);
-            }
+            get => baseMinDamage + (currentWeapon != null ? currentWeapon.WeaponAttack.minDamage : 0);
+        }
+        /// <summary>
+        /// Does the damage for me
+        /// </summary>
+        public int Damage
+        {
+            get => Utils.NumberBetween(CurrentMinDamage, CurrentMaxDamage);
         }
 
         /// <summary>
@@ -711,14 +709,6 @@ namespace CRPGNamespace
                 MoveTo(home, true);
                 Program.combatWindow.EndAttack();
             }
-        }
-
-        /// <summary>
-        /// Override for abstract class NOT IMPLEMENTED
-        /// </summary>
-        public override int TakeDamage()
-        {
-            throw new NotImplementedException();
         }
         #endregion
     }

@@ -96,7 +96,7 @@ namespace RaylibWindowNamespace
             //Check for collision and if so damage the enemy and end the players turn
             if (CollisionManager.Colliding(player, monster))
             {
-                monster.creature.TakeDamage();
+                monster.creature.TakeDamage((player.creature as CRPGNamespace.Player).Damage);
                 if (monster.creature != null)
                     healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
                 Window.attackTimer.Reset(Window.attackTimer.delay);
@@ -162,7 +162,9 @@ namespace RaylibWindowNamespace
                 //Checks to see if monster was hit and if so, deal damage
                 if (CollisionManager.Colliding(monster, spears[x]))
                 {
-                    int damage = monster.creature.TakeDamage();
+                    int damage = (player.creature as CRPGNamespace.Player).Damage;
+
+                    monster.creature.TakeDamage(damage);
 
                     if (monster.creature != null)
                     {
