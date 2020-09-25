@@ -10,7 +10,7 @@ namespace RaylibWindowNamespace
     /// <summary>
     /// Holds all possible enmy attacks
     /// </summary>
-    public enum EnemyAttackIndex { WOLFATTACK, LOOTERATTACK, MERMAIDATTACK, TROLLATTACK }
+    public enum EnemyAttackIndex { WOLFATTACK, LOOTERATTACK, MERMAIDATTACK, TROLLATTACK, BANDITSATTACK }
     /// <summary>
     /// This class handles an enemy's attack
     /// </summary>
@@ -60,6 +60,9 @@ namespace RaylibWindowNamespace
                 case EnemyAttackIndex.TROLLATTACK:
                     InitTroll();
                     break;
+                case EnemyAttackIndex.BANDITSATTACK:
+                    InitBandits();
+                    break;
             }
         }
 
@@ -81,6 +84,9 @@ namespace RaylibWindowNamespace
                     break;
                 case EnemyAttackIndex.TROLLATTACK:
                     TrollAttack();
+                    break;
+                case EnemyAttackIndex.BANDITSATTACK:
+                    BanditsAttack();
                     break;
             }
         }
@@ -122,7 +128,7 @@ namespace RaylibWindowNamespace
                     {
                         damage -= (player.creature as CRPGNamespace.Player).CurrentAc;
                         damage = (int)MathF.Max(damage, 1);
-                        player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
+                        player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / player.creature.maximumHP));
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
                     }
 
@@ -235,7 +241,7 @@ namespace RaylibWindowNamespace
                     {
                         damage -= (player.creature as CRPGNamespace.Player).CurrentAc;
                         damage = (int)MathF.Max(damage, 1);
-                        player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
+                        player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / player.creature.maximumHP));
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
                     }
 
@@ -337,7 +343,7 @@ namespace RaylibWindowNamespace
                     {
                         damage -= (player.creature as CRPGNamespace.Player).CurrentAc;
                         damage = (int)MathF.Max(damage, 1);
-                        player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
+                        player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / player.creature.maximumHP));
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
                     }
 
@@ -373,6 +379,123 @@ namespace RaylibWindowNamespace
             holdTimer.Reset();
             stallTimer.Reset();
             waitTimer.Reset();
+        }
+        #endregion
+
+        #region Bandits Attack
+        //Second monster melee
+        AI monster2;
+        Timer rangedTimer = new Timer(2);
+        readonly List<LineSprite> arrows = new List<LineSprite>();
+        Timer playerInvulnerability = new Timer(0.15f);
+        int state = 0;
+        void BanditsAttack()
+        {
+            //Have two bandits attack the player one using melee and one range
+
+            //Updates
+            player.Update();
+            player.Draw();
+
+            Vector2 dir = player.Position - monster.Position;
+            if (MathF.Abs(dir.X) > MathF.Abs(dir.Y)) 
+            {
+                state = (dir.X > 0) ? 2 : 1;
+            }
+            else if (MathF.Abs(dir.X) < MathF.Abs(dir.Y))
+            {
+                state = (dir.Y > 0) ? 0 : 3;
+            }
+            monster.SetState(state);
+            monster.Draw();
+
+            monster2.SetDirection(player.Position - monster2.Position);
+            monster2.Update();
+            monster2.Draw();
+            //make monster2 collide with monster
+            if (CollisionManager.Colliding(monster, monster2))
+            {
+                CollisionManager.Push(monster, monster2);
+            }
+
+            //have monster one shoot a new arrow
+            if (rangedTimer.Check())
+            {
+                arrows.Add(new LineSprite(monster.Position, player.Position - monster.Position, 60, 10, 600, BROWN));
+            }
+            //Update arrows
+            for (int x = 0; x < arrows.Count; x++)
+            {
+                arrows[x].Update();
+                arrows[x].Draw();
+
+                //Check to see if arrow has collided with player
+                if(CollisionManager.Colliding(player, arrows[x]))
+                {
+                    int damage = Utils.NumberBetween(minDamage, maxDamage);
+
+                    player.creature.TakeDamage(damage);
+
+                    if (player.creature != null)
+                    {
+                        damage -= (player.creature as CRPGNamespace.Player).CurrentAc;
+                        damage = (int)MathF.Max(damage, 1);
+                        player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / player.creature.maximumHP));
+                        healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
+                    }
+
+                    arrows.RemoveAt(x);
+                }
+            }
+
+            //ensure the player doesn't get sawbladed by the enemies
+            if (playerInvulnerability.Check(false))
+            {
+                //check to see if monster has collided with the player
+                if (CollisionManager.Colliding(player, monster))
+                {
+                    player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
+                    if (player.creature != null)
+                        healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
+
+                    CollisionManager.Push(monster, player);
+                    playerInvulnerability.Reset();
+                }
+                //check to see if monster2 has collided with the player
+                if (CollisionManager.Colliding(player, monster2))
+                {
+                    player.creature.TakeDamage(Utils.NumberBetween(minDamage, maxDamage));
+                    if (player.creature != null)
+                        healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
+
+                    CollisionManager.Push(monster2, player);
+                    playerInvulnerability.Reset();
+
+                    monster2.Position = monster.Position;
+                }
+            }
+        }
+
+        void InitBandits()
+        {
+            arrows.Clear();
+            monster.Position = new Vector2(Utils.NumberBetween((int)(Window.playZoneBarrier.X + 10), (int)(Window.playZoneBarrier.Z - 10)),
+                                  Utils.NumberBetween((int)(Window.playZoneBarrier.Y + 10), (int)(Window.playZoneBarrier.W - 10)));
+            monster.speed = 0;
+            monster.sensitivity = 0;
+
+            monster2 = new AI(monster.texture, monster.Position, WHITE, 16, Vector2.One * 4, monster.radius);
+            CollisionManager.Push(monster, monster2);
+            monster2.speed = 500;
+            monster2.sensitivity = 1.5f;
+
+
+            player.Position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
+            player.sensitivity = 4;
+            player.speed = 400;
+
+            rangedTimer.Reset();
+            playerInvulnerability.Reset();
         }
         #endregion
     }

@@ -384,6 +384,9 @@ namespace CRPGNamespace
             if ((loc is LockedLocation lockLoc) && !lockLoc.Enter())
                 return;
 
+            if ((loc is NestLocation nestLoc))
+                nestLoc.SpawnMonster();
+
             if (loc.monsterLivingHere != null)
             {
                 loc.monsterLivingHere.currentHP = loc.monsterLivingHere.maximumHP;

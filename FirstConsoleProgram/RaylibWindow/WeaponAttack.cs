@@ -168,7 +168,7 @@ namespace RaylibWindowNamespace
 
                     if (monster.creature != null)
                     {
-                        monster.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / player.creature.maximumHP));
+                        monster.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
                         healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
                     }
 

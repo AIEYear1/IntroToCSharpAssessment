@@ -28,7 +28,8 @@ namespace CRPGNamespace
         WOLF,
         MERMAID,
         LOOTER,
-        TROLL
+        TROLL,
+        BANDITS
     }
     public enum LocationIDs
     {
@@ -42,7 +43,9 @@ namespace CRPGNamespace
         TOWNSHOP = 1 << 7,
         TOWNINN = 1 << 8,
         TOWNSQUARE = 1 << 9,
-        ROADNORTH = 1 << 10
+        ROADNORTH = 1 << 10,
+        ROAD = 1 << 11,
+        ROADTOCITY = 1 << 12
     }
     public enum QuestIDs
     {
@@ -150,7 +153,11 @@ namespace CRPGNamespace
             {
                 lootTable = new LootItem[] { new LootItem(ItemByID((int)ItemIDs.BANDITGARB), 100, true) }
             };
-            QuestMonster troll = new QuestMonster(new Name("Troll"), "A troll trying to attack the town", 30, trollAttack, 32, 10, QuestByID((int)QuestIDs.TUTORIALQUEST), 1)
+            QuestMonster troll = new QuestMonster(new Name("Troll"), "A troll trying to attack the town", 30, trollAttack, 40, 10, QuestByID((int)QuestIDs.TUTORIALQUEST), 1)
+            {
+                lootTable = new LootItem[] {}
+            };
+            Monster bandits = new Monster(new Name("Bandits"), "A pair of bandits, you don't feel like giving them your money", 32, banditsAttack, 12, 25, false, true)
             {
                 lootTable = new LootItem[] {}
             };
@@ -159,6 +166,7 @@ namespace CRPGNamespace
             Monsters.Add(mermaid);
             Monsters.Add(looter);
             Monsters.Add(troll);
+            Monsters.Add(bandits);
         }
 
         /// <summary>
@@ -205,6 +213,11 @@ namespace CRPGNamespace
                 npcLivingHere = NPCByID((int)NPCIDs.KVORKYSFOLKS)
             };
             LockedLocation roadNorth = new LockedLocation((int)LocationIDs.ROADNORTH, "Road North", "A road leading north", LockedLocationIndex.NORTH, "You should head to the town first");
+            NestLocation road = new NestLocation((int)LocationIDs.ROAD, "Road", "The road that connects Kvorkys to the capital")
+            {
+                monsterToLiveHere = MonsterByID((int)MonsterIDs.BANDITS)
+            };
+            Location roadToTheCapital = new Location((int)LocationIDs.ROADTOCITY, "Road to the Capital", "The road which leads to the capital");
 
 
             #region Intro Forest
@@ -239,6 +252,16 @@ namespace CRPGNamespace
             townSquare.locationToWest = townEntrance;
             #endregion
 
+            #region Road
+            roadNorth.locationToSouth = pavedRoad;
+            roadNorth.locationToNorth = road;
+
+            road.locationToSouth = roadNorth;
+            road.locationToNorth = roadToTheCapital;
+
+
+            roadToTheCapital.locationToSouth = road;
+            #endregion
 
             Locations.Add(clearing);
             Locations.Add(path);
@@ -251,6 +274,8 @@ namespace CRPGNamespace
             Locations.Add(townInn);
             Locations.Add(townSquare);
             Locations.Add(roadNorth);
+            Locations.Add(road);
+            Locations.Add(roadToTheCapital);
         }
 
         /// <summary>
@@ -266,7 +291,7 @@ namespace CRPGNamespace
                 objectives = new Objective[]
             {
                 new Objective("Figure out where you are", 0, "As you walk along the road you see a city being attacked by a troll!\nDefeat the troll and protect the villagers!"),
-                new Objective("Defeat the troll", 1, "With the troll defeated the town is now safe, perhaps there you can find answers there"),
+                new Objective("Defeat the troll", 1, "With the troll defeated the town is now safe, perhaps there you can find answers"),
                 new Objective("Talk with the townsfolk", 2, "You're lost? Oh well this is Kvorkys a small town in the southern portion of Bjork.\nYou may be able to find out more at the capital, if you head out of the town you should see a road north,\nthat'll lead you to the capital")
             }
             };

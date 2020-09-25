@@ -50,6 +50,9 @@
                 return;
             }
 
+            if (!Program.player.activeQuests.Contains(relatingQuest))
+                return;
+
             relatingQuest.ObjectiveMarker(objectiveMarker);
         }
     }

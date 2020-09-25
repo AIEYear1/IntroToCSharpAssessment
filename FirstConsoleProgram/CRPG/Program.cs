@@ -151,7 +151,7 @@ namespace CRPGNamespace
                         //3rd case "help", tell the player what other commands they can use
                         case "help":
                             input = "";
-                            Utils.Add("back to return to game, quit to leave");
+                            Utils.Add("back to return to game, quit to leave\nDelete <Filename> to delete said file");
                             Utils.Print();
                             continue;
                         //4th case "Delete", deletes the specified save file

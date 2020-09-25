@@ -51,6 +51,10 @@ namespace RaylibWindowNamespace
         /// Attack for the Troll Attack
         /// </summary>
         public static EnemyAttack trollAttack = new EnemyAttack(9, 21, "Troll attacks a random area every few seconds", EnemyAttackIndex.TROLLATTACK);
+        /// <summary>
+        /// Attack for the Bandits Attack
+        /// </summary>
+        public static EnemyAttack banditsAttack = new EnemyAttack(4, 7, "One bandit chases you will the other tries to attack you with a bow", EnemyAttackIndex.BANDITSATTACK);
 
         /// <summary>
         /// Loads the textures and assigns the player and monster instances, done because you can't LoadTexture cannot be called before InitWindow()

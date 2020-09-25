@@ -14,8 +14,6 @@
     /// </summary>
     class LockedLocation : Location
     {
-        //Whether the player can move to the location
-        bool canEnter = false;
         //What location type it is
         readonly LockedLocationIndex index;
         //Text that plays when the player can't move to the location
@@ -39,6 +37,8 @@
         /// <returns>returns true if the player can enter the Location</returns>
         public bool Enter()
         {
+            bool canEnter = false;
+
             switch (index)
             {
                 case LockedLocationIndex.FORESTEDGE:
@@ -46,14 +46,12 @@
                         break;
 
                     canEnter = true;
-                    Utils.Add("You unlock " + Utils.PrefixNoun(name, properNoun, knownNoun));
                     break;
                 case LockedLocationIndex.NORTH:
-                    if (Program.player.completedQuests.Contains(World.QuestByID((int)QuestIDs.TUTORIALQUEST)))
-                    {
-                        Utils.Add("This is the current end of the demo");
-                        return false;
-                    }
+                    if (!Program.player.completedQuests.Contains(World.QuestByID((int)QuestIDs.TUTORIALQUEST)))
+                        break;
+
+                    canEnter = true;
                     break;
             }
 
@@ -63,6 +61,7 @@
                 return false;
             }
 
+            Utils.Add("You unlock " + Utils.PrefixNoun(name, properNoun, knownNoun));
             return true;
         }
     }
