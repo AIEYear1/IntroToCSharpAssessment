@@ -34,6 +34,14 @@ namespace RaylibWindowNamespace
         Color color;
 
         /// <summary>
+        /// Direction getter for AI code
+        /// </summary>
+        public Vector2 Direction
+        {
+            get => direction;
+        }
+
+        /// <summary>
         /// Start position of the line
         /// </summary>
         public Vector2 StartPos { get => startPos; }

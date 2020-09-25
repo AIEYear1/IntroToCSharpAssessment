@@ -192,7 +192,8 @@ namespace RaylibWindowNamespace
                 }
             }
 
-            monster.SetDirection(monster.Position - spears[spearToRunFrom].position);
+            Vector2 course = spears[spearToRunFrom].position + (Utils.LockMagnitude(spears[spearToRunFrom].Direction, 1) * Vector2.Distance(monster.Position, spears[spearToRunFrom].position));
+            monster.SetDirection(monster.Position - course);
             monster.Update();
             monster.Draw();
         }

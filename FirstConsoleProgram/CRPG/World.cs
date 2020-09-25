@@ -381,7 +381,7 @@ namespace CRPGNamespace
             Utils.Add("\thelp color: explains the text color scheme", TextColor.LIME);
             Utils.Add("\thelp combat: explains how combat works", TextColor.LIME);
             Utils.Add("\tsave <name of save file>: creates a save file with the specified name", TextColor.LIME);
-            Utils.Add("\tload <(Optional)name of save file>: Enters the load loop and attempts to load a save file with the specified name if given", TextColor.LIME);
+            Utils.Add("\tload <(Optional)name of save file>: Enters the load loop\n\tand attempts to load a save file with the specified name if given", TextColor.LIME);
             Utils.Add("\twho am i: tells you your name", TextColor.LIME);
             Utils.Add("\tlook <thing to look at>: lets you look at things\n\tSubCommands: \n\t\tNorth; East; South; West: lets you look at locations in that direction" +
                 "\n\t\there: lets you look here and tells you of everything in this area\n\t\tItem Names: lets you look at the specified item" +
