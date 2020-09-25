@@ -8,7 +8,7 @@
         /// <summary>
         /// Name of the creature
         /// </summary>
-        public Name Name;
+        public Name name;
         /// <summary>
         /// Creature's current HP
         /// </summary>
@@ -20,11 +20,11 @@
         /// <summary>
         /// Whether noun is specific or abstract
         /// </summary>
-        public bool KnownNoun;
+        public bool knownNoun;
         /// <summary>
         /// Whether noun is Proper or normal
         /// </summary>
-        public bool ProperNoun;
+        public bool properNoun;
 
         /// Parameters
         /// <param name="name">Name of the creature</param>
@@ -33,11 +33,11 @@
         /// <param name="properNoun">Whether the noun is Proper or normal</param>
         public LivingCreature(Name name, int HP, bool knownNoun, bool properNoun)
         {
-            this.Name = name;
+            this.name = name;
             this.currentHP = HP;
             this.maximumHP = HP;
-            this.KnownNoun = knownNoun;
-            this.ProperNoun = properNoun;
+            this.knownNoun = knownNoun;
+            this.properNoun = properNoun;
         }
 
         /// Parameters
@@ -48,8 +48,8 @@
         {
             this.currentHP = HP;
             this.maximumHP = HP;
-            this.KnownNoun = knownNoun;
-            this.ProperNoun = properNoun;
+            this.knownNoun = knownNoun;
+            this.properNoun = properNoun;
         }
 
         public LivingCreature()

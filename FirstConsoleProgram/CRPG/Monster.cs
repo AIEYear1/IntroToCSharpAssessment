@@ -38,7 +38,7 @@ namespace CRPGNamespace
         /// <param name="rewardGold">Gold earned from defeating the monster</param>
         public Monster(Name name, string description, int HP, EnemyAttack enemyAttack, int rewardXP, int rewardGold, bool knownNoun = false, bool properNoun = false) : base(name, HP, knownNoun, properNoun)
         {
-            this.Name = name;
+            this.name = name;
             this.description = description;
             this.enemyAttack = enemyAttack;
             this.rewardXP = rewardXP;
@@ -50,8 +50,8 @@ namespace CRPGNamespace
         /// </summary>
         public void LookAt()
         {
-            KnownNoun = true;
-            Utils.Add($"Stats for {Name.FullName}:");
+            knownNoun = true;
+            Utils.Add($"Stats for {name.FullName}:");
             Utils.Add($"\tHP:\t\t{currentHP}/{maximumHP}");
             Utils.Add($"\tAttack power:\t{enemyAttack.minDamage}-{enemyAttack.maxDamage}");
             Utils.Add("Attack: " + enemyAttack.description);
@@ -64,7 +64,7 @@ namespace CRPGNamespace
         public override void TakeDamage(int damage)
         {
             currentHP -= damage;
-            Utils.Add($"You hit {Utils.PrefixNoun(Name.FullName, ProperNoun, KnownNoun, TextColor.RED)} for {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
+            Utils.Add($"You hit {Utils.PrefixNoun(name.FullName, properNoun, knownNoun, TextColor.RED)} for {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
             if (currentHP <= 0)
             {
                 Die(Program.player);
@@ -81,7 +81,7 @@ namespace CRPGNamespace
             player.EarnXP(rewardXP);
             player.currentLocation.monsterLivingHere = null;
 
-            Utils.Add(Utils.PrefixNoun(Name.FullName, ProperNoun, KnownNoun, TextColor.RED) + " has died");
+            Utils.Add(Utils.PrefixNoun(name.FullName, properNoun, knownNoun, TextColor.RED) + " has died");
             Utils.Add($"You gained {Utils.ColorText(rewardGold.ToString(), TextColor.YELLOW)} gold");
             Utils.Add($"You earned {Utils.ColorText(rewardXP.ToString(), TextColor.GREEN)} XP");
 

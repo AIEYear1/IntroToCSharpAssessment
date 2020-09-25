@@ -222,12 +222,20 @@ namespace CRPGNamespace
                     }
                     World.Help();
                     break;
-                //2nd case "who am i", tell the player their name
+                //2nd case "save", save the player's current progress with specified name
+                case string save when save.StartsWith("save "):
+                    player.Save(save.Substring(5).Trim());
+                    break;
+                //3rd case "load", attempt to load a file, can possibly give a specified name
+                case string load when load.StartsWith("load"):
+                    AttemptLoad((load.Length > 5) ? load.Substring(5) : "");
+                    break;
+                //4th case "who am i", tell the player their name
                 case "who am i":
                     //If the player gave a proper name show it
-                    if (player.Name.FirstName != "")
+                    if (player.name.FirstName != "")
                     {
-                        Utils.Add(player.Name.FullName);
+                        Utils.Add(player.name.FullName);
                         break;
                     }
 
@@ -242,20 +250,20 @@ namespace CRPGNamespace
                     //otherwise give a passing line
                     Utils.Add("Uh, alright then");
                     break;
-                //3rd case "look", allow the player to look at things
+                //5th case "look", allow the player to look at things
                 case string look when look.StartsWith("look "):
                     player.Look(look.Substring(5).Trim());
                     break;
-                //4th case "stats", show the player their stats
+                //6th case "stats", show the player their stats
                 case "stats":
                     player.Stats();
                     break;
-                //5th case "inventory" "i", show the player their inventory
+                //7th case "inventory" "i", show the player their inventory
                 case "inventory":
                 case "i":
                     player.InventoryCheck();
                     break;
-                //6th case "quest" "q", show the player their active quests
+                //8th case "quest" "q", show the player their active quests
                 case "quests":
                 case "q":
                     Utils.Add("Current Quests: ");
@@ -264,17 +272,9 @@ namespace CRPGNamespace
                         Utils.Add("\t" + q.name);
                     }
                     break;
-                //7th case "move", attempt to move the player in a specified direction
+                //9th case "move", attempt to move the player in a specified direction
                 case string move when move.StartsWith("move "):
                     player.Move(move.Substring(5).Trim());
-                    break;
-                //8th case "save", save the player's current progress with specified name
-                case string save when save.StartsWith("save "):
-                    player.Save(save.Substring(5).Trim());
-                    break;
-                //9th case "load", attempt to load a file, can possibly give a specified name
-                case string load when load.StartsWith("load"):
-                    AttemptLoad((load.Length > 5) ? load.Substring(5) : "");
                     break;
                 //10th case "equip", attempt to equip a specified item
                 case string equip when equip.StartsWith("equip "):

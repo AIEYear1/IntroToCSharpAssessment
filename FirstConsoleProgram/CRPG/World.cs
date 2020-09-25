@@ -378,19 +378,23 @@ namespace CRPGNamespace
         public static void Help()
         {
             Utils.Add("Possible Commands:", TextColor.LIME);
+            Utils.Add("\thelp color: explains the text color scheme", TextColor.LIME);
+            Utils.Add("\thelp combat: explains how combat works", TextColor.LIME);
+            Utils.Add("\tsave <name of save file>: creates a save file with the specified name", TextColor.LIME);
+            Utils.Add("\tload <(Optional)name of save file>: Enters the load loop and attempts to load a save file with the specified name if given", TextColor.LIME);
             Utils.Add("\twho am i: tells you your name", TextColor.LIME);
-            Utils.Add("\tlook: lets you look at things\n\tSubCommands: \n\t\tNorth; East; South; West: lets you look at locations in that direction" +
+            Utils.Add("\tlook <thing to look at>: lets you look at things\n\tSubCommands: \n\t\tNorth; East; South; West: lets you look at locations in that direction" +
                 "\n\t\there: lets you look here and tells you of everything in this area\n\t\tItem Names: lets you look at the specified item" +
                 "\n\t\tMonster Names: lets you look at the specified monster\n\t\tQuest Names: lets you look at the specified quest", TextColor.LIME);
             Utils.Add("\tstats: shows you your current stats", TextColor.LIME);
             Utils.Add("\tinventory: shows you all the items in your inventory", TextColor.LIME);
             Utils.Add("\tquests: shows you your current quests", TextColor.LIME);
-            Utils.Add("\tmove: lets you move in a specified direction", TextColor.LIME);
-            Utils.Add("\tequip: lets you equip a specified item", TextColor.LIME);
+            Utils.Add("\tmove <direction to move in>: lets you move in a specified direction", TextColor.LIME);
+            Utils.Add("\tequip <item to equip>: lets you equip a specified item", TextColor.LIME);
+            Utils.Add("\tuse <item to use>: lets you use a specified item", TextColor.LIME);
             Utils.Add("\tattack: attacks the current monster in the area", TextColor.LIME);
+            Utils.Add("\ttalk: talks to the current NPC in the area", TextColor.LIME);
             Utils.Add("\tquit: quits the game", TextColor.LIME);
-            Utils.Add("\thelp color: explains the text color scheme", TextColor.LIME);
-            Utils.Add("\thelp combat: explains how combat works", TextColor.LIME);
         }
         /// <summary>
         /// Adds all of the Color help commands to the string to upload

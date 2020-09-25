@@ -8,20 +8,20 @@ using System.Numerics;
 enum TextColor
 {
     WHITE = 255,
-    RED = 160,
-    MAGENTA = 163,
-    GREEN = 46,
-    LIME = 154,
     YELLOW = 226,
-    AQUA = 49,
-    BLUE = 69,
-    SALMON = 9,
-    LIGHTBLUE = 14,
-    GOLD = 3,
-    DARKRED = 88,
     PINK = 199,
+    MAGENTA = 163,
+    RED = 160,
+    LIME = 154,
+    PURPLE = 90,
+    DARKRED = 88,
+    BLUE = 69,
+    AQUA = 49,
     SEAGREEN = 48,
-    PURPLE = 90
+    GREEN = 46,
+    LIGHTBLUE = 14,
+    SALMON = 9,
+    GOLD = 3
 }
 
 /// <summary>
@@ -177,7 +177,7 @@ class Utils
     //Random number generator for the random methods
     private static readonly Random _generator = new Random(Guid.NewGuid().GetHashCode());
     /// <summary>
-    /// Returns an int based on a skewed chance
+    /// Returns an int based on a skewed chance, not used but I like the commenting in this so I'm keeping it to come back to at a later date
     /// </summary>
     /// <param name="values">The number of values that could be returned</param>
     /// <param name="probabilities">Array of chances for each value</param>
@@ -297,22 +297,6 @@ class Utils
         string Return = "";
         for (int count = 0; count < array.Length; count++)
             Return += (array[count]) + (count + 1 < array.Length ? spacer : "");
-
-        return Return;
-    }
-
-    /// <summary>
-    /// Converts a List into a string of the values separated by a splicable char
-    /// </summary>
-    /// <param name="list">List to be converted</param>
-    /// <param name="spacer">Spacer put in-between values from the List</param>
-    /// <returns>Returns a string of the values separated by a splicable char</returns>
-    public static string ToString<TInput>(List<TInput> list, string spacer = "")
-    {
-        string Return = "";
-
-        for (int count = 0; count < list.Count; count++)
-            Return += (list[count]) + (count + 1 < list.Count ? spacer : "");
 
         return Return;
     }
