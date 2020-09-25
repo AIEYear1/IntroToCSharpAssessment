@@ -411,7 +411,7 @@ namespace CRPGNamespace
             Utils.Add("\t" + Utils.ColorText("Pink", TextColor.PINK) + Utils.ColorText(": Consumable", TextColor.LIME));
             Utils.Add("\t" + Utils.ColorText("Sea Green", TextColor.SEAGREEN) + Utils.ColorText(": NPC", TextColor.LIME));
             Utils.Add("\t" + Utils.ColorText("Purple", TextColor.PURPLE) + Utils.ColorText(": Healing", TextColor.LIME));
-            Utils.Add("Lime: Help", TextColor.LIME);
+            Utils.Add("\tLime: Help", TextColor.LIME);
         }
         /// <summary>
         /// gives a basic combat tutorial

@@ -10,7 +10,7 @@ enum TextColor
     WHITE = 255,
     RED = 160,
     MAGENTA = 163,
-    GREEN = 118,
+    GREEN = 46,
     LIME = 154,
     YELLOW = 226,
     AQUA = 49,
@@ -59,19 +59,18 @@ class Utils
     /// Adds strToAdd to outputToConsole including an optional new line
     /// </summary>
     /// <param name="strToAdd">string to be added</param>
-    /// <param name="addNewLine">whether to add a new line, assumed true</param>
-    public static void Add(string strToAdd, bool addNewLine = true)
+    public static void Add(string strToAdd)
     {
-        outputToConsole += strToAdd + (addNewLine ? "\n" : "");
+        outputToConsole += strToAdd + "\n";
     }
     /// <summary>
     /// Adds strToAdd to outputToConsole including an optional new line
     /// </summary>
     /// <param name="strToAdd">string to be added</param>
-    /// <param name="addNewLine">whether to add a new line, assumed true</param>
-    public static void Add(string strToAdd, TextColor color, bool addNewLine = true)
+    /// <param name="color">wColor the text will be, if there is colored text inbetween, all text after the other colored text will be white</param>
+    public static void Add(string strToAdd, TextColor color)
     {
-        outputToConsole += Utils.ColorText(strToAdd, color) + (addNewLine ? "\n" : "");
+        outputToConsole += Utils.ColorText(strToAdd, color) + "\n";
     }
 
     /// <summary>

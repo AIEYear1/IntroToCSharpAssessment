@@ -705,7 +705,7 @@ namespace CRPGNamespace
             Utils.Add($"You took {Utils.ColorText(damage.ToString(), TextColor.BLUE)} damage!");
             if (currentHP <= 0)
             {
-                Utils.Add(Utils.ColorText(Name.FullName + " has died!", TextColor.DARKRED));
+                Utils.Add(Name.FullName + " has died!", TextColor.DARKRED);
                 MoveTo(home, true);
                 Program.combatWindow.EndAttack();
             }
