@@ -148,7 +148,10 @@ namespace CRPGNamespace
             {
                 lootTable = new LootItem[] { new LootItem(ItemByID((int)ItemIDs.BANDITGARB), 100, true) }
             };
-            QuestMonster troll = new QuestMonster(new Name("Troll"), "A troll trying to attack the town", 30, trollAttack, 32, 10, QuestByID((int)QuestIDs.TUTORIALQUEST), 1);
+            QuestMonster troll = new QuestMonster(new Name("Troll"), "A troll trying to attack the town", 30, trollAttack, 32, 10, QuestByID((int)QuestIDs.TUTORIALQUEST), 1)
+            {
+                lootTable = new LootItem[] {}
+            };
 
             Monsters.Add(wolf);
             Monsters.Add(mermaid);

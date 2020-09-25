@@ -120,6 +120,8 @@ namespace RaylibWindowNamespace
 
                     if (player.creature != null)
                     {
+                        damage -= (player.creature as CRPGNamespace.Player).CurrentAc;
+                        damage = (int)MathF.Max(damage, 1);
                         player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
                     }
@@ -175,6 +177,11 @@ namespace RaylibWindowNamespace
             if (MathF.Abs(Utils.AngleBetween(Utils.LockMagnitude(player.direction, 1), monster.Position - player.Position)) < 70)
             {
                 monster.Draw();
+                monster.speed = 300;
+            }
+            else
+            {
+                monster.speed = 100;
             }
 
             //check to see if monster has collided with the player
@@ -190,8 +197,8 @@ namespace RaylibWindowNamespace
         {
             //Initialize monster
             monster.Position = new Vector2(Window.playZoneBarrier.X + monster.radius, Window.playZoneBarrier.W - monster.radius);
-            monster.sensitivity = 3;
-            monster.speed = 250;
+            monster.sensitivity = 3f;
+            monster.speed = 100;
 
             //Initialize player
             player.Position = new Vector2(Window.screenWidth / 2, Window.screenHeight / 2);
@@ -226,6 +233,8 @@ namespace RaylibWindowNamespace
 
                     if (player.creature != null)
                     {
+                        damage -= (player.creature as CRPGNamespace.Player).CurrentAc;
+                        damage = (int)MathF.Max(damage, 1);
                         player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
                     }
@@ -260,15 +269,15 @@ namespace RaylibWindowNamespace
         /// <summary>
         /// waits to give the player some pause between attacks
         /// </summary>
-        Timer waitTimer = new Timer(2.25f);
+        Timer waitTimer = new Timer(0.5f);
         /// <summary>
         /// stalls so the player can react to the incoming attack
         /// </summary>
-        Timer stallTimer = new Timer(1.4f);
+        Timer stallTimer = new Timer(1.1f);
         /// <summary>
         /// holds so the player can see the attack
         /// </summary>
-        Timer holdTimer = new Timer(.5f);
+        Timer holdTimer = new Timer(0.3f);
         /// <summary>
         /// attack space to use
         /// </summary>
@@ -326,6 +335,8 @@ namespace RaylibWindowNamespace
 
                     if (player.creature != null)
                     {
+                        damage -= (player.creature as CRPGNamespace.Player).CurrentAc;
+                        damage = (int)MathF.Max(damage, 1);
                         player.PopUp(damage.ToString(), (int)Utils.Lerp(10, 70, damage / monster.creature.maximumHP));
                         healthBar.Width = ((float)player.creature.currentHP / (float)player.creature.maximumHP) * healthBackground.Width;
                     }
