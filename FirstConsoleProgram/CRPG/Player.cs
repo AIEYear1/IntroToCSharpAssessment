@@ -650,23 +650,26 @@ namespace CRPGNamespace
             Utils.Add("Current Inventory: ");
             for (int x = 0; x < Inventory.Count; x++)
             {
+                int quant = Inventory[x].quantity;
+                string name = (quant == 1) ? Inventory[x].details.Name : Inventory[x].details.NamePlural;
+
                 if (Inventory[x].details is Weapon)
                 {
-                    Utils.Add($"\t{Utils.ColorText(Inventory[x].details.Name, TextColor.SALMON)} : {Inventory[x].quantity}");
+                    Utils.Add($"\t{Utils.ColorText(name, TextColor.SALMON)} : {quant}");
                     continue;
                 }
                 if (Inventory[x].details is Armor)
                 {
-                    Utils.Add($"\t{Utils.ColorText(Inventory[x].details.Name, TextColor.LIGHTBLUE)} : {Inventory[x].quantity}");
+                    Utils.Add($"\t{Utils.ColorText(name, TextColor.LIGHTBLUE)} : {quant}");
                     continue;
                 }
                 if (Inventory[x].details is Consumable)
                 {
-                    Utils.Add($"\t{Utils.ColorText(Inventory[x].details.Name, TextColor.PINK)} : {Inventory[x].quantity}");
+                    Utils.Add($"\t{Utils.ColorText(name, TextColor.PINK)} : {quant}");
                     continue;
                 }
 
-                Utils.Add($"\t{Utils.ColorText(Inventory[x].details.Name, TextColor.GOLD)} : {Inventory[x].quantity}");
+                Utils.Add($"\t{Utils.ColorText(name, TextColor.GOLD)} : {quant}");
             }
         }
         #endregion

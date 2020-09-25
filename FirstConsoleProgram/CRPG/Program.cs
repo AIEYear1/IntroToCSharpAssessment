@@ -89,8 +89,9 @@ namespace CRPGNamespace
         /// </summary>
         static void Initialize()
         {
-            player.AddItemToInventory(new InventoryItem(World.ItemByID((int)ItemIDs.STICK), 1));
-            player.AddItemToInventory(new InventoryItem(World.ItemByID((int)ItemIDs.CLOTHES), 1));
+            player.AddItemToInventory(World.ItemByID((int)ItemIDs.STICK));
+            player.AddItemToInventory(World.ItemByID((int)ItemIDs.CLOTHES));
+            player.AddItemToInventory(new InventoryItem(World.ItemByID((int)ItemIDs.BERRIES), 10));
 
             player.SetName();
 

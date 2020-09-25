@@ -35,28 +35,7 @@ namespace CRPGNamespace
         public override void Talk()
         {
             base.Talk();
-            Utils.Add("shop Items:");
-            //Show all possible items
-            for (int x = 0; x < stock.Count; x++)
-            {
-                if (stock[x].details is Weapon)
-                {
-                    Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.SALMON)} : {stock[x].quantity}");
-                    continue;
-                }
-                if (stock[x].details is Armor)
-                {
-                    Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.LIGHTBLUE)} : {stock[x].quantity}");
-                    continue;
-                }
-                if (stock[x].details is Consumable)
-                {
-                    Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.PINK)} : {stock[x].quantity}");
-                    continue;
-                }
-
-                Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.GOLD)} : {stock[x].quantity}");
-            }
+            ShowStock();
             Utils.Print();
 
             switch (Utils.AskQuestion(question))
@@ -95,26 +74,38 @@ namespace CRPGNamespace
         public override void Look()
         {
             base.Look();
+            //Show stock items
+            ShowStock();
+        }
+
+        /// <summary>
+        /// Simply shows the items in the Shops inventory
+        /// </summary>
+        void ShowStock()
+        {
             Utils.Add("shop Items:");
             for (int x = 0; x < stock.Count; x++)
             {
+                int quant = stock[x].quantity;
+                string name = (quant == 1) ? stock[x].details.Name : stock[x].details.NamePlural;
+
                 if (stock[x].details is Weapon)
                 {
-                    Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.SALMON)} : {stock[x].quantity}");
+                    Utils.Add($"\t{Utils.ColorText(name, TextColor.SALMON)} : {quant}");
                     continue;
                 }
                 if (stock[x].details is Armor)
                 {
-                    Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.LIGHTBLUE)} : {stock[x].quantity}");
+                    Utils.Add($"\t{Utils.ColorText(name, TextColor.LIGHTBLUE)} : {quant}");
                     continue;
                 }
                 if (stock[x].details is Consumable)
                 {
-                    Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.PINK)} : {stock[x].quantity}");
+                    Utils.Add($"\t{Utils.ColorText(name, TextColor.PINK)} : {quant}");
                     continue;
                 }
 
-                Utils.Add($"\t{Utils.ColorText(stock[x].details.Name, TextColor.GOLD)} : {stock[x].quantity}");
+                Utils.Add($"\t{Utils.ColorText(name, TextColor.GOLD)} : {quant}");
             }
         }
 

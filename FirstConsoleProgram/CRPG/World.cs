@@ -13,7 +13,8 @@ namespace CRPGNamespace
         MERMAIDSPEAR = 1 << 3,
         BANDITGARB = 1 << 4,
         LESSERHEALINGPOTION = 1 << 5,
-        HEALINGPOTION = 1 << 6
+        HEALINGPOTION = 1 << 6,
+        BERRIES = 1 << 7
     }
     public enum NPCIDs
     {
@@ -100,11 +101,12 @@ namespace CRPGNamespace
             //Armor: Parameters, AC
             Items.Add(new Weapon((int)ItemIDs.STICK, "Stick", "Sticks", "Long narrow stick with a stick like texture", 3, stickAttack));
             Items.Add(new Armor((int)ItemIDs.CLOTHES, "Clothes", "Clothes", "Some pretty normal clothes, without these you'd be naked!", 5, 2));
-            Items.Add(new Item((int)ItemIDs.FANG, "Wolf Fang", "Wolf Fangs", "The fang of a wolf, pretty useless", 1));
+            Items.Add(new Item((int)ItemIDs.FANG, "Wolf Fang", "Wolf Fangs", "The fang of a wolf, pretty useless", 6));
             Items.Add(new Weapon((int)ItemIDs.MERMAIDSPEAR, "Mermaid Spear", "Mermaid Spears", "A simple yet elegant spear", 7, mermaidSpearAttack));
             Items.Add(new Armor((int)ItemIDs.BANDITGARB, "Bandit Garb", "Bandit Garb", "A simple set of thrown together armor", 10, 5));
-            Items.Add(new HealingPotion((int)ItemIDs.LESSERHEALINGPOTION, "Lesser Healing Potion", "Lesser Healing Potions", "A cheap healing potion", 25, 4));
-            Items.Add(new HealingPotion((int)ItemIDs.HEALINGPOTION, "Healing Potion", "Healing Potions", "A decent healing potion", 50, 10));
+            Items.Add(new HealingPotion((int)ItemIDs.LESSERHEALINGPOTION, "Lesser Healing Potion", "Lesser Healing Potions", "A cheap healing potion", 25, 8));
+            Items.Add(new HealingPotion((int)ItemIDs.HEALINGPOTION, "Healing Potion", "Healing Potions", "A decent healing potion", 50, 18));
+            Items.Add(new HealingPotion((int)ItemIDs.BERRIES, "Berry", "Berries", "Some strange berries, whne did they get in your pocket?", 1, 2));
         }
 
         /// <summary>
