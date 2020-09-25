@@ -404,17 +404,17 @@ namespace CRPGNamespace
             Utils.Add("Color Reference:", TextColor.LIME);
             Utils.Add("\tWhite" + Utils.ColorText(": normal text", TextColor.LIME));
             Utils.Add("\t" + Utils.ColorText("Red", TextColor.RED) + Utils.ColorText(": Monster", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Sea Green", TextColor.SEAGREEN) + Utils.ColorText(": NPC", TextColor.LIME));
             Utils.Add("\t" + Utils.ColorText("Magenta", TextColor.MAGENTA) + Utils.ColorText(": quest objective", TextColor.LIME));
-            Utils.Add("\t" + Utils.ColorText("Green", TextColor.GREEN) + Utils.ColorText(": XP", TextColor.LIME));
-            Utils.Add("\t" + Utils.ColorText("Yellow", TextColor.YELLOW) + Utils.ColorText(": Gold", TextColor.LIME));
             Utils.Add("\t" + Utils.ColorText("Blue", TextColor.BLUE) + Utils.ColorText(": Damage", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Purple", TextColor.PURPLE) + Utils.ColorText(": Healing", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Yellow", TextColor.YELLOW) + Utils.ColorText(": Gold", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Green", TextColor.GREEN) + Utils.ColorText(": XP", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Dark Red", TextColor.DARKRED) + Utils.ColorText(": player death", TextColor.LIME));
             Utils.Add("\t" + Utils.ColorText("Salmon", TextColor.SALMON) + Utils.ColorText(": Weapon", TextColor.LIME));
             Utils.Add("\t" + Utils.ColorText("Light Blue", TextColor.LIGHTBLUE) + Utils.ColorText(": Armor", TextColor.LIME));
-            Utils.Add("\t" + Utils.ColorText("Gold", TextColor.GOLD) + Utils.ColorText(": General Item", TextColor.LIME));
-            Utils.Add("\t" + Utils.ColorText("Dark Red", TextColor.DARKRED) + Utils.ColorText(": player death", TextColor.LIME));
             Utils.Add("\t" + Utils.ColorText("Pink", TextColor.PINK) + Utils.ColorText(": Consumable", TextColor.LIME));
-            Utils.Add("\t" + Utils.ColorText("Sea Green", TextColor.SEAGREEN) + Utils.ColorText(": NPC", TextColor.LIME));
-            Utils.Add("\t" + Utils.ColorText("Purple", TextColor.PURPLE) + Utils.ColorText(": Healing", TextColor.LIME));
+            Utils.Add("\t" + Utils.ColorText("Gold", TextColor.GOLD) + Utils.ColorText(": General Item", TextColor.LIME));
             Utils.Add("\tLime: Help", TextColor.LIME);
         }
         /// <summary>

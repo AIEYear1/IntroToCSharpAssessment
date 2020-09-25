@@ -16,7 +16,6 @@ enum TextColor
     PURPLE = 90,
     DARKRED = 88,
     BLUE = 69,
-    AQUA = 49,
     SEAGREEN = 48,
     GREEN = 46,
     LIGHTBLUE = 14,
