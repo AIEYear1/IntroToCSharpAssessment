@@ -91,7 +91,7 @@ namespace CRPGNamespace
         {
             player.AddItemToInventory(World.ItemByID((int)ItemIDs.STICK));
             player.AddItemToInventory(World.ItemByID((int)ItemIDs.CLOTHES));
-            player.AddItemToInventory(new InventoryItem(World.ItemByID((int)ItemIDs.BERRIES), 10));
+            player.AddItemToInventory(new InventoryItem(World.ItemByID((int)ItemIDs.BERRIES), 5));
 
             player.SetName();
 
