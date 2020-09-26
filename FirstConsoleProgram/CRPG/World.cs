@@ -457,7 +457,8 @@ namespace CRPGNamespace
                 "in this window you'll have a chance to attack.\n" +
                 "Each enemy has a unique attack and so does each weapon!\n" +
                 "To find out how your attacks work look at your weapon,\n" +
-                "you can also get a simple description of the enemy's attack by looking at them", TextColor.LIME);
+                "you can also get a simple description of the enemy's attack by looking at them.\n" +
+                "attack phases last around 20 seconds each", TextColor.LIME);
         }
         #endregion
     }
