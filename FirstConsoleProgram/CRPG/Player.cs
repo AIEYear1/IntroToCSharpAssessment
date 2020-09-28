@@ -533,9 +533,9 @@ namespace CRPGNamespace
         }
 
         /// <summary>
-        /// Attempts to equip and item
+        /// Attempts to equip specified item
         /// </summary>
-        /// <param name="arg">Item to equip</param>
+        /// <param name="arg">name of item to equip</param>
         public void EquipItem(string arg)
         {
             for (int x = 0; x < Inventory.Count; x++)
@@ -564,6 +564,125 @@ namespace CRPGNamespace
             }
 
             Utils.Add("You have no items called " + arg);
+        }
+
+        /// <summary>
+        /// Attempts to unequip specified Item
+        /// </summary>
+        /// <param name="arg">name of item attempting to unequip</param>
+        public void UnequipItem(string arg)
+        {
+            for (int x = 0; x < Inventory.Count; x++)
+            {
+                if (Inventory[x].details.Name.ToLower() == arg || Inventory[x].details.NamePlural.ToLower() == arg)
+                {
+                    Item tmpItem = Inventory[x].details;
+
+                    if (tmpItem is Weapon)
+                    {
+                        if (currentWeapon == null)
+                        {
+                            Utils.Add("You have no weapons equiped");
+                            return;
+                        }
+
+                        if (tmpItem != currentWeapon)
+                        {
+                            Utils.Add("You don't have that equipped");
+                            return;
+                        }
+
+                        currentWeapon = null;
+                        Utils.Add("You unequip " + tmpItem.Name);
+                        return;
+                    }
+
+                    if (tmpItem is Armor)
+                    {
+                        if (currentArmor == null)
+                        {
+                            Utils.Add("You have no armor equiped");
+                            return;
+                        }
+
+                        if (tmpItem != currentArmor)
+                        {
+                            Utils.Add("You don't have that equipped");
+                            return;
+                        }
+
+                        currentArmor = null;
+                        Utils.Add("You unequip " + tmpItem.Name);
+                        return;
+                    }
+
+                    Utils.Add("You can't unequip " + tmpItem.Name);
+                    return;
+                }
+            }
+
+            Utils.Add("You have no items called " + arg);
+        }
+
+        /// <summary>
+        /// Sorts the player inventory to be Weapon, armor, consumale, junk; as well as puts items with larger IDs above items with smaller IDs
+        /// </summary>
+        void SortInventory()
+        {
+            bool swapped = true;
+            int iteration = 0;
+
+            while (swapped)
+            {
+                swapped = false;
+
+                int nextItemType;
+                int curItemType;
+                for (int x = 0; x < Inventory.Count - iteration - 1; x++)
+                {
+                    curItemType = (Inventory[x].details is Weapon) ? 0 : ((Inventory[x].details is Armor) ? 1 : ((Inventory[x].details is Consumable) ? 3 : 4));
+                    nextItemType = (Inventory[x + 1].details is Weapon) ? 0 : ((Inventory[x + 1].details is Armor) ? 1 : ((Inventory[x + 1].details is Consumable) ? 3 : 4));
+                    if (curItemType > nextItemType)
+                    {
+                        InventoryItem tmpItem = Inventory[x + 1];
+                        Inventory[x + 1] = Inventory[x];
+                        Inventory[x] = tmpItem;
+                        swapped = true;
+                        continue;
+                    }
+
+                    if (curItemType == nextItemType && Inventory[x].details.ID < Inventory[x + 1].details.ID)
+                    {
+                        InventoryItem tmpItem = Inventory[x + 1];
+                        Inventory[x + 1] = Inventory[x];
+                        Inventory[x] = tmpItem;
+                        swapped = true;
+                    }
+                }
+                for (int x = Inventory.Count - 1; x > 0 + iteration; x--)
+                {
+                    curItemType = (Inventory[x].details is Weapon) ? 0 : ((Inventory[x].details is Armor) ? 1 : ((Inventory[x].details is Consumable) ? 3 : 4));
+                    nextItemType = (Inventory[x - 1].details is Weapon) ? 0 : ((Inventory[x - 1].details is Armor) ? 1 : ((Inventory[x - 1].details is Consumable) ? 3 : 4));
+                    if (curItemType < nextItemType)
+                    {
+                        InventoryItem tmpItem = Inventory[x - 1];
+                        Inventory[x - 1] = Inventory[x];
+                        Inventory[x] = tmpItem;
+                        swapped = true;
+                        continue;
+                    }
+
+                    if (curItemType == nextItemType && Inventory[x].details.ID > Inventory[x - 1].details.ID)
+                    {
+                        InventoryItem tmpItem = Inventory[x - 1];
+                        Inventory[x - 1] = Inventory[x];
+                        Inventory[x] = tmpItem;
+                        swapped = true;
+                    }
+                }
+
+                iteration++;
+            }
         }
         #endregion
 
@@ -635,10 +754,8 @@ namespace CRPGNamespace
             Utils.Add($"Stats for {name.FullName}");
             Utils.Add($"\tHP: \t\t{currentHP}/{maximumHP}");
 
-            if (currentWeapon != null)
-                Utils.Add($"\tAttack Power: \t{CurrentMinDamage}-{CurrentMaxDamage}");
-            if (currentArmor != null)
-                Utils.Add($"\tProtection: \t{CurrentAc}");
+            Utils.Add($"\tAttack Power: \t{CurrentMinDamage}-{CurrentMaxDamage}");
+            Utils.Add($"\tProtection: \t{CurrentAc}");
 
             Utils.Add($"\tLevel: \t\t{level}");
             Utils.Add($"\tXP: \t\t{XP}/{XPToLevelUp}");
@@ -650,6 +767,7 @@ namespace CRPGNamespace
         /// </summary>
         public void InventoryCheck()
         {
+            SortInventory();
             Utils.Add("Current Inventory: ");
             for (int x = 0; x < Inventory.Count; x++)
             {
@@ -684,15 +802,15 @@ namespace CRPGNamespace
         /// <param name="enemToAttack">Enemy to attack</param>
         public void Attack(Monster enemToAttack)
         {
-            if (currentWeapon == null)
-            {
-                Utils.Add("You need a weapon to attack");
-                return;
-            }
             if (enemToAttack == null)
             {
                 Utils.Add("You swing wildly at the air");
                 return;
+            }
+            if (currentWeapon == null)
+            {
+                Utils.Add("You attack with your bare fists");
+                enemToAttack.TakeDamage(Damage);
             }
 
             enemToAttack.knownNoun = true;

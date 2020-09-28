@@ -281,15 +281,19 @@ namespace CRPGNamespace
                 case string equip when equip.StartsWith("equip "):
                     player.EquipItem(equip.Substring(6).Trim());
                     break;
-                //11th case "Use", attempt to use a specified item
+                //11th case "unequip", attempt to unequip a specified item
+                case string unequip when unequip.StartsWith("unequip "):
+                    player.UnequipItem(unequip.Substring(8).Trim());
+                    break;
+                //12th case "Use", attempt to use a specified item
                 case string use when use.StartsWith("use "):
                     player.Use(use.Substring(4));
                     break;
-                //12th case "attack", attempt to attack an enemy in the Current Location
+                //13th case "attack", attempt to attack an enemy in the Current Location
                 case "attack":
                     player.Attack(player.currentLocation.monsterLivingHere);
                     break;
-                //13th case "talk", attempt to talk to an NPC in the Current Location
+                //14th case "talk", attempt to talk to an NPC in the Current Location
                 case "talk":
                     if (player.currentLocation.npcLivingHere != null)
                     {
@@ -299,7 +303,7 @@ namespace CRPGNamespace
 
                     Utils.Add("You talk to the air");
                     break;
-                //14th case "quit", quits the game
+                //15th case "quit", quits the game
                 case "quit":
                     running = false;
                     break;

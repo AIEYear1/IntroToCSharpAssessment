@@ -131,6 +131,12 @@ namespace RaylibWindowNamespace
                         healthBar.Position = vec;
                         healthBar.Width = ((float)monster.creature.currentHP / (float)monster.creature.maximumHP) * healthBackground.Width;
 
+                        if ((player.creature as Player).currentWeapon == null)
+                        {
+                            stage = CombatPhase.PAUSE;
+                            break;
+                        }
+
                         (player.creature as Player).currentWeapon.WeaponAttack.Start();
                         stage = CombatPhase.PLAYERATTACK;
                     }

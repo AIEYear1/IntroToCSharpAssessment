@@ -398,7 +398,7 @@ namespace RaylibWindowNamespace
             player.Draw();
 
             Vector2 dir = player.Position - monster.Position;
-            if (MathF.Abs(dir.X) > MathF.Abs(dir.Y)) 
+            if (MathF.Abs(dir.X) > MathF.Abs(dir.Y))
             {
                 state = (dir.X > 0) ? 2 : 1;
             }
@@ -430,7 +430,7 @@ namespace RaylibWindowNamespace
                 arrows[x].Draw();
 
                 //Check to see if arrow has collided with player
-                if(CollisionManager.Colliding(player, arrows[x]))
+                if (CollisionManager.Colliding(player, arrows[x]))
                 {
                     int damage = Utils.NumberBetween(minDamage, maxDamage);
 

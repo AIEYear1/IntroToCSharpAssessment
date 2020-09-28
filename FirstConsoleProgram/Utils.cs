@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Numerics;
-using System.Runtime.Serialization.Formatters.Binary;
 
 /// <summary>
 /// Enum which holds all of the possible colors text can be

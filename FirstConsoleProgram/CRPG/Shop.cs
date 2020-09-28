@@ -121,23 +121,47 @@ namespace CRPGNamespace
             {
                 swapped = false;
 
+                int nextItemType;
+                int curItemType;
                 for (int x = 0; x < stock.Count - iteration - 1; x++)
                 {
-                    if (stock[x].details.Value > stock[x + 1].details.Value)
+                    curItemType = (stock[x].details is Weapon) ? 0 : ((stock[x].details is Armor) ? 1 : ((stock[x].details is Consumable) ? 3 : 4));
+                    nextItemType = (stock[x + 1].details is Weapon) ? 0 : ((stock[x + 1].details is Armor) ? 1 : ((stock[x + 1].details is Consumable) ? 3 : 4));
+                    if (curItemType > nextItemType)
                     {
-                        InventoryItem tmpHolder = stock[x + 1];
+                        InventoryItem tmpItem = stock[x + 1];
                         stock[x + 1] = stock[x];
-                        stock[x] = tmpHolder;
+                        stock[x] = tmpItem;
+                        swapped = true;
+                        continue;
+                    }
+
+                    if (curItemType == nextItemType && stock[x].details.Value < stock[x + 1].details.Value)
+                    {
+                        InventoryItem tmpItem = stock[x + 1];
+                        stock[x + 1] = stock[x];
+                        stock[x] = tmpItem;
                         swapped = true;
                     }
                 }
                 for (int x = stock.Count - 1; x > 0 + iteration; x--)
                 {
-                    if (stock[x].details.Value < stock[x - 1].details.Value)
+                    curItemType = (stock[x].details is Weapon) ? 0 : ((stock[x].details is Armor) ? 1 : ((stock[x].details is Consumable) ? 3 : 4));
+                    nextItemType = (stock[x - 1].details is Weapon) ? 0 : ((stock[x - 1].details is Armor) ? 1 : ((stock[x - 1].details is Consumable) ? 3 : 4));
+                    if (curItemType < nextItemType)
                     {
-                        InventoryItem tmpHolder = stock[x - 1];
+                        InventoryItem tmpItem = stock[x - 1];
                         stock[x - 1] = stock[x];
-                        stock[x] = tmpHolder;
+                        stock[x] = tmpItem;
+                        swapped = true;
+                        continue;
+                    }
+
+                    if (curItemType == nextItemType && stock[x].details.Value > stock[x - 1].details.Value)
+                    {
+                        InventoryItem tmpItem = stock[x - 1];
+                        stock[x - 1] = stock[x];
+                        stock[x] = tmpItem;
                         swapped = true;
                     }
                 }

@@ -124,8 +124,8 @@ namespace CRPGNamespace
             //Inn: QueryNPC, Cost to stay at the inn
             //shop: QueryNPC, Price augement
             NPCs.Add(new NPC(new Name("Steve"), "'ello, welcome to Kvorkys", "The entrance guard to Kvorkys", false, true));
-            NPCs.Add(new Inn(new Name("Mileena"), "'ello", "The town inn", "Would you like to rent a room for the night?", 10, false, true));
-            Shop kvorkysShop = new Shop(new Name("Markus"), "'ello", "the town shop", "Buyin' or sellin'?", 1.02f, false, true);
+            NPCs.Add(new Inn(new Name("Mileena"), "'ello", "Keeper of the town inn", "Would you like to rent a room for the night?", 10, false, true));
+            Shop kvorkysShop = new Shop(new Name("Markus"), "'ello", "Owner of the town shop", "Buyin' or sellin'?", 1.02f, false, true);
             kvorkysShop.stock.Add(new InventoryItem(ItemByID((int)ItemIDs.LESSERHEALINGPOTION), 5));
             kvorkysShop.stock.Add(new InventoryItem(ItemByID((int)ItemIDs.HEALINGPOTION), 5));
             kvorkysShop.SortByPrice();
@@ -155,11 +155,11 @@ namespace CRPGNamespace
             };
             QuestMonster troll = new QuestMonster(new Name("Troll"), "A troll trying to attack the town", 30, trollAttack, 40, 10, QuestByID((int)QuestIDs.TUTORIALQUEST), 1)
             {
-                lootTable = new LootItem[] {}
+                lootTable = new LootItem[] { }
             };
             Monster bandits = new Monster(new Name("Bandits"), "A pair of bandits, you don't feel like giving them your money", 32, banditsAttack, 12, 25, false, true)
             {
-                lootTable = new LootItem[] {}
+                lootTable = new LootItem[] { }
             };
 
             Monsters.Add(wolf);
@@ -292,7 +292,7 @@ namespace CRPGNamespace
             {
                 new Objective("Figure out where you are", 0, "As you walk along the road you see a city being attacked by a troll!\nDefeat the troll and protect the villagers!"),
                 new Objective("Defeat the troll", 1, "With the troll defeated the town is now safe, perhaps there you can find answers"),
-                new Objective("Talk with the townsfolk", 2, "You're lost? Oh well this is Kvorkys a small town in the southern portion of Bjork.\nYou may be able to find out more at the capital, if you head out of the town you should see a road north,\nthat'll lead you to the capital")
+                new Objective("Talk with the townsfolk", 2, "\"You're lost? Oh well this is Kvorkys, a small town in the southern portion of Bjork.\nYou may be able to find out more at the capital, if you head out of the town you should see a road north,\nthat'll lead you straight there\"")
             }
             };
 
@@ -421,6 +421,7 @@ namespace CRPGNamespace
             Utils.Add("\tquests: shows you your current quests", TextColor.LIME);
             Utils.Add("\tmove <direction to move in>: lets you move in a specified direction", TextColor.LIME);
             Utils.Add("\tequip <item to equip>: lets you equip a specified item", TextColor.LIME);
+            Utils.Add("\tunequip <item to unequip>: lets you unequip a specified item", TextColor.LIME);
             Utils.Add("\tuse <item to use>: lets you use a specified item", TextColor.LIME);
             Utils.Add("\tattack: attacks the current monster in the area", TextColor.LIME);
             Utils.Add("\ttalk: talks to the current NPC in the area", TextColor.LIME);

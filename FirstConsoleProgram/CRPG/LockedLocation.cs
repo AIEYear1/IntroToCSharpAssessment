@@ -61,6 +61,7 @@
                 return false;
             }
 
+            knownNoun = true;
             Utils.Add("You unlock " + Utils.PrefixNoun(name, properNoun, knownNoun));
             return true;
         }
